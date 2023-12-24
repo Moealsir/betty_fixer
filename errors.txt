@@ -1,0 +1,21 @@
+
+========== i.c ==========
+func0
+func1
+
+========== j.c ==========
+j.c:2: ERROR: spaces required around that '==' (ctx:ExO)
+j.c:2: ERROR: spaces required around that '==' (ctx:OxO)
+j.c:2: ERROR: spaces required around that '==' (ctx:OxO)
+j.c:2: ERROR: spaces required around that '==' (ctx:OxO)
+j.c:2: ERROR: spaces required around that '==' (ctx:OxW)
+j.c:2: ERROR: spaces required around that '==' (ctx:WxO)
+j.c:2: ERROR: spaces required around that '==' (ctx:OxO)
+j.c:2: ERROR: spaces required around that '==' (ctx:OxO)
+j.c:2: ERROR: spaces required around that '==' (ctx:OxO)
+j.c:2: ERROR: spaces required around that '==' (ctx:OxE)
+j.c:3: ERROR: spaces required around that ':' (ctx:VxV)
+j.c:3: ERROR: spaces required around that ':' (ctx:VxW)
+j.c:3: ERROR: spaces required around that ':' (ctx:VxW)
+j.c:4: ERROR: spaces required around that ':' (ctx:VxW)
+total: 14 errors, 0 warnings, 7 lines checked
