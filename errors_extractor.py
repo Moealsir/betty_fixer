@@ -14,9 +14,11 @@ def run_betty(file_path, output_file):
             common_output_file.write(output)
     except subprocess.CalledProcessError as e:
         # Handle the case when Betty returns a non-zero exit code
-        print(f"Error running Betty for {file_path}: {e}")
-        print("Betty output:")
-        print(e.output.decode())
+        pass
+        # Append the error output to the common errors.txt file
+        with open(output_file, 'a') as common_output_file:
+            common_output_file.write(e.stdout)
+            common_output_file.write(e.stderr)
 
 if __name__ == "__main__":
     # Check if at least one file path is provided as a command-line argument

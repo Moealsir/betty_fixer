@@ -43,8 +43,10 @@ def run_vi_script(filename):
     # Run the vi command with gg=G using the -c option
     subprocess.run(['vi', '-c', 'normal! gg=G', '-c', 'wq', filename])
 
+
 def fix_betty_warnings(content, file_path):
     # Run Betty and append errors to the common errors.txt file
+    content = remove_consecutive_blank_lines(content)
     run_betty(file_path, 'errors.txt')
 
     content = fix_comments(content)
