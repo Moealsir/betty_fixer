@@ -1,3 +1,4 @@
+import re
 # Process the errors from the errors.txt file
 def process_error_file(errors_file_path):
     with open(errors_file_path, 'r') as errors_file:
@@ -20,6 +21,15 @@ def extract_and_print_variables(error_line):
         return file_path.strip(), line_number.strip(), error_description
     return None
 
+def clean_up_line(line):
+    # Remove extra spaces and ensure a single space before and after each word
+    cleaned_line = ' '.join(part.strip() for part in line.split(' '))
+
+    # Add newline character if the original line had it
+    if line.endswith('\n'):
+        cleaned_line += '\n'
+
+    return cleaned_line
 
 def fix_errors_from_file(file_path, line_number, error_description):
     # List of error messages
@@ -78,6 +88,29 @@ def fix_space_prohibited_between_function_name_and_open_parenthesis(file_path, l
 
     # Find the specifier in the line and fix it
     fixed_line = error_line.replace(f' {specifier}', specifier)
+    
+    # Replace the line in the file
+    lines[int(line_number) - 1] = fixed_line
+
+    # Write the modified content back to the file
+    with open(file_path, 'w') as file:
+        file.writelines(lines)
+
+ 
+def fix_space_prohibited_after_that_open_parenthesis(file_path, line_number, error_description):
+     # Extract specifier from error_description
+    specifier_index = error_description.find("'") + 1
+    specifier = error_description[specifier_index:-1]
+
+    # Read the file content
+    with open(file_path, 'r') as file:
+        lines = file.readlines()
+
+    # Find the line with the error
+    error_line = lines[int(line_number) - 1]
+
+    # Find the specifier in the line and fix it
+    fixed_line = error_line.replace(f'{specifier} ', specifier)
 
     # Replace the line in the file
     lines[int(line_number) - 1] = fixed_line
@@ -86,17 +119,49 @@ def fix_space_prohibited_between_function_name_and_open_parenthesis(file_path, l
     with open(file_path, 'w') as file:
         file.writelines(lines)
 
-def fix_space_prohibited_after_that_open_parenthesis(file_path, line_number, error_description):
-    # Implement the fix logic here
-    pass
-
 def fix_space_prohibited_before_that_close_parenthesis(file_path, line_number, error_description):
-    # Implement the fix logic here
-    pass
+    # Extract specifier from error_description
+    specifier_index = error_description.find("'") + 1
+    specifier = error_description[specifier_index:-1]
+
+    # Read the file content
+    with open(file_path, 'r') as file:
+        lines = file.readlines()
+
+    # Find the line with the error
+    error_line = lines[int(line_number) - 1]
+    error_line = clean_up_line(error_line)
+    # Find the specifier in the line and fix it
+    fixed_line = error_line.replace(f' {specifier}', specifier)
+
+    # Replace the line in the file
+    lines[int(line_number) - 1] = fixed_line
+
+    # Write the modified content back to the file
+    with open(file_path, 'w') as file:
+        file.writelines(lines)
 
 def fix_space_required_before_the_open_parenthesis(file_path, line_number, error_description):
-    # Implement the fix logic here
-    pass
+    # Extract specifier from error_description
+    specifier_index = error_description.find("'") + 1
+    specifier = error_description[specifier_index:-1]
+
+    # Read the file content
+    with open(file_path, 'r') as file:
+        lines = file.readlines()
+
+    # Find the line with the error
+    error_line = lines[int(line_number) - 1]
+    error_line = clean_up_line(error_line)
+    # Find the specifier in the line and fix it
+    fixed_line = error_line.replace(specifier, f' {specifier}')
+
+    # Replace the line in the file
+    lines[int(line_number) - 1] = fixed_line
+
+    # Write the modified content back to the file
+    with open(file_path, 'w') as file:
+        file.writelines(lines)
 
 def fix_space_prohibited_before_semicolon(file_path, line_number, error_description):
     # Implement the fix logic here
@@ -128,6 +193,7 @@ def fix_space_required_after_that(file_path, line_number, error_description):
 
 # Example usage
 if __name__ == "__main__":
+    
     # Assuming you have an errors.txt file with test data
     errors_file_path = 'errors.txt'
     process_error_file(errors_file_path)
