@@ -3,8 +3,9 @@ import sys
 import os
 import subprocess
 from backup import *
-from spaces import *
-from errors_extractor import run_betty
+from errors_extractor import exctract_errors
+from extract_line import process_error_file
+
 
 def read_file(file_path):
     with open(file_path, 'r') as file:
@@ -14,6 +15,20 @@ def read_file(file_path):
 def write_file(file_path, content):
     with open(file_path, 'w') as file:
         file.write(content)
+
+def add_line_without_newline(file_path, line):
+    # Add a line without a newline at the end of the file if not found
+    with open(file_path, 'r') as file:
+        lines = file.readlines()
+        last_line = lines[-1] if lines else ''
+
+    if not last_line.strip() == line.strip():
+        with open(file_path, 'a') as file:
+            file.write(line)
+            
+def remove_consecutive_blank_lines(content):
+    # Remove multiple consecutive blank lines
+    return re.sub('\n{3,}', '\n\n', content)
 
 def add_parentheses_around_return(content):
     # Add parentheses around return values if not already present
@@ -43,17 +58,22 @@ def run_vi_script(filename):
     # Run the vi command with gg=G using the -c option
     subprocess.run(['vi', '-c', 'normal! gg=G', '-c', 'wq', filename])
 
+def process_errors(file_path):
+    # Process the errors for the specified file
+    errors_file_path = 'errors.txt'
+    process_error_file(errors_file_path)
 
 def fix_betty_warnings(content, file_path):
     # Run Betty and append errors to the common errors.txt file
     content = remove_consecutive_blank_lines(content)
-    run_betty(file_path, 'errors.txt')
+    exctract_errors(file_path, 'errors.txt')
 
     content = fix_comments(content)
     content = remove_trailing_whitespaces(content)
     content = add_parentheses_around_return(content)
 
-    return content
+    # Return the file path for further processing
+    return file_path
 
 def fix_betty_style(file_paths):
     for file_path in file_paths:
@@ -66,13 +86,16 @@ def fix_betty_style(file_paths):
         content = read_file(file_path)
 
         # Apply fixes for warnings and write errors to the file
-        content = fix_betty_warnings(content, file_path)
+        file_path_with_errors = fix_betty_warnings(content, file_path)
 
         # Write the fixed content back to the file
         write_file(file_path, content)
 
         # Add a line without a newline at the end of the file
         add_line_without_newline(file_path, '\n')
+
+        # Process errors for the file
+        process_errors(file_path_with_errors)
 
 if __name__ == "__main__":
     if len(sys.argv) < 2:
