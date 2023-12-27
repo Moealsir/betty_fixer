@@ -59,7 +59,7 @@ def fix_errors_from_file(file_path, line_number, error_description):
             elif i == 3:
                 fix_space_required_before_the_open_parenthesis(file_path, line_number, error_description)
             elif i == 4:
-                fix_space_prohibited_before_semicolon(file_path, line_number, error_description)
+                fix_space_prohibited_before_semicolon(file_path, line_number, ';')
             elif i == 5:
                 fix_should_be_foo_star_bar(file_path, line_number, error_description)
             elif i == 6:
@@ -95,7 +95,6 @@ def fix_space_prohibited_between_function_name_and_open_parenthesis(file_path, l
     # Write the modified content back to the file
     with open(file_path, 'w') as file:
         file.writelines(lines)
-
  
 def fix_space_prohibited_after_that_open_parenthesis(file_path, line_number, error_description):
      # Extract specifier from error_description
@@ -163,13 +162,57 @@ def fix_space_required_before_the_open_parenthesis(file_path, line_number, error
     with open(file_path, 'w') as file:
         file.writelines(lines)
 
-def fix_space_prohibited_before_semicolon(file_path, line_number, error_description):
-    # Implement the fix logic here
-    pass
+def fix_space_prohibited_before_semicolon(file_path, line_number, specifier):
+
+    # Read the file content
+    with open(file_path, 'r') as file:
+        lines = file.readlines()
+
+    # Find the line with the error
+    error_line = lines[int(line_number) - 1]
+
+    # Replace any space before the semicolon specifier
+    fixed_line = error_line.replace(f' {specifier}', specifier)
+
+    # Replace the line in the file
+    lines[int(line_number) - 1] = fixed_line
+
+    # Write the modified content back to the file
+    with open(file_path, 'w') as file:
+        file.writelines(lines)
+
 
 def fix_should_be_foo_star_bar(file_path, line_number, error_description):
-    # Implement the fix logic here
-    pass
+    # Specify the specifier
+    specifier = '*'
+
+    # Read the file content
+    with open(file_path, 'r') as file:
+        lines = file.readlines()
+
+    # Find the line with the error
+    error_line = lines[int(line_number) - 1]
+
+    # Check conditions and fix the line accordingly
+    if f'foo* bar' in error_description:
+        fixed_line = error_line.replace(f'{specifier} ', f' {specifier}')
+    elif f'foo * bar' in error_description:
+        fixed_line = error_line.replace(f'{specifier} ', f'{specifier}')
+    elif f'foo*bar' in error_description:
+        fixed_line = error_line.replace(f'{specifier}', f' {specifier}')
+    else:
+        # If none of the conditions match, return without making changes
+        return
+
+    # Replace the line in the file
+    lines[int(line_number) - 1] = fixed_line
+
+    # Write the modified content back to the file
+    with open(file_path, 'w') as file:
+        file.writelines(lines)
+
+
+
 
 def fix_spaces_prohibited_around_that(file_path, line_number, error_description):
     # Implement the fix logic here
