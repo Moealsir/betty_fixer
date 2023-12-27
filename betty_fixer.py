@@ -76,26 +76,30 @@ def fix_betty_warnings(content, file_path):
     return file_path
 
 def fix_betty_style(file_paths):
-    for file_path in file_paths:
-        create_backup(file_path)  # Create a backup before making changes
+    for _ in range(2):  # Run the loop twice
+        for file_path in file_paths:
+            create_backup(file_path)  # Create a backup before making changes
 
-        # Run the vi script for each file
-        run_vi_script(file_path)
+            # Run the vi script for each file
+            run_vi_script(file_path)
 
-        # Read file content
-        content = read_file(file_path)
+            # Read file content
+            content = read_file(file_path)
 
-        # Apply fixes for warnings and write errors to the file
-        file_path_with_errors = fix_betty_warnings(content, file_path)
+            # Apply fixes for warnings and write errors to the file
+            file_path_with_errors = fix_betty_warnings(content, file_path)
 
-        # Write the fixed content back to the file
-        write_file(file_path, content)
+            # Write the fixed content back to the file
+            write_file(file_path, content)
 
-        # Add a line without a newline at the end of the file
-        add_line_without_newline(file_path, '\n')
+            # Add a line without a newline at the end of the file
+            add_line_without_newline(file_path, '\n')
 
-        # Process errors for the file
-        process_errors(file_path_with_errors)
+            # Process errors for the file
+            process_errors(file_path_with_errors)
+            
+
+
 
 if __name__ == "__main__":
     if len(sys.argv) < 2:

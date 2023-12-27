@@ -40,11 +40,12 @@ def fix_errors_from_file(file_path, line_number, error_description):
         "space required before the open parenthesis",
         "space prohibited before semicolon",
         "should be \"foo *bar\"",
-        "spaces prohibited around that",
-        "space prohibited after that",
-        "space prohibited before that",
-        "spaces preferred around that",
-        "space required after that",
+        "spaces prohibited around that '",
+        "space prohibited after that '",
+        "space prohibited before that '",
+        "spaces preferred around that '",
+        "space required after that '",
+        "spaces required around that ",
         "Missing a blank line after declarations"
     ]
 
@@ -73,6 +74,8 @@ def fix_errors_from_file(file_path, line_number, error_description):
                 fix_spaces_preferred_around_that(file_path, line_number, error_description)
             elif i == 10:
                 fix_space_required_after_that(file_path, line_number, error_description)
+            elif i == 11:
+                fix_space_required_around_that(file_path, line_number, error_description)
             # elif i == 11:
             #     fix_missing_blank_line_after_declaration(file_path, line_number)
 
@@ -196,7 +199,7 @@ def fix_space_prohibited_before_semicolon(file_path, line_number, specifier):
     with open(file_path, 'w') as file:
         file.writelines(lines)
 
-def fix_should_be_foo_star_bar(file_path, line_number, error_description):
+def fix_should_be_foo_star_bar(file_path, line_number, error_description): #done
     # Specify the specifier
     specifier = '*'
 
@@ -225,7 +228,7 @@ def fix_should_be_foo_star_bar(file_path, line_number, error_description):
     with open(file_path, 'w') as file:
         file.writelines(lines)
 
-def fix_spaces_prohibited_around_that(file_path, line_number, error_description):
+def fix_spaces_prohibited_around_that(file_path, line_number, error_description): #done
     # Find the specifier between two single quotes in the error_description
     specifier_start = error_description.find("'") + 1
     specifier_end = error_description.rfind("'")
@@ -272,25 +275,239 @@ def fix_spaces_prohibited_around_that(file_path, line_number, error_description)
         file.writelines(lines)
 
 
-def fix_space_prohibited_after_that(file_path, line_number, error_description):
-    # Implement the fix logic here
-    pass
+def fix_space_prohibited_after_that(file_path, line_number, error_description): #done
+    # Find the specifier between two single quotes in the error_description
+    specifier_start = error_description.find("'") + 1
+    specifier_end = error_description.rfind("'")
+    
+    if specifier_start < 0 or specifier_end < 0:
+        # Unable to find valid specifier, return without making changes
+        return
+
+    specifier = error_description[specifier_start:specifier_end]
+
+    # Extract context from the end of error_description (ctx:context) between : and )
+    context_start = error_description.rfind(':') + 1
+    context_end = error_description.rfind(')')
+
+    if context_start < 0 or context_end < 0:
+        # Unable to find valid context, return without making changes
+        return
+
+    context = error_description[context_start:context_end].strip()
+
+    # Read the file content
+    with open(file_path, 'r') as file:
+        lines = file.readlines()
+
+    # Find the line with the error
+    error_line = lines[int(line_number) - 1]
+
+    # Fix line according to the context conditions
+    if context == 'WxW':
+        fixed_line = error_line.replace(f'{specifier} ', f'{specifier}')
+    elif context == 'ExW':
+        fixed_line = error_line.replace(f'{specifier} ', f'{specifier}')
+    else:
+        # If the context doesn't match known conditions, return without making changes
+        return
+
+    # Replace the line in the file
+    lines[int(line_number) - 1] = fixed_line
+
+    # Write the modified content back to the file
+    with open(file_path, 'w') as file:
+        file.writelines(lines)
 
 def fix_space_prohibited_before_that(file_path, line_number, error_description):
-    # Implement the fix logic here
-    pass
+    # Find the specifier between two single quotes in the error_description
+    specifier_start = error_description.find("'") + 1
+    specifier_end = error_description.rfind("'")
+    
+    if specifier_start < 0 or specifier_end < 0:
+        # Unable to find valid specifier, return without making changes
+        return
 
-def fix_spaces_preferred_around_that(file_path, line_number, error_description):
-    # Implement the fix logic here
-    pass
+    specifier = error_description[specifier_start:specifier_end]
+
+    # Extract context from the end of error_description (ctx:context) between : and )
+    context_start = error_description.rfind(':') + 1
+    context_end = error_description.rfind(')')
+
+    if context_start < 0 or context_end < 0:
+        # Unable to find valid context, return without making changes
+        return
+
+    context = error_description[context_start:context_end].strip()
+
+    # Read the file content
+    with open(file_path, 'r') as file:
+        lines = file.readlines()
+
+    # Find the line with the error
+    error_line = lines[int(line_number) - 1]
+
+    # Fix line according to the context conditions
+    if context == 'WxV' or context == 'WxO' or context == 'WxE' or context == 'WxW':
+        fixed_line = error_line.replace(f' {specifier}', f'{specifier}')
+    else:
+        # If the context doesn't match known conditions, return without making changes
+        return
+
+    # Replace the line in the file
+    lines[int(line_number) - 1] = fixed_line
+
+    # Write the modified content back to the file
+    with open(file_path, 'w') as file:
+        file.writelines(lines)
+
+def fix_spaces_preferred_around_that(file_path, line_number, error_description): #done
+    # Find the specifier between two single quotes in the error_description
+    specifier_start = error_description.find("'") + 1
+    specifier_end = error_description.rfind("'")
+    
+    if specifier_start < 0 or specifier_end < 0:
+        # Unable to find valid specifier, return without making changes
+        return
+
+    specifier = error_description[specifier_start:specifier_end]
+
+    # Extract context from the end of error_description (ctx:context) between : and )
+    context_start = error_description.rfind(':') + 1
+    context_end = error_description.rfind(')')
+
+    if context_start < 0 or context_end < 0:
+        # Unable to find valid context, return without making changes
+        return
+
+    context = error_description[context_start:context_end].strip()
+
+    # Read the file content
+    with open(file_path, 'r') as file:
+        lines = file.readlines()
+
+    # Find the line with the error
+    error_line = lines[int(line_number) - 1]
+    
+    # Check if the line already satisfies the condition
+    if f' {specifier} ' in error_line:
+        # If the required space is already present, skip the fix
+        return
+
+    # Fix line according to the context conditions
+    if context == 'VxV':
+        fixed_line = error_line.replace(f'{specifier}', f' {specifier} ')
+    elif context == 'WxV':
+        fixed_line = error_line.replace(f' {specifier}', f' {specifier} ')
+    elif context == 'VxW':
+        fixed_line = error_line.replace(f'{specifier} ', f' {specifier} ')
+    else:
+        # If the context doesn't match known conditions, return without making changes
+        return  
+
+    # Replace the line in the file
+    lines[int(line_number) - 1] = fixed_line
+
+    # Write the modified content back to the file
+    with open(file_path, 'w') as file:
+        file.writelines(lines)
+
+def fix_space_required_around_that(file_path, line_number, error_description): #done
+    # Find the specifier between two single quotes in the error_description
+    specifier_start = error_description.find("'") + 1
+    specifier_end = error_description.rfind("'")
+    
+    if specifier_start < 0 or specifier_end < 0:
+        # Unable to find valid specifier, return without making changes
+        return
+
+    specifier = error_description[specifier_start:specifier_end]
+
+    # Extract context from the end of error_description (ctx:context) between : and )
+    context_start = error_description.rfind(':') + 1
+    context_end = error_description.rfind(')')
+
+    if context_start < 0 or context_end < 0:
+        # Unable to find valid context, return without making changes
+        return
+
+    context = error_description[context_start:context_end].strip()
+
+    # Read the file content
+    with open(file_path, 'r') as file:
+        lines = file.readlines()
+
+    # Find the line with the error
+    error_line = lines[int(line_number) - 1]
+    
+    # Check if the line already satisfies the condition
+    if f' {specifier} ' in error_line:
+        # If the required space is already present, skip the fix
+        return
+
+    # Fix line according to the context conditions
+    if context == 'VxV':
+        fixed_line = error_line.replace(f'{specifier}', f' {specifier} ')
+    elif context == 'WxV':
+        fixed_line = error_line.replace(f' {specifier}', f' {specifier} ')
+    elif context == 'VxW':
+        fixed_line = error_line.replace(f'{specifier} ', f' {specifier} ')
+    else:
+        # If the context doesn't match known conditions, return without making changes
+        return  
+
+    # Replace the line in the file
+    lines[int(line_number) - 1] = fixed_line
+
+    # Write the modified content back to the file
+    with open(file_path, 'w') as file:
+        file.writelines(lines)
+
 
 def fix_space_required_after_that(file_path, line_number, error_description):
-    # Implement the fix logic here
-    pass
+    # Find the specifier between two single quotes in the error_description
+    specifier_start = error_description.find("'") + 1
+    specifier_end = error_description.rfind("'")
+    
+    if specifier_start < 0 or specifier_end < 0:
+        # Unable to find valid specifier, return without making changes
+        return
+
+    specifier = error_description[specifier_start:specifier_end]
+
+    # Extract context from the end of error_description (ctx:context) between : and )
+    context_start = error_description.rfind(':') + 1
+    context_end = error_description.rfind(')')
+
+    if context_start < 0 or context_end < 0:
+        # Unable to find valid context, return without making changes
+        return
+
+    context = error_description[context_start:context_end].strip()
+
+    # Read the file content
+    with open(file_path, 'r') as file:
+        lines = file.readlines()
+
+    # Find the line with the error
+    error_line = lines[int(line_number) - 1]
+
+    # Fix line according to the context conditions
+    if context == 'WxV':
+        fixed_line = error_line.replace(f'{specifier}', f'{specifier} ')
+    else:
+        # If the context doesn't match known conditions, return without making changes
+        return
+
+    # Replace the line in the file
+    lines[int(line_number) - 1] = fixed_line
+
+    # Write the modified content back to the file
+    with open(file_path, 'w') as file:
+        file.writelines(lines)
 
 # Example usage
 if __name__ == "__main__":
-    
-    # Assuming you have an errors.txt file with test data
+# Assuming you have an errors.txt file with test data
     errors_file_path = 'errors.txt'
     process_error_file(errors_file_path)
