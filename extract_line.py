@@ -46,6 +46,8 @@ def fix_errors_from_file(file_path, line_number, error_description):
         "spaces preferred around that '",
         "space required after that '",
         "spaces required around that ",
+        "space required before the open brace",
+        "space required after that close brac",
         "Missing a blank line after declarations"
     ]
 
@@ -76,6 +78,10 @@ def fix_errors_from_file(file_path, line_number, error_description):
                 fix_space_required_after_that(file_path, line_number, error_description)
             elif i == 11:
                 fix_space_required_around_that(file_path, line_number, error_description)
+            elif i == 12:
+                fix_space_required_before_the_open_brace(file_path, line_number, error_description)
+            elif i == 13:
+                fix_space_required_after_the_close_brace(file_path, line_number, error_description)
             # elif i == 11:
             #     fix_missing_blank_line_after_declaration(file_path, line_number)
 
@@ -463,7 +469,6 @@ def fix_space_required_around_that(file_path, line_number, error_description): #
     with open(file_path, 'w') as file:
         file.writelines(lines)
 
-
 def fix_space_required_after_that(file_path, line_number, error_description):
     # Find the specifier between two single quotes in the error_description
     specifier_start = error_description.find("'") + 1
@@ -498,6 +503,50 @@ def fix_space_required_after_that(file_path, line_number, error_description):
     else:
         # If the context doesn't match known conditions, return without making changes
         return
+
+    # Replace the line in the file
+    lines[int(line_number) - 1] = fixed_line
+
+    # Write the modified content back to the file
+    with open(file_path, 'w') as file:
+        file.writelines(lines)
+
+def fix_space_required_before_the_open_brace(file_path, line_number, error_description):
+    # Extract specifier from error_description
+    specifier_index = error_description.find("'") + 1
+    specifier = error_description[specifier_index:-1]
+
+    # Read the file content
+    with open(file_path, 'r') as file:
+        lines = file.readlines()
+
+    # Find the line with the error
+    error_line = lines[int(line_number) - 1]
+    error_line = clean_up_line(error_line)
+    # Find the specifier in the line and fix it
+    fixed_line = error_line.replace(specifier, f' {specifier}')
+
+    # Replace the line in the file
+    lines[int(line_number) - 1] = fixed_line
+
+    # Write the modified content back to the file
+    with open(file_path, 'w') as file:
+        file.writelines(lines)
+
+def fix_space_required_after_the_close_brace(file_path, line_number, error_description):
+    # Extract specifier from error_description
+    specifier_index = error_description.find("'") + 1
+    specifier = error_description[specifier_index:-1]
+
+    # Read the file content
+    with open(file_path, 'r') as file:
+        lines = file.readlines()
+
+    # Find the line with the error
+    error_line = lines[int(line_number) - 1]
+    error_line = clean_up_line(error_line)
+    # Find the specifier in the line and fix it
+    fixed_line = error_line.replace(specifier, f'{specifier} ')
 
     # Replace the line in the file
     lines[int(line_number) - 1] = fixed_line
