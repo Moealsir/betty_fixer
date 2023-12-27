@@ -196,7 +196,6 @@ def fix_space_prohibited_before_semicolon(file_path, line_number, specifier):
     with open(file_path, 'w') as file:
         file.writelines(lines)
 
-
 def fix_should_be_foo_star_bar(file_path, line_number, error_description):
     # Specify the specifier
     specifier = '*'
@@ -226,12 +225,52 @@ def fix_should_be_foo_star_bar(file_path, line_number, error_description):
     with open(file_path, 'w') as file:
         file.writelines(lines)
 
-
-
-
 def fix_spaces_prohibited_around_that(file_path, line_number, error_description):
-    # Implement the fix logic here
-    pass
+    # Find the specifier between two single quotes in the error_description
+    specifier_start = error_description.find("'") + 1
+    specifier_end = error_description.rfind("'")
+    
+    if specifier_start < 0 or specifier_end < 0:
+        # Unable to find valid specifier, return without making changes
+        return
+
+    specifier = error_description[specifier_start:specifier_end]
+
+    # Extract context from the end of error_description (ctx:context) between : and )
+    context_start = error_description.rfind(':') + 1
+    context_end = error_description.rfind(')')
+
+    if context_start < 0 or context_end < 0:
+        # Unable to find valid context, return without making changes
+        return
+
+    context = error_description[context_start:context_end].strip()
+
+    # Read the file content
+    with open(file_path, 'r') as file:
+        lines = file.readlines()
+
+    # Find the line with the error
+    error_line = lines[int(line_number) - 1]
+
+    # Fix line according to the context conditions
+    if context == 'WxW':
+        fixed_line = error_line.replace(f' {specifier} ', f'{specifier}')
+    elif context == 'WxV':
+        fixed_line = error_line.replace(f' {specifier}', f'{specifier}')
+    elif context == 'VxW':
+        fixed_line = error_line.replace(f'{specifier} ', f'{specifier}')
+    else:
+        # If the context doesn't match known conditions, return without making changes
+        return
+
+    # Replace the line in the file
+    lines[int(line_number) - 1] = fixed_line
+
+    # Write the modified content back to the file
+    with open(file_path, 'w') as file:
+        file.writelines(lines)
+
 
 def fix_space_prohibited_after_that(file_path, line_number, error_description):
     # Implement the fix logic here
