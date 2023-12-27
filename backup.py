@@ -13,8 +13,8 @@ def create_backup(file_path):
 
         shutil.copy2(file_path, backup_path)
 
-        print(f"Backup created: {backup_path}")
+        
     except FileNotFoundError:
-        print(f"Error creating backup for {file_path}: File not found.")
+        pass
     except Exception as e:
-        print(f"Unexpected error in create_backup for {file_path}: {e}")
+        pass

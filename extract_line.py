@@ -1,4 +1,16 @@
 import re
+
+
+def remove_extra_spaces(input_text):
+    lines = input_text.split('\n')
+    cleaned_lines = []
+
+    for line in lines:
+        cleaned_line = ' '.join(line.split())
+        cleaned_lines.append(cleaned_line)
+
+    cleaned_text = '\n'.join(cleaned_lines)
+    return cleaned_text
 # Process the errors from the errors.txt file
 def process_error_file(errors_file_path):
     with open(errors_file_path, 'r') as errors_file:
@@ -7,7 +19,7 @@ def process_error_file(errors_file_path):
             if variables:
                 file_path, line_number, error_description = variables
                 fix_errors_from_file(file_path, line_number, error_description)
-
+                
 def extract_and_print_variables(error_line):
     # Split the error line to extract variables
     parts = error_line.split(":")
@@ -20,7 +32,6 @@ def extract_and_print_variables(error_line):
         # Further processing if needed
         return file_path.strip(), line_number.strip(), error_description
     return None
-
 def clean_up_line(line):
     # Remove extra spaces and ensure a single space before and after each word
     cleaned_line = ' '.join(part.strip() for part in line.split(' '))
@@ -30,7 +41,6 @@ def clean_up_line(line):
         cleaned_line += '\n'
 
     return cleaned_line
-
 def fix_errors_from_file(file_path, line_number, error_description):
     # List of error messages
     error_messages = [
@@ -84,7 +94,6 @@ def fix_errors_from_file(file_path, line_number, error_description):
                 fix_space_required_after_the_close_brace(file_path, line_number, error_description)
             # elif i == 11:
             #     fix_missing_blank_line_after_declaration(file_path, line_number)
-
 def fix_missing_blank_line_after_declaration(file_path, line_number):
     # Read the file content
     with open(file_path, 'r') as file:
@@ -96,8 +105,82 @@ def fix_missing_blank_line_after_declaration(file_path, line_number):
     # Write the modified content back to the file
     with open(file_path, 'w') as file:
         file.writelines(lines)
-
 # Implement specific fixes for each error type
+
+def generate_documentation(file_name, function_name):
+    try:
+        with open(file_name, 'r') as file:
+            lines = file.readlines()
+
+        # Search for the function
+        pattern = r'\b' + re.escape(function_name) + r'\b[^(]*\([^)]*\)'
+        for i, line in enumerate(lines):
+            if re.search(pattern, line):
+                function_start_line = i
+                break
+        else:
+            raise ValueError(f"No function named '{function_name}' found in the file.")
+
+        # Extract function arguments
+        args_match = re.search(r'\(([^)]*)\)', lines[function_start_line])
+        if args_match:
+            # Extract arguments from the updated text
+            args_text = args_match.group(1).strip()
+
+            # Ignore if arguments are "void"
+            if args_text.lower() == 'void':
+                arguments = []
+            else:
+                while ')' not in args_text and '\n' not in lines[function_start_line]:
+                    # Iterate through the remaining lines until a closing parenthesis or a new line is encountered
+                    function_start_line += 1
+                    args_text += lines[function_start_line].strip()
+
+                arguments = args_text.split(',')
+                arguments = [arg.strip().split(' ')[-1].lstrip('*') if '*' in arg else arg.strip().split(' ')[-1] for arg in arguments if arg.strip()]
+
+        # Create documentation
+        documentation = []
+        documentation.append('/**')
+        documentation.append(f' * {function_name} - a Function that ...')
+        if arguments:
+            for arg in arguments:
+                # Correctly identify the second argument as the word before the last closing parenthesis
+                if arg == arguments[-1]:
+                    documentation.append(f' * @{arg}: Description of {arg}.')
+                else:
+                    documentation.append(f' * @{arg}: Description of {arg}.')
+        documentation.append(' * Return: Description of the return value.')
+        documentation.append(' */\n')  # Add a new line after closing '/'
+
+        # Insert documentation into the file
+        lines.insert(function_start_line, '\n'.join(documentation))
+
+        # Write back to the file
+        with open(file_name, 'w') as file:
+            file.writelines(lines)
+
+        print(f"Documentation for '{function_name}' added successfully.")
+
+    except Exception as e:
+        print(f"Error: {e}")
+
+def extract_functions_with_no_description(file_path):
+    functions = []
+    file_path = 'errors.txt'
+    with open(file_path, 'r') as errors_file:
+        for line in errors_file:
+            # Check if the error description contains 'no description found for function'
+            if 'no description found for function' in line:
+                # Split the line by spaces and get the word after 'no description found for function'
+                words = line.split()
+                index = words.index('no') + 5  # Adjust index based on the specific position of the function name
+                function_name = words[index]
+
+                # Append the function name to the list
+                functions.append(function_name)
+
+    return functions
 def fix_space_prohibited_between_function_name_and_open_parenthesis(file_path, line_number, error_description):
     # Extract specifier from error_description
     specifier_index = error_description.find("'") + 1
@@ -118,8 +201,7 @@ def fix_space_prohibited_between_function_name_and_open_parenthesis(file_path, l
 
     # Write the modified content back to the file
     with open(file_path, 'w') as file:
-        file.writelines(lines)
- 
+        file.writelines(lines) 
 def fix_space_prohibited_after_that_open_parenthesis(file_path, line_number, error_description):
      # Extract specifier from error_description
     specifier_index = error_description.find("'") + 1
@@ -141,7 +223,6 @@ def fix_space_prohibited_after_that_open_parenthesis(file_path, line_number, err
     # Write the modified content back to the file
     with open(file_path, 'w') as file:
         file.writelines(lines)
-
 def fix_space_prohibited_before_that_close_parenthesis(file_path, line_number, error_description):
     # Extract specifier from error_description
     specifier_index = error_description.find("'") + 1
@@ -163,7 +244,6 @@ def fix_space_prohibited_before_that_close_parenthesis(file_path, line_number, e
     # Write the modified content back to the file
     with open(file_path, 'w') as file:
         file.writelines(lines)
-
 def fix_space_required_before_the_open_parenthesis(file_path, line_number, error_description):
     # Extract specifier from error_description
     specifier_index = error_description.find("'") + 1
@@ -185,7 +265,6 @@ def fix_space_required_before_the_open_parenthesis(file_path, line_number, error
     # Write the modified content back to the file
     with open(file_path, 'w') as file:
         file.writelines(lines)
-
 def fix_space_prohibited_before_semicolon(file_path, line_number, specifier):
 
     # Read the file content
@@ -204,7 +283,6 @@ def fix_space_prohibited_before_semicolon(file_path, line_number, specifier):
     # Write the modified content back to the file
     with open(file_path, 'w') as file:
         file.writelines(lines)
-
 def fix_should_be_foo_star_bar(file_path, line_number, error_description): #done
     # Specify the specifier
     specifier = '*'
@@ -233,7 +311,6 @@ def fix_should_be_foo_star_bar(file_path, line_number, error_description): #done
     # Write the modified content back to the file
     with open(file_path, 'w') as file:
         file.writelines(lines)
-
 def fix_spaces_prohibited_around_that(file_path, line_number, error_description): #done
     # Find the specifier between two single quotes in the error_description
     specifier_start = error_description.find("'") + 1
@@ -279,8 +356,6 @@ def fix_spaces_prohibited_around_that(file_path, line_number, error_description)
     # Write the modified content back to the file
     with open(file_path, 'w') as file:
         file.writelines(lines)
-
-
 def fix_space_prohibited_after_that(file_path, line_number, error_description): #done
     # Find the specifier between two single quotes in the error_description
     specifier_start = error_description.find("'") + 1
@@ -324,7 +399,6 @@ def fix_space_prohibited_after_that(file_path, line_number, error_description): 
     # Write the modified content back to the file
     with open(file_path, 'w') as file:
         file.writelines(lines)
-
 def fix_space_prohibited_before_that(file_path, line_number, error_description):
     # Find the specifier between two single quotes in the error_description
     specifier_start = error_description.find("'") + 1
@@ -366,7 +440,6 @@ def fix_space_prohibited_before_that(file_path, line_number, error_description):
     # Write the modified content back to the file
     with open(file_path, 'w') as file:
         file.writelines(lines)
-
 def fix_spaces_preferred_around_that(file_path, line_number, error_description): #done
     # Find the specifier between two single quotes in the error_description
     specifier_start = error_description.find("'") + 1
@@ -417,7 +490,6 @@ def fix_spaces_preferred_around_that(file_path, line_number, error_description):
     # Write the modified content back to the file
     with open(file_path, 'w') as file:
         file.writelines(lines)
-
 def fix_space_required_around_that(file_path, line_number, error_description): #done
     # Find the specifier between two single quotes in the error_description
     specifier_start = error_description.find("'") + 1
@@ -468,7 +540,6 @@ def fix_space_required_around_that(file_path, line_number, error_description): #
     # Write the modified content back to the file
     with open(file_path, 'w') as file:
         file.writelines(lines)
-
 def fix_space_required_after_that(file_path, line_number, error_description):
     # Find the specifier between two single quotes in the error_description
     specifier_start = error_description.find("'") + 1
@@ -510,7 +581,6 @@ def fix_space_required_after_that(file_path, line_number, error_description):
     # Write the modified content back to the file
     with open(file_path, 'w') as file:
         file.writelines(lines)
-
 def fix_space_required_before_the_open_brace(file_path, line_number, error_description):
     # Extract specifier from error_description
     specifier_index = error_description.find("'") + 1
@@ -532,7 +602,6 @@ def fix_space_required_before_the_open_brace(file_path, line_number, error_descr
     # Write the modified content back to the file
     with open(file_path, 'w') as file:
         file.writelines(lines)
-
 def fix_space_required_after_the_close_brace(file_path, line_number, error_description):
     # Extract specifier from error_description
     specifier_index = error_description.find("'") + 1
@@ -554,9 +623,9 @@ def fix_space_required_after_the_close_brace(file_path, line_number, error_descr
     # Write the modified content back to the file
     with open(file_path, 'w') as file:
         file.writelines(lines)
-
 # Example usage
 if __name__ == "__main__":
 # Assuming you have an errors.txt file with test data
     errors_file_path = 'errors.txt'
     process_error_file(errors_file_path)
+    

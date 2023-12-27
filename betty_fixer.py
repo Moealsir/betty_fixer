@@ -4,9 +4,7 @@ import os
 import subprocess
 from backup import *
 from errors_extractor import exctract_errors
-from extract_line import process_error_file
-
-
+from extract_line import *
 def read_file(file_path):
     with open(file_path, 'r') as file:
         content = file.read()
@@ -76,30 +74,36 @@ def fix_betty_warnings(content, file_path):
     return file_path
 
 def fix_betty_style(file_paths):
-    for _ in range(2):  # Run the loop twice
-        for file_path in file_paths:
-            create_backup(file_path)  # Create a backup before making changes
+    for file_path in file_paths:
+        create_backup(file_path)
+        run_vi_script(file_path)
+        content = read_file(file_path)
+        file_path_with_errors = fix_betty_warnings(content, file_path)
+        write_file(file_path, content)
+        add_line_without_newline(file_path, '\n')
 
-            # Run the vi script for each file
-            run_vi_script(file_path)
-
-            # Read file content
-            content = read_file(file_path)
-
-            # Apply fixes for warnings and write errors to the file
-            file_path_with_errors = fix_betty_warnings(content, file_path)
-
-            # Write the fixed content back to the file
-            write_file(file_path, content)
-
-            # Add a line without a newline at the end of the file
-            add_line_without_newline(file_path, '\n')
-
-            # Process errors for the file
+        for _ in range(2):
             process_errors(file_path_with_errors)
+
+        # Extract functions with no description from 'errors.txt'
+        functions_with_no_description = extract_functions_with_no_description('errors.txt')
+
+        # Iterate through each line in path_file and remove extra spaces
+        with open(file_path, 'r') as file:
+            lines = file.readlines()
+        
+        cleaned_lines = [remove_extra_spaces(line) for line in lines]
+
+        # Write the cleaned lines back to the file
+        with open(file_path, 'w') as file:
+            file.writelines(cleaned_lines)
+
+        # Generate documentation for each function with no description
+        for function_name in functions_with_no_description:
+            generate_documentation(file_path, function_name)
+        run_vi_script(file_path)
+
             
-
-
 
 if __name__ == "__main__":
     if len(sys.argv) < 2:
@@ -110,3 +114,5 @@ if __name__ == "__main__":
     open('errors.txt', 'w').close()
     # Fix Betty style
     fix_betty_style(file_paths)
+    for file_path in file_paths:
+        run_vi_script(file_path)

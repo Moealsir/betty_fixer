@@ -35,3 +35,4 @@ if __name__ == "__main__":
     # Iterate over each file provided as a command-line argument
     for file_path in sys.argv[1:]:
         exctract_errors(file_path, errors_file_path)
+        
