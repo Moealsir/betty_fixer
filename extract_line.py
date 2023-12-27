@@ -44,7 +44,8 @@ def fix_errors_from_file(file_path, line_number, error_description):
         "space prohibited after that",
         "space prohibited before that",
         "spaces preferred around that",
-        "space required after that"
+        "space required after that",
+        "Missing a blank line after declarations"
     ]
 
     # Check each error message
@@ -72,6 +73,20 @@ def fix_errors_from_file(file_path, line_number, error_description):
                 fix_spaces_preferred_around_that(file_path, line_number, error_description)
             elif i == 10:
                 fix_space_required_after_that(file_path, line_number, error_description)
+            # elif i == 11:
+            #     fix_missing_blank_line_after_declaration(file_path, line_number)
+
+def fix_missing_blank_line_after_declaration(file_path, line_number):
+    # Read the file content
+    with open(file_path, 'r') as file:
+        lines = file.readlines()
+
+    # Insert a newline character at the beginning of the specified line number
+    lines.insert(int(line_number) - 1, '\n')
+
+    # Write the modified content back to the file
+    with open(file_path, 'w') as file:
+        file.writelines(lines)
 
 # Implement specific fixes for each error type
 def fix_space_prohibited_between_function_name_and_open_parenthesis(file_path, line_number, error_description):
