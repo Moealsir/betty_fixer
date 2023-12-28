@@ -1,26 +1,29 @@
 
-========== cp_test.c ==========
-cp_test.c:1: ERROR: trailing whitespace
-cp_test.c:1: ERROR: "foo ** bar" should be "foo **bar"
-cp_test.c:1: WARNING: space prohibited between function name and open parenthesis '('
-cp_test.c:3: WARNING: space prohibited before semicolon
-cp_test.c:5: WARNING: space prohibited between function name and open parenthesis '('
-cp_test.c:6: ERROR: trailing whitespace
-cp_test.c:6: ERROR: space required before the open parenthesis '('
-cp_test.c:9: ERROR: trailing whitespace
-cp_test.c:9: ERROR: "foo** bar" should be "foo **bar"
-cp_test.c:9: WARNING: space prohibited between function name and open parenthesis '('
-cp_test.c:11: ERROR: trailing whitespace
-cp_test.c:11: WARNING: space prohibited before semicolon
-cp_test.c:11: ERROR: space required before the open parenthesis '('
-cp_test.c:14: ERROR: trailing whitespace
-cp_test.c:14: ERROR: "foo**bar" should be "foo **bar"
-cp_test.c:14: WARNING: space prohibited between function name and open parenthesis '('
-cp_test.c:16: ERROR: trailing whitespace
-cp_test.c:16: WARNING: space prohibited before semicolon
-cp_test.c:16: ERROR: space required before the open parenthesis '('
-cp_test.c:17: ERROR: trailing whitespace
-total: 13 errors, 7 warnings, 17 lines checked
-cp_test.c:1: warning: no description found for function func0
-cp_test.c:9: warning: no description found for function func1
-cp_test.c:14: warning: no description found for function func2
+========== j.c ==========
+j.c:173: ERROR: More than 5 functions in the file
+j.c:200: ERROR: More than 5 functions in the file
+j.c:213: ERROR: More than 5 functions in the file
+j.c:228: ERROR: More than 5 functions in the file
+j.c:246: ERROR: More than 5 functions in the file
+j.c:263: ERROR: More than 5 functions in the file
+j.c:277: ERROR: More than 5 functions in the file
+j.c:280: WARNING: Missing a blank line after declarations
+j.c:289: ERROR: More than 5 functions in the file
+j.c:300: ERROR: More than 5 functions in the file
+j.c:310: ERROR: More than 5 functions in the file
+total: 10 errors, 1 warnings, 319 lines checked
+func0
+func1
+func2
+func3
+func4
+func5
+func6
+func7
+func8
+func9
+func10
+func11
+func12
+func13
+func14

@@ -74,6 +74,27 @@ def fix_betty_warnings(content, file_path):
     # Return the file path for further processing
     return file_path
 
+def remove_blank_lines_inside_comments(file_path):
+    # Read the content of the file
+    with open(file_path, 'r') as file:
+        lines = file.readlines()
+
+    # Find lines starting with '/**' (declaration beginning)
+    for i, line in enumerate(lines):
+        if line.strip().startswith('/**'):
+            # Find the next line starting with ' */' (declaration ending)
+            for j in range(i + 1, len(lines)):
+                if lines[j].strip().startswith('*/'):
+                    # Remove any blank lines between declaration beginning and ending
+                    for k in range(i + 1, j):
+                        if lines[k].strip() == '':
+                            del lines[k]
+
+                    # Write the modified content back to the file
+                    with open(file_path, 'w') as file:
+                        file.writelines(lines)
+                    return
+
 def fix_betty_style(file_paths):
     for file_path in file_paths:
         create_backup(file_path)
@@ -108,8 +129,21 @@ def fix_betty_style(file_paths):
             remove_unused_attribute(file_path, function_name)
         run_vi_script(file_path)
 
+        # Fix missing blank line after declarations
+        with open('errors.txt', 'r') as errors_file:
+            for error_line in errors_file:
+                if 'Missing a blank line after declarations' in error_line:
+                    # Extract (file_path, line_number) from the error line
+                    variables = extract_and_print_variables(error_line)
+                    if len(variables) >= 2:
+                        file_path, line_number = variables[:2]  # Take the first two values
+                        # Fix missing blank line after declaration
+                        fix_missing_blank_line_after_declaration(file_path, line_number)
 
-
+                        # Update Betty errors in errors.txt and restart searching
+                        exctract_errors(file_path, 'errors.txt')
+                        
+        remove_blank_lines_inside_comments(file_path)
 if __name__ == "__main__":
     if len(sys.argv) < 2:
         print("Usage: python betty_fixer.py file1.c file2.c ...")
