@@ -100,7 +100,7 @@ def fix_betty_style(file_paths):
 
         # Generate documentation for each function with no description
         for function_name in functions_with_no_description:
-            generate_documentation(file_path, function_name)
+            remove_unused_attribute(file_path, function_name)
         run_vi_script(file_path)
 
             
