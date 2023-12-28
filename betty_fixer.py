@@ -5,6 +5,8 @@ import subprocess
 from backup import *
 from errors_extractor import exctract_errors
 from extract_line import *
+
+
 def read_file(file_path):
     with open(file_path, 'r') as file:
         content = file.read()
@@ -78,6 +80,10 @@ def fix_betty_style(file_paths):
         create_backup(file_path)
         run_vi_script(file_path)
         content = read_file(file_path)
+        content = fix_comments(content)
+        content = remove_trailing_whitespaces(content)
+        content = add_parentheses_around_return(content)
+        content = remove_consecutive_blank_lines(content)
         file_path_with_errors = fix_betty_warnings(content, file_path)
         write_file(file_path, content)
         add_line_without_newline(file_path, '\n')
@@ -103,7 +109,7 @@ def fix_betty_style(file_paths):
             remove_unused_attribute(file_path, function_name)
         run_vi_script(file_path)
 
-            
+
 
 if __name__ == "__main__":
     if len(sys.argv) < 2:
@@ -114,5 +120,3 @@ if __name__ == "__main__":
     open('errors.txt', 'w').close()
     # Fix Betty style
     fix_betty_style(file_paths)
-    for file_path in file_paths:
-        run_vi_script(file_path)

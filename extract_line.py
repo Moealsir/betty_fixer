@@ -159,7 +159,11 @@ def fix_lines_in_file(file_name, function_declarations):
                 for func_name, original_line in function_declarations.items():
                     if func_name in line:
                         # Replace the line with the desired format
-                        lines[i] = f' */\n{original_line}\n'
+                        lines[i] = f' */\n{original_line}'
+                        
+                        # Check if the next line is a blank line; if so, delete it
+                        if i + 1 < len(lines) and lines[i + 1] == '\n':
+                            del lines[i + 1]
                         break
 
         # Write back to the file
@@ -356,7 +360,7 @@ def fix_should_be_foo_star_bar(file_path, line_number, error_description): #done
     # Write the modified content back to the file
     with open(file_path, 'w') as file:
         file.writelines(lines)
-def fix_spaces_prohibited_around_that(file_path, line_number, error_description): #done
+def fix_spaces_prohibited_around_that(file_path, line_number, error_description):
     # Find the specifier between two single quotes in the error_description
     specifier_start = error_description.find("'") + 1
     specifier_end = error_description.rfind("'")
@@ -381,6 +385,11 @@ def fix_spaces_prohibited_around_that(file_path, line_number, error_description)
     with open(file_path, 'r') as file:
         lines = file.readlines()
 
+    # Check if the provided line number is within the valid range
+    if not (1 <= int(line_number) <= len(lines)):
+        # Invalid line number, return without making changes
+        return
+
     # Find the line with the error
     error_line = lines[int(line_number) - 1]
 
@@ -401,6 +410,7 @@ def fix_spaces_prohibited_around_that(file_path, line_number, error_description)
     # Write the modified content back to the file
     with open(file_path, 'w') as file:
         file.writelines(lines)
+
 def fix_space_prohibited_after_that(file_path, line_number, error_description): #done
     # Find the specifier between two single quotes in the error_description
     specifier_start = error_description.find("'") + 1

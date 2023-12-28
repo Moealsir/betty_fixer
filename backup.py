@@ -1,20 +1,11 @@
-import os
-import shutil
-from datetime import datetime
+import shutil  # Add the import statement for shutil
 
 def create_backup(file_path):
     try:
-        # Get the current timestamp
-        timestamp = datetime.now().strftime("%H:%M:%S")
-
-        # Create a backup copy of the original file with a timestamp in the filename
-        backup_filename = f"{os.path.basename(file_path)}_{timestamp}.bak"
-        backup_path = os.path.join(os.path.dirname(file_path), backup_filename)
-
+        # Create a backup copy of the original file
+        backup_path = file_path + '.bak'
         shutil.copy2(file_path, backup_path)
-
-        
     except FileNotFoundError:
-        pass
+        print(f"Error creating backup for {file_path}: File not found.")
     except Exception as e:
-        pass
+        print(f"Unexpected error in create_backup for {file_path}: {e}")

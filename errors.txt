@@ -1,197 +1,213 @@
 
-========== j.c ==========
-j.c:1: WARNING: space prohibited between function name and open parenthesis '('
-j.c:1: ERROR: space prohibited after that open parenthesis '('
-j.c:1: ERROR: space prohibited before that close parenthesis ')'
-j.c:3: ERROR: space prohibited after that open parenthesis '('
-j.c:3: ERROR: space prohibited before that close parenthesis ')'
-j.c:3: ERROR: space required before the open parenthesis '('
-j.c:4: WARNING: space prohibited before semicolon
-j.c:4: ERROR: space prohibited after that open parenthesis '('
-j.c:4: ERROR: space prohibited before that close parenthesis ')'
-j.c:4: ERROR: space required before the open parenthesis '('
-j.c:5: ERROR: space prohibited after that open parenthesis '('
-j.c:5: ERROR: space prohibited before that close parenthesis ')'
-j.c:5: ERROR: space required before the open parenthesis '('
-j.c:6: WARNING: space prohibited before semicolon
-j.c:6: ERROR: space prohibited after that open parenthesis '('
-j.c:6: ERROR: space prohibited before that close parenthesis ')'
-j.c:6: ERROR: space required before the open parenthesis '('
-j.c:7: ERROR: space required before the open parenthesis '('
-j.c:9: ERROR: space prohibited before that ':' (ctx:WxE)
-j.c:10: ERROR: space prohibited before that ':' (ctx:WxE)
-j.c:11: WARNING: space prohibited before semicolon
-j.c:13: ERROR: space required after that ';' (ctx:WxV)
-j.c:13: ERROR: space required before the open parenthesis '('
-j.c:14: WARNING: space prohibited before semicolon
-j.c:14: ERROR: space prohibited after that open parenthesis '('
-j.c:14: ERROR: space prohibited before that close parenthesis ')'
-j.c:14: ERROR: space required before the open parenthesis '('
-j.c:15: ERROR: space prohibited after that open parenthesis '('
-j.c:15: ERROR: space prohibited before that close parenthesis ')'
-j.c:15: ERROR: space required before the open parenthesis '('
-j.c:16: WARNING: space prohibited before semicolon
-j.c:16: ERROR: space prohibited after that open parenthesis '('
-j.c:16: ERROR: space prohibited before that close parenthesis ')'
-j.c:16: ERROR: space required before the open parenthesis '('
-j.c:17: ERROR: space required before the open brace '{'
-j.c:18: WARNING: space prohibited before semicolon
-j.c:18: ERROR: space prohibited after that open parenthesis '('
-j.c:18: ERROR: space prohibited before that close parenthesis ')'
-j.c:18: ERROR: space required before the open parenthesis '('
-j.c:19: WARNING: space prohibited before semicolon
-j.c:19: ERROR: space required after that close brace '}'
-j.c:19: ERROR: space prohibited after that open parenthesis '('
-j.c:19: ERROR: space prohibited before that close parenthesis ')'
-j.c:19: ERROR: space required before the open parenthesis '('
-j.c:22: WARNING: space prohibited between function name and open parenthesis '('
-j.c:22: ERROR: space prohibited before that ',' (ctx:WxW)
-j.c:22: ERROR: space prohibited after that open parenthesis '('
-j.c:22: ERROR: space prohibited before that close parenthesis ')'
-j.c:24: WARNING: space prohibited before semicolon
-j.c:26: WARNING: space prohibited between function name and open parenthesis '('
-j.c:26: ERROR: spaces required around that '=' (ctx:VxV)
-j.c:26: WARNING: space prohibited before semicolon
-j.c:26: ERROR: space prohibited after that open parenthesis '('
-j.c:26: ERROR: space prohibited before that close parenthesis ')'
-j.c:27: WARNING: space prohibited before semicolon
-j.c:27: ERROR: space prohibited after that open parenthesis '('
-j.c:27: ERROR: space prohibited before that close parenthesis ')'
-j.c:27: ERROR: space required before the open parenthesis '('
-j.c:40: ERROR: "foo* bar" should be "foo *bar"
-j.c:40: ERROR: "foo* bar" should be "foo *bar"
-j.c:42: ERROR: "foo * bar" should be "foo *bar"
-j.c:43: ERROR: "foo* bar" should be "foo *bar"
-j.c:46: ERROR: spaces prohibited around that '->' (ctx:VxW)
-j.c:47: ERROR: spaces prohibited around that '->' (ctx:WxV)
-j.c:48: ERROR: spaces prohibited around that '->' (ctx:WxW)
-j.c:54: ERROR: spaces required around that '=' (ctx:VxV)
-j.c:55: ERROR: spaces required around that '=' (ctx:VxW)
-j.c:56: ERROR: spaces required around that '=' (ctx:WxV)
-j.c:58: ERROR: spaces preferred around that '+' (ctx:VxV)
-j.c:59: ERROR: spaces preferred around that '+' (ctx:VxW)
-j.c:60: ERROR: spaces preferred around that '+' (ctx:WxV)
-j.c:62: ERROR: spaces preferred around that '-' (ctx:VxV)
-j.c:63: ERROR: spaces preferred around that '-' (ctx:VxW)
-j.c:64: ERROR: spaces preferred around that '-' (ctx:WxV)
-j.c:66: ERROR: spaces required around that '<' (ctx:VxV)
-j.c:67: ERROR: spaces required around that '<' (ctx:VxW)
-j.c:68: ERROR: spaces required around that '<' (ctx:WxV)
-j.c:70: ERROR: spaces required around that '>' (ctx:VxV)
-j.c:71: ERROR: spaces required around that '>' (ctx:VxW)
-j.c:72: ERROR: spaces required around that '>' (ctx:WxV)
-j.c:74: ERROR: spaces preferred around that '*' (ctx:VxV)
-j.c:75: ERROR: spaces preferred around that '*' (ctx:VxW)
-j.c:76: ERROR: spaces preferred around that '*' (ctx:WxV)
-j.c:78: ERROR: spaces preferred around that '/' (ctx:VxV)
-j.c:79: ERROR: spaces preferred around that '/' (ctx:VxW)
-j.c:80: ERROR: spaces preferred around that '/' (ctx:WxV)
-j.c:82: ERROR: spaces preferred around that '%' (ctx:VxV)
-j.c:83: ERROR: spaces preferred around that '%' (ctx:VxW)
-j.c:84: ERROR: spaces preferred around that '%' (ctx:WxV)
-j.c:86: ERROR: spaces preferred around that '%' (ctx:VxV)
-j.c:87: ERROR: spaces preferred around that '%' (ctx:VxW)
-j.c:88: ERROR: spaces preferred around that '%' (ctx:WxV)
-j.c:91: ERROR: More than 5 functions in the file
-j.c:93: ERROR: spaces preferred around that '|' (ctx:VxV)
-j.c:94: ERROR: spaces preferred around that '|' (ctx:VxW)
-j.c:95: ERROR: spaces preferred around that '|' (ctx:WxV)
-j.c:97: ERROR: spaces preferred around that '&' (ctx:VxV)
-j.c:98: ERROR: spaces preferred around that '&' (ctx:VxW)
-j.c:99: ERROR: spaces preferred around that '&' (ctx:WxV)
-j.c:101: ERROR: spaces preferred around that '^' (ctx:VxV)
-j.c:102: ERROR: spaces preferred around that '^' (ctx:VxW)
-j.c:103: ERROR: spaces preferred around that '^' (ctx:WxV)
-j.c:105: ERROR: spaces required around that '<=' (ctx:VxV)
-j.c:106: ERROR: spaces required around that '<=' (ctx:VxW)
-j.c:107: ERROR: spaces required around that '<=' (ctx:WxV)
-j.c:109: ERROR: spaces required around that '>=' (ctx:VxV)
-j.c:110: ERROR: spaces required around that '>=' (ctx:VxW)
-j.c:111: ERROR: spaces required around that '>=' (ctx:WxV)
-j.c:113: ERROR: spaces required around that '==' (ctx:VxV)
-j.c:114: ERROR: spaces required around that '==' (ctx:VxW)
-j.c:115: ERROR: spaces required around that '==' (ctx:WxV)
-j.c:117: ERROR: spaces required around that '!=' (ctx:VxV)
-j.c:118: ERROR: spaces required around that '!=' (ctx:VxW)
-j.c:119: ERROR: spaces required around that '!=' (ctx:WxV)
-j.c:122: ERROR: More than 5 functions in the file
-j.c:124: ERROR: spaces preferred around that '<<' (ctx:VxV)
-j.c:125: ERROR: spaces preferred around that '<<' (ctx:VxW)
-j.c:126: ERROR: spaces preferred around that '<<' (ctx:WxV)
-j.c:128: ERROR: spaces preferred around that '>>' (ctx:VxV)
-j.c:129: ERROR: spaces preferred around that '>>' (ctx:VxW)
-j.c:130: ERROR: spaces preferred around that '>>' (ctx:WxV)
-j.c:133: ERROR: More than 5 functions in the file
-j.c:135: ERROR: spaces required around that '?' (ctx:VxV)
-j.c:135: ERROR: spaces required around that ':' (ctx:VxV)
-j.c:136: ERROR: spaces required around that '?' (ctx:VxW)
-j.c:136: ERROR: spaces required around that ':' (ctx:VxV)
-j.c:137: ERROR: spaces required around that '?' (ctx:WxV)
-j.c:137: ERROR: spaces required around that ':' (ctx:VxV)
-j.c:138: ERROR: spaces required around that '?' (ctx:VxV)
-j.c:138: ERROR: spaces required around that ':' (ctx:VxW)
-j.c:139: ERROR: spaces required around that '?' (ctx:VxV)
-j.c:139: ERROR: spaces required around that ':' (ctx:WxV)
-j.c:140: ERROR: spaces required around that '?' (ctx:VxW)
-j.c:140: ERROR: spaces required around that ':' (ctx:VxW)
-j.c:141: ERROR: spaces required around that '?' (ctx:VxW)
-j.c:141: ERROR: spaces required around that ':' (ctx:WxV)
-j.c:142: ERROR: spaces required around that '?' (ctx:WxV)
-j.c:142: ERROR: spaces required around that ':' (ctx:VxW)
-j.c:143: ERROR: spaces required around that '?' (ctx:WxV)
-j.c:143: ERROR: spaces required around that ':' (ctx:WxV)
-j.c:146: ERROR: More than 5 functions in the file
-j.c:148: ERROR: spaces required around that '+=' (ctx:VxV)
-j.c:149: ERROR: spaces required around that '+=' (ctx:VxW)
-j.c:150: ERROR: spaces required around that '+=' (ctx:WxV)
-j.c:152: ERROR: spaces required around that '-=' (ctx:VxV)
-j.c:153: ERROR: spaces required around that '-=' (ctx:VxW)
-j.c:154: ERROR: spaces required around that '-=' (ctx:WxV)
-j.c:156: ERROR: spaces required around that '*=' (ctx:VxV)
-j.c:157: ERROR: spaces required around that '*=' (ctx:VxW)
-j.c:158: ERROR: spaces required around that '*=' (ctx:WxV)
-j.c:160: ERROR: spaces required around that '/=' (ctx:VxV)
-j.c:161: ERROR: spaces required around that '/=' (ctx:VxW)
-j.c:162: ERROR: spaces required around that '/=' (ctx:WxV)
-j.c:164: ERROR: spaces required around that '%=' (ctx:VxV)
-j.c:165: ERROR: spaces required around that '%=' (ctx:VxW)
-j.c:166: ERROR: spaces required around that '%=' (ctx:WxV)
-j.c:168: ERROR: spaces required around that '&=' (ctx:VxV)
-j.c:169: ERROR: spaces required around that '&=' (ctx:VxW)
-j.c:170: ERROR: spaces required around that '&=' (ctx:WxV)
-j.c:172: ERROR: spaces required around that '|=' (ctx:VxV)
-j.c:173: ERROR: spaces required around that '|=' (ctx:VxW)
-j.c:174: ERROR: spaces required around that '|=' (ctx:WxV)
-j.c:176: ERROR: spaces required around that '^=' (ctx:VxV)
-j.c:177: ERROR: spaces required around that '^=' (ctx:VxW)
-j.c:178: ERROR: spaces required around that '^=' (ctx:WxV)
-j.c:180: ERROR: spaces required around that '>>=' (ctx:VxV)
-j.c:181: ERROR: spaces required around that '>>=' (ctx:VxW)
-j.c:182: ERROR: spaces required around that '>>=' (ctx:WxV)
-j.c:184: ERROR: spaces required around that '<<=' (ctx:VxV)
-j.c:185: ERROR: spaces required around that '<<=' (ctx:VxW)
-j.c:186: ERROR: spaces required around that '<<=' (ctx:WxV)
-j.c:189: ERROR: More than 5 functions in the file
-j.c:193: ERROR: space prohibited after that '&' (ctx:WxW)
-j.c:194: ERROR: space prohibited after that '*' (ctx:WxW)
-j.c:195: ERROR: space prohibited after that '+' (ctx:WxW)
-j.c:196: ERROR: space prohibited after that '-' (ctx:WxW)
-j.c:197: ERROR: space prohibited after that '~' (ctx:WxW)
-j.c:198: ERROR: space prohibited after that '!' (ctx:WxW)
-j.c:201: ERROR: More than 5 functions in the file
-j.c:203: ERROR: space prohibited before that '++' (ctx:WxO)
-j.c:204: ERROR: space prohibited before that '--' (ctx:WxO)
-j.c:205: ERROR: space prohibited after that '++' (ctx:ExW)
-j.c:206: ERROR: space prohibited after that '--' (ctx:ExW)
-total: 170 errors, 13 warnings, 207 lines checked
-j.c:1: warning: no description found for function func0
-j.c:22: warning: no description found for function func1
-j.c:30: warning: no description found for function func0
-j.c:40: warning: no description found for function func2
-j.c:52: warning: no description found for function func0
-j.c:91: warning: no description found for function func1
-j.c:122: warning: no description found for function func2
-j.c:133: warning: no description found for function func3
-j.c:146: warning: no description found for function func4
-j.c:189: warning: no description found for function func0
-j.c:201: warning: no description found for function func1
+========== test.c ==========
+test.c:3: ERROR: spaces required around that '=' (ctx:VxV)
+test.c:4: ERROR: spaces required around that '=' (ctx:VxW)
+test.c:5: ERROR: spaces required around that '=' (ctx:WxV)
+test.c:7: ERROR: spaces preferred around that '+' (ctx:VxV)
+test.c:8: ERROR: spaces preferred around that '+' (ctx:VxW)
+test.c:9: ERROR: spaces preferred around that '+' (ctx:WxV)
+test.c:11: ERROR: spaces preferred around that '-' (ctx:VxV)
+test.c:12: ERROR: spaces preferred around that '-' (ctx:VxW)
+test.c:13: ERROR: spaces preferred around that '-' (ctx:WxV)
+test.c:15: ERROR: spaces required around that '<' (ctx:VxV)
+test.c:16: ERROR: spaces required around that '<' (ctx:VxW)
+test.c:17: ERROR: spaces required around that '<' (ctx:WxV)
+test.c:19: ERROR: spaces required around that '>' (ctx:VxV)
+test.c:20: ERROR: spaces required around that '>' (ctx:VxW)
+test.c:21: ERROR: spaces required around that '>' (ctx:WxV)
+test.c:23: ERROR: spaces preferred around that '*' (ctx:VxV)
+test.c:24: ERROR: spaces preferred around that '*' (ctx:VxW)
+test.c:25: ERROR: spaces preferred around that '*' (ctx:WxV)
+test.c:27: ERROR: spaces preferred around that '/' (ctx:VxV)
+test.c:28: ERROR: spaces preferred around that '/' (ctx:VxW)
+test.c:29: ERROR: spaces preferred around that '/' (ctx:WxV)
+test.c:31: ERROR: spaces preferred around that '%' (ctx:VxV)
+test.c:32: ERROR: spaces preferred around that '%' (ctx:VxW)
+test.c:33: ERROR: spaces preferred around that '%' (ctx:WxV)
+test.c:35: ERROR: spaces preferred around that '%' (ctx:VxV)
+test.c:36: ERROR: spaces preferred around that '%' (ctx:VxW)
+test.c:37: ERROR: spaces preferred around that '%' (ctx:WxV)
+test.c:42: ERROR: spaces preferred around that '|' (ctx:VxV)
+test.c:43: ERROR: spaces preferred around that '|' (ctx:VxW)
+test.c:44: ERROR: spaces preferred around that '|' (ctx:WxV)
+test.c:46: ERROR: spaces preferred around that '&' (ctx:VxV)
+test.c:47: ERROR: spaces preferred around that '&' (ctx:VxW)
+test.c:48: ERROR: spaces preferred around that '&' (ctx:WxV)
+test.c:50: ERROR: spaces preferred around that '^' (ctx:VxV)
+test.c:51: ERROR: spaces preferred around that '^' (ctx:VxW)
+test.c:52: ERROR: spaces preferred around that '^' (ctx:WxV)
+test.c:54: ERROR: spaces required around that '<=' (ctx:VxV)
+test.c:55: ERROR: spaces required around that '<=' (ctx:VxW)
+test.c:56: ERROR: spaces required around that '<=' (ctx:WxV)
+test.c:58: ERROR: spaces required around that '>=' (ctx:VxV)
+test.c:59: ERROR: spaces required around that '>=' (ctx:VxW)
+test.c:60: ERROR: spaces required around that '>=' (ctx:WxV)
+test.c:62: ERROR: spaces required around that '==' (ctx:VxV)
+test.c:63: ERROR: spaces required around that '==' (ctx:VxW)
+test.c:64: ERROR: spaces required around that '==' (ctx:WxV)
+test.c:66: ERROR: spaces required around that '!=' (ctx:VxV)
+test.c:67: ERROR: spaces required around that '!=' (ctx:VxW)
+test.c:68: ERROR: spaces required around that '!=' (ctx:WxV)
+test.c:73: ERROR: spaces preferred around that '<<' (ctx:VxV)
+test.c:74: ERROR: spaces preferred around that '<<' (ctx:VxW)
+test.c:75: ERROR: spaces preferred around that '<<' (ctx:WxV)
+test.c:77: ERROR: spaces preferred around that '>>' (ctx:VxV)
+test.c:78: ERROR: spaces preferred around that '>>' (ctx:VxW)
+test.c:79: ERROR: spaces preferred around that '>>' (ctx:WxV)
+test.c:84: ERROR: spaces required around that '?' (ctx:VxV)
+test.c:84: ERROR: spaces required around that ':' (ctx:VxV)
+test.c:85: ERROR: spaces required around that '?' (ctx:VxW)
+test.c:85: ERROR: spaces required around that ':' (ctx:VxV)
+test.c:86: ERROR: spaces required around that '?' (ctx:WxV)
+test.c:86: ERROR: spaces required around that ':' (ctx:VxV)
+test.c:87: ERROR: spaces required around that '?' (ctx:VxV)
+test.c:87: ERROR: spaces required around that ':' (ctx:VxW)
+test.c:88: ERROR: spaces required around that '?' (ctx:VxV)
+test.c:88: ERROR: spaces required around that ':' (ctx:WxV)
+test.c:89: ERROR: spaces required around that '?' (ctx:VxW)
+test.c:89: ERROR: spaces required around that ':' (ctx:VxW)
+test.c:90: ERROR: spaces required around that '?' (ctx:VxW)
+test.c:90: ERROR: spaces required around that ':' (ctx:WxV)
+test.c:91: ERROR: spaces required around that '?' (ctx:WxV)
+test.c:91: ERROR: spaces required around that ':' (ctx:VxW)
+test.c:92: ERROR: spaces required around that '?' (ctx:WxV)
+test.c:92: ERROR: spaces required around that ':' (ctx:WxV)
+test.c:97: ERROR: spaces required around that '+=' (ctx:VxV)
+test.c:98: ERROR: spaces required around that '+=' (ctx:VxW)
+test.c:99: ERROR: spaces required around that '+=' (ctx:WxV)
+test.c:101: ERROR: spaces required around that '-=' (ctx:VxV)
+test.c:102: ERROR: spaces required around that '-=' (ctx:VxW)
+test.c:103: ERROR: spaces required around that '-=' (ctx:WxV)
+test.c:105: ERROR: spaces required around that '*=' (ctx:VxV)
+test.c:106: ERROR: spaces required around that '*=' (ctx:VxW)
+test.c:107: ERROR: spaces required around that '*=' (ctx:WxV)
+test.c:109: ERROR: spaces required around that '/=' (ctx:VxV)
+test.c:110: ERROR: spaces required around that '/=' (ctx:VxW)
+test.c:111: ERROR: spaces required around that '/=' (ctx:WxV)
+test.c:113: ERROR: spaces required around that '%=' (ctx:VxV)
+test.c:114: ERROR: spaces required around that '%=' (ctx:VxW)
+test.c:115: ERROR: spaces required around that '%=' (ctx:WxV)
+test.c:117: ERROR: spaces required around that '&=' (ctx:VxV)
+test.c:118: ERROR: spaces required around that '&=' (ctx:VxW)
+test.c:119: ERROR: spaces required around that '&=' (ctx:WxV)
+test.c:121: ERROR: spaces required around that '|=' (ctx:VxV)
+test.c:122: ERROR: spaces required around that '|=' (ctx:VxW)
+test.c:123: ERROR: spaces required around that '|=' (ctx:WxV)
+test.c:125: ERROR: spaces required around that '^=' (ctx:VxV)
+test.c:126: ERROR: spaces required around that '^=' (ctx:VxW)
+test.c:127: ERROR: spaces required around that '^=' (ctx:WxV)
+test.c:129: ERROR: spaces required around that '>>=' (ctx:VxV)
+test.c:130: ERROR: spaces required around that '>>=' (ctx:VxW)
+test.c:131: ERROR: spaces required around that '>>=' (ctx:WxV)
+test.c:133: ERROR: spaces required around that '<<=' (ctx:VxV)
+test.c:134: ERROR: spaces required around that '<<=' (ctx:VxW)
+test.c:135: ERROR: spaces required around that '<<=' (ctx:WxV)
+test.c:138: WARNING: space prohibited between function name and open parenthesis '('
+test.c:138: ERROR: space prohibited after that open parenthesis '('
+test.c:138: ERROR: space prohibited before that close parenthesis ')'
+test.c:138: ERROR: More than 5 functions in the file
+test.c:140: ERROR: space prohibited after that open parenthesis '('
+test.c:140: ERROR: space prohibited before that close parenthesis ')'
+test.c:140: ERROR: space required before the open parenthesis '('
+test.c:141: WARNING: space prohibited before semicolon
+test.c:141: ERROR: space prohibited after that open parenthesis '('
+test.c:141: ERROR: space prohibited before that close parenthesis ')'
+test.c:141: ERROR: space required before the open parenthesis '('
+test.c:142: ERROR: space prohibited after that open parenthesis '('
+test.c:142: ERROR: space prohibited before that close parenthesis ')'
+test.c:142: ERROR: space required before the open parenthesis '('
+test.c:143: WARNING: space prohibited before semicolon
+test.c:143: ERROR: space prohibited after that open parenthesis '('
+test.c:143: ERROR: space prohibited before that close parenthesis ')'
+test.c:143: ERROR: space required before the open parenthesis '('
+test.c:144: ERROR: space required before the open parenthesis '('
+test.c:146: ERROR: space prohibited before that ':' (ctx:WxE)
+test.c:147: ERROR: space prohibited before that ':' (ctx:WxE)
+test.c:148: WARNING: space prohibited before semicolon
+test.c:150: ERROR: space required after that ';' (ctx:WxV)
+test.c:150: ERROR: space required before the open parenthesis '('
+test.c:151: WARNING: space prohibited before semicolon
+test.c:151: ERROR: space prohibited after that open parenthesis '('
+test.c:151: ERROR: space prohibited before that close parenthesis ')'
+test.c:151: ERROR: space required before the open parenthesis '('
+test.c:152: ERROR: space prohibited after that open parenthesis '('
+test.c:152: ERROR: space prohibited before that close parenthesis ')'
+test.c:152: ERROR: space required before the open parenthesis '('
+test.c:153: WARNING: space prohibited before semicolon
+test.c:153: ERROR: space prohibited after that open parenthesis '('
+test.c:153: ERROR: space prohibited before that close parenthesis ')'
+test.c:153: ERROR: space required before the open parenthesis '('
+test.c:154: ERROR: space required before the open brace '{'
+test.c:155: WARNING: space prohibited before semicolon
+test.c:155: ERROR: space prohibited after that open parenthesis '('
+test.c:155: ERROR: space prohibited before that close parenthesis ')'
+test.c:155: ERROR: space required before the open parenthesis '('
+test.c:156: WARNING: space prohibited before semicolon
+test.c:156: ERROR: space required after that close brace '}'
+test.c:156: ERROR: space prohibited after that open parenthesis '('
+test.c:156: ERROR: space prohibited before that close parenthesis ')'
+test.c:156: ERROR: space required before the open parenthesis '('
+test.c:159: WARNING: space prohibited between function name and open parenthesis '('
+test.c:159: ERROR: space prohibited before that ',' (ctx:WxW)
+test.c:159: ERROR: space prohibited after that open parenthesis '('
+test.c:159: ERROR: space prohibited before that close parenthesis ')'
+test.c:159: ERROR: More than 5 functions in the file
+test.c:161: WARNING: space prohibited before semicolon
+test.c:163: WARNING: space prohibited between function name and open parenthesis '('
+test.c:163: ERROR: spaces required around that '=' (ctx:VxV)
+test.c:163: WARNING: space prohibited before semicolon
+test.c:163: ERROR: space prohibited after that open parenthesis '('
+test.c:163: ERROR: space prohibited before that close parenthesis ')'
+test.c:164: WARNING: space prohibited before semicolon
+test.c:164: ERROR: space prohibited after that open parenthesis '('
+test.c:164: ERROR: space prohibited before that close parenthesis ')'
+test.c:164: ERROR: space required before the open parenthesis '('
+test.c:167: ERROR: More than 5 functions in the file
+test.c:177: ERROR: "foo* bar" should be "foo *bar"
+test.c:177: ERROR: "foo* bar" should be "foo *bar"
+test.c:177: ERROR: More than 5 functions in the file
+test.c:179: ERROR: "foo * bar" should be "foo *bar"
+test.c:180: ERROR: "foo* bar" should be "foo *bar"
+test.c:183: ERROR: spaces prohibited around that '->' (ctx:VxW)
+test.c:184: ERROR: spaces prohibited around that '->' (ctx:WxV)
+test.c:185: ERROR: spaces prohibited around that '->' (ctx:WxW)
+test.c:189: ERROR: More than 5 functions in the file
+test.c:193: ERROR: space prohibited after that '&' (ctx:WxW)
+test.c:194: ERROR: space prohibited after that '*' (ctx:WxW)
+test.c:195: ERROR: space prohibited after that '+' (ctx:WxW)
+test.c:196: ERROR: space prohibited after that '-' (ctx:WxW)
+test.c:197: ERROR: space prohibited after that '~' (ctx:WxW)
+test.c:198: ERROR: space prohibited after that '!' (ctx:WxW)
+test.c:201: ERROR: More than 5 functions in the file
+test.c:203: ERROR: space prohibited before that '++' (ctx:WxO)
+test.c:204: ERROR: space prohibited before that '--' (ctx:WxO)
+test.c:205: ERROR: space prohibited after that '++' (ctx:ExW)
+test.c:206: ERROR: space prohibited after that '--' (ctx:ExW)
+test.c:210: ERROR: More than 5 functions in the file
+test.c:213: WARNING: Missing a blank line after declarations
+test.c:217: ERROR: More than 5 functions in the file
+test.c:224: ERROR: do not use C99 // comments
+test.c:223: ERROR: More than 5 functions in the file
+test.c:225: ERROR: do not use C99 // comments
+test.c:226: ERROR: do not use C99 // comments
+test.c:239: ERROR: More than 5 functions in the file
+test.c:245: ERROR: do not use C99 // comments
+test.c:246: ERROR: do not use C99 // comments
+test.c:246: ERROR: parentheses are required on a return statement
+test.c:247: ERROR: do not use C99 // comments
+total: 181 errors, 14 warnings, 247 lines checked
+test.c:1: warning: no description found for function func0
+test.c:40: warning: no description found for function func1
+test.c:71: warning: no description found for function func2
+test.c:82: warning: no description found for function func3
+test.c:95: warning: no description found for function func4
+test.c:138: warning: no description found for function func5
+test.c:159: warning: no description found for function func6
+test.c:167: warning: no description found for function func7
+test.c:177: warning: no description found for function func8
+test.c:189: warning: no description found for function func9
+test.c:201: warning: no description found for function func10
+test.c:209: warning: no description found for function func11
+test.c:216: warning: no description found for function func12
+test.c:222: warning: no description found for function func13
+test.c:239: warning: no description found for function func14
