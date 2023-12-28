@@ -70,7 +70,6 @@ def fix_betty_warnings(content, file_path):
 
     content = fix_comments(content)
     content = remove_trailing_whitespaces(content)
-    content = add_parentheses_around_return(content)
 
     # Return the file path for further processing
     return file_path
@@ -81,8 +80,8 @@ def fix_betty_style(file_paths):
         run_vi_script(file_path)
         content = read_file(file_path)
         content = fix_comments(content)
-        content = remove_trailing_whitespaces(content)
         content = add_parentheses_around_return(content)
+        content = remove_trailing_whitespaces(content)
         content = remove_consecutive_blank_lines(content)
         file_path_with_errors = fix_betty_warnings(content, file_path)
         write_file(file_path, content)

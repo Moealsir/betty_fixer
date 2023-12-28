@@ -92,7 +92,7 @@ def fix_errors_from_file(file_path, line_number, error_description):
                 fix_space_required_before_the_open_brace(file_path, line_number, error_description)
             elif i == 13:
                 fix_space_required_after_the_close_brace(file_path, line_number, error_description)
-            # elif i == 11:
+            # elif i == 14:
             #     fix_missing_blank_line_after_declaration(file_path, line_number)
 def fix_missing_blank_line_after_declaration(file_path, line_number):
     # Read the file content

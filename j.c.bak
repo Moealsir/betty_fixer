@@ -186,7 +186,7 @@ char* func8(char* var)
 	return (str);
 }
 
-void func9(int var1,	 int var2)
+void func9(int var1, int var2)
 {
 	int *addr;
 
@@ -221,20 +221,9 @@ int func12(int argc, __attribute__((unused)) char **argv)
 
 char func13(__attribute__((unused)) int var1, char *var2)
 
-{//whew
-	return (0); // whew
-} //whew
-
-
-
-
-
-
-
-
-
-
-
+{
+	return (0);
+}
 
 char *func14(char *var)
 {
@@ -242,6 +231,7 @@ char *func14(char *var)
 	Struct_s *ptr;
 
 	str = var;
-	str = ptr->str; //whew
-	return str; // whew
-}//whew
+	str = ptr->str;
+	return (str);
+}
+
