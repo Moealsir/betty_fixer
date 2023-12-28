@@ -58,6 +58,7 @@ def fix_errors_from_file(file_path, line_number, error_description):
         "spaces required around that ",
         "space required before the open brace",
         "space required after that close brac",
+        "should be \"foo **bar\"",
         "Missing a blank line after declarations"
     ]
 
@@ -92,8 +93,8 @@ def fix_errors_from_file(file_path, line_number, error_description):
                 fix_space_required_before_the_open_brace(file_path, line_number, error_description)
             elif i == 13:
                 fix_space_required_after_the_close_brace(file_path, line_number, error_description)
-            # elif i == 14:
-            #     fix_missing_blank_line_after_declaration(file_path, line_number)
+            elif i == 14:
+                fix_should_be_foo_star_star_bar(file_path, line_number, error_description)
 def fix_missing_blank_line_after_declaration(file_path, line_number):
     # Read the file content
     with open(file_path, 'r') as file:
@@ -106,6 +107,37 @@ def fix_missing_blank_line_after_declaration(file_path, line_number):
     with open(file_path, 'w') as file:
         file.writelines(lines)
 # Implement specific fixes for each error type
+
+def fix_should_be_foo_star_star_bar(file_path, line_number, error_description): #done
+    # Specify the specifier
+    specifier = '**'
+
+    # Read the file content
+    with open(file_path, 'r') as file:
+        lines = file.readlines()
+
+    # Find the line with the error
+    error_line = lines[int(line_number) - 1]
+
+    # Check conditions and fix the line accordingly
+    if f'foo** bar' in error_description:
+        fixed_line = error_line.replace(f'{specifier} ', f' {specifier}')
+    elif f'foo ** bar' in error_description:
+        fixed_line = error_line.replace(f'{specifier} ', f'{specifier}')
+    elif f'foo**bar' in error_description:
+        fixed_line = error_line.replace(f'{specifier}', f' {specifier}')
+    else:
+        # If none of the conditions match, return without making changes
+        return
+
+    # Replace the line in the file
+    lines[int(line_number) - 1] = fixed_line
+
+    # Write the modified content back to the file
+    with open(file_path, 'w') as file:
+        file.writelines(lines)
+
+        
 
 def remove_unused_attribute(file_name, function_name):
     try:
