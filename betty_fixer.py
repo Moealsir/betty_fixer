@@ -75,6 +75,7 @@ def fix_betty_warnings(content, file_path):
     return file_path
 
 def remove_blank_lines_inside_comments(file_path):
+    exctract_errors(file_path, 'errors.txt')
     # Read the content of the file
     with open(file_path, 'r') as file:
         lines = file.readlines()
