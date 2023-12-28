@@ -344,7 +344,9 @@ def fix_should_be_foo_star_bar(file_path, line_number, error_description): #done
     error_line = lines[int(line_number) - 1]
 
     # Check conditions and fix the line accordingly
-    if f'foo* bar' in error_description:
+    if f'foo** bar' in error_description:
+        fixed_line = error_line.replace(f'{specifier} ', f' {specifier}')
+    elif f'foo* bar' in error_description:
         fixed_line = error_line.replace(f'{specifier} ', f' {specifier}')
     elif f'foo * bar' in error_description:
         fixed_line = error_line.replace(f'{specifier} ', f'{specifier}')
