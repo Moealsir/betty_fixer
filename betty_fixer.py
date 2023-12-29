@@ -3,7 +3,7 @@ import sys
 import os
 import subprocess
 from backup import *
-from errors_extractor import exctract_errors
+from errors_extractor import *
 from extract_line import *
 
 
@@ -132,8 +132,81 @@ def fix_betty_style(file_paths):
         fix_missing_blank_line_after_declarations(errors_file_path)
         fix_brace_should_be_on_the_previous_line(errors_file_path)
         remove_blank_lines_inside_comments(file_path)
+        More_than_5_functions_in_the_file(errors_file_path)
 
         
+        
+
+def More_than_5_functions_in_the_file(errors_file_path):
+    with open(errors_file_path, 'r') as errors_file:
+        # Read all lines at once to allow modification of the list while iterating
+        error_lines = errors_file.readlines()
+
+        messages = ["More than 5 functions in the file",
+                    "More than 40 lines in a function",
+                    "line over 80 characters"
+                    ]
+
+        for error_line in error_lines:
+            for message in messages:
+                if message in error_line:
+                    variables = extract_and_print_variables(error_line)
+                    if len(variables) >= 1:
+                        # Extract the first element from the tuple
+                        file_path = variables[0]
+                        other_handlers(file_path)
+
+def other_handlers(file_path):
+    errors_file_path = 'errors.txt'
+    # Your logic code
+
+    create_tasks_directory()
+    # Pass file_path as a list to copy_files_to_tasks
+    copy_files_to_tasks([file_path])
+    modify_main_files([file_path])
+
+    # Clean 'errors.txt' before extracting new errors
+    clean_errors_file(errors_file_path)
+
+    # Update Betty errors in errors.txt
+    exctract_errors(file_path, errors_file_path)
+
+def create_tasks_directory():
+    # Create tasks directory if not found
+    if not os.path.exists("tasks"):
+        os.makedirs("tasks")
+
+def copy_files_to_tasks(files):
+    # Copy files to tasks directory
+    for file_path in files:
+        destination_path = os.path.join("tasks", os.path.basename(file_path))
+        if not os.path.exists(destination_path):
+            # Read the content of the file
+            with open(file_path, 'r') as source_file:
+                content = source_file.readlines()
+
+            # Exclude lines starting with #include and ending with '.h"'
+            filtered_content = [line for line in content if not line.strip().startswith("#include") or not line.strip().endswith('.h"')]
+
+            # Write the modified content to the destination file
+            with open(destination_path, 'w') as destination_file:
+                destination_file.write(''.join(filtered_content))
+
+def modify_main_files(files):
+    # Modify main files
+    for file_path in files:
+        # Read the content of the main file
+        with open(file_path, 'r') as main_file:
+            content = main_file.readlines()
+
+        # Keep only lines with #include that end with '.h"'
+        include_lines = [line.strip() for line in content if line.strip().startswith("#include") and line.strip().endswith('.h"')]
+
+        # Write the modified content to the main file, adding an empty line at the end
+        with open(file_path, 'w') as main_file:
+            main_file.write('\n'.join(include_lines + [f'#include "tasks/{os.path.basename(file_path)}"\n']))
+
+
         
 if __name__ == "__main__":
     if len(sys.argv) < 2:
