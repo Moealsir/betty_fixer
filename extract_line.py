@@ -1,5 +1,6 @@
 import re
 from errors_extractor import exctract_errors
+from betty_fixer import clean_errors_file
 
 def remove_extra_spaces(input_text):
     lines = input_text.split('\n')
@@ -95,36 +96,59 @@ def fix_errors_from_file(file_path, line_number, error_description):
                 fix_space_required_after_the_close_brace(file_path, line_number, error_description)
             elif i == 14:
                 fix_should_be_foo_star_star_bar(file_path, line_number, error_description)
-def fix_missing_blank_line_after_declarations(errors_file_path):
+
+def fix_missing_blank_line_after_declarations(file_path, errors_file_path):
+    clean_errors_file(errors_file_path)
     with open(errors_file_path, 'r') as errors_file:
-        for error_line in errors_file:
+        # Read all lines at once to allow modification of the list while iterating
+        error_lines = errors_file.readlines()
+
+        for error_line in error_lines:
             if 'Missing a blank line after declarations' in error_line:
                 # Extract (file_path, line_number) from the error line
                 variables = extract_and_print_variables(error_line)
                 if len(variables) >= 2:
                     file_path, line_number = variables[:2]  # Take the first two values
+
                     # Fix missing blank line after declaration
                     fix_missing_blank_line_after_declaration(file_path, line_number)
 
-                    # Update Betty errors in errors.txt and restart searching
+                    # Clean 'errors.txt' before extracting new errors
+                    clean_errors_file(errors_file_path)
+
+                    # Update Betty errors in errors.txt
                     exctract_errors(file_path, errors_file_path)
+
+                    # Start looking for the message in errors.txt lines from the beginning
+                    # (Reset the file iterator by reopening it)
+                    errors_file.seek(0)
+
+                    # Skip lines until the current error line
+                    while errors_file.readline() != error_line:
+                        pass
+
+                    # Continue processing the rest of the file
+                    continue
 
 def fix_missing_blank_line_after_declaration(file_path, line_number):
     # Convert line_number to integer
     line_number = int(line_number)
-    
+
     # Read the content of the file
     with open(file_path, 'r') as file:
         lines = file.readlines()
-    
+
+    # Ensure that function_start_line is initialized
+    function_start_line = 0
+
     line_number -= 1
-    print(line_number)
     # Add a blank line after the specified line number
-    lines.insert(int(line_number), '\n')
+    lines.insert(line_number, '\n')
 
     # Write the modified content back to the file
     with open(file_path, 'w') as file:
         file.writelines(lines)
+
 
 # def fix_missing_blank_line_after_declaration(file_path, line_number):
     # Read the file content

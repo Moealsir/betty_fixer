@@ -1,29 +1,4 @@
 
-========== j.c ==========
-j.c:173: ERROR: More than 5 functions in the file
-j.c:200: ERROR: More than 5 functions in the file
-j.c:213: ERROR: More than 5 functions in the file
-j.c:228: ERROR: More than 5 functions in the file
-j.c:246: ERROR: More than 5 functions in the file
-j.c:263: ERROR: More than 5 functions in the file
-j.c:277: ERROR: More than 5 functions in the file
-j.c:280: WARNING: Missing a blank line after declarations
-j.c:289: ERROR: More than 5 functions in the file
-j.c:300: ERROR: More than 5 functions in the file
-j.c:310: ERROR: More than 5 functions in the file
-total: 10 errors, 1 warnings, 319 lines checked
-func0
-func1
-func2
-func3
-func4
-func5
-func6
-func7
-func8
-func9
-func10
-func11
-func12
-func13
-func14
+========== spaces6.c ==========
+func30
+func31

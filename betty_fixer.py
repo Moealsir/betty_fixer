@@ -96,7 +96,14 @@ def remove_blank_lines_inside_comments(file_path):
                         file.writelines(lines)
                     return
 
+def clean_errors_file(errors_file_path):
+    # Clear the content of the errors.txt file before appending new errors
+    open(errors_file_path, 'w').close()
+
 def fix_betty_style(file_paths):
+    errors_file_path = 'errors.txt'
+    processed_functions = set()
+
     for file_path in file_paths:
         create_backup(file_path)
         run_vi_script(file_path)
@@ -113,12 +120,12 @@ def fix_betty_style(file_paths):
             process_errors(file_path_with_errors)
 
         # Extract functions with no description from 'errors.txt'
-        functions_with_no_description = extract_functions_with_no_description('errors.txt')
+        functions_with_no_description = extract_functions_with_no_description(errors_file_path)
 
         # Iterate through each line in path_file and remove extra spaces
         with open(file_path, 'r') as file:
             lines = file.readlines()
-        
+
         cleaned_lines = [remove_extra_spaces(line) for line in lines]
 
         # Write the cleaned lines back to the file
@@ -127,24 +134,17 @@ def fix_betty_style(file_paths):
 
         # Generate documentation for each function with no description
         for function_name in functions_with_no_description:
-            remove_unused_attribute(file_path, function_name)
+            if function_name not in processed_functions:
+                remove_unused_attribute(file_path, function_name)
+                processed_functions.add(function_name)
+        
         run_vi_script(file_path)
 
         # Fix missing blank line after declarations
-        with open('errors.txt', 'r') as errors_file:
-            for error_line in errors_file:
-                if 'Missing a blank line after declarations' in error_line:
-                    # Extract (file_path, line_number) from the error line
-                    variables = extract_and_print_variables(error_line)
-                    if len(variables) >= 2:
-                        file_path, line_number = variables[:2]  # Take the first two values
-                        # Fix missing blank line after declaration
-                        fix_missing_blank_line_after_declaration(file_path, line_number)
-
-                        # Update Betty errors in errors.txt and restart searching
-                        exctract_errors(file_path, 'errors.txt')
-                        
+        fix_missing_blank_line_after_declarations(file_path, errors_file_path)
         remove_blank_lines_inside_comments(file_path)
+        
+        
 if __name__ == "__main__":
     if len(sys.argv) < 2:
         print("Usage: python betty_fixer.py file1.c file2.c ...")
