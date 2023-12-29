@@ -1,6 +1,7 @@
 import re
 import sys
 from errors_extractor import exctract_errors
+from betty_fixer import run_vi_script
 
 def remove_extra_spaces(input_text):
     lines = input_text.split('\n')
@@ -60,7 +61,7 @@ def fix_errors_from_file(file_path, line_number, error_description):
         "space required before the open brace",
         "space required after that close brac",
         "should be \"foo **bar\"",
-        "Missing a blank line after declarations"
+        "Statements should start on a tabstop"
     ]
 
     # Check each error message
@@ -96,6 +97,8 @@ def fix_errors_from_file(file_path, line_number, error_description):
                 fix_space_required_after_the_close_brace(file_path, line_number, error_description)
             elif i == 14:
                 fix_should_be_foo_star_star_bar(file_path, line_number, error_description)
+            elif i == 15:
+                run_vi_script(file_path)
 
 def clean_errors_file(errors_file_path):
     errors_file_path = 'errors.txt'
@@ -723,7 +726,7 @@ def fix_space_required_after_that(file_path, line_number, error_description):
     error_line = lines[int(line_number) - 1]
 
     # Fix line according to the context conditions
-    if context == 'WxV':
+    if context == 'WxV' or context == 'VxV':
         fixed_line = error_line.replace(f'{specifier}', f'{specifier} ')
     else:
         # If the context doesn't match known conditions, return without making changes

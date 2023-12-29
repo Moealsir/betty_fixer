@@ -1,3 +1,5 @@
 
 ========== cp_test.c ==========
-func22
+func0
+func1
+cp_test.c:5: warning: bad line: 
