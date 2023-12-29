@@ -2,4 +2,4 @@
 ========== cp_test.c ==========
 func0
 func1
-cp_test.c:5: warning: bad line: 
+cp_test.c:4: warning: bad line: 

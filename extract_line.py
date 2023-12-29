@@ -61,7 +61,8 @@ def fix_errors_from_file(file_path, line_number, error_description):
         "space required before the open brace",
         "space required after that close brac",
         "should be \"foo **bar\"",
-        "Statements should start on a tabstop"
+        "Statements should start on a tabstop",
+        "following function declarations go on the next line"
     ]
 
     # Check each error message
@@ -99,6 +100,9 @@ def fix_errors_from_file(file_path, line_number, error_description):
                 fix_should_be_foo_star_star_bar(file_path, line_number, error_description)
             elif i == 15:
                 run_vi_script(file_path)
+            elif i == 16:
+                # errors_file_path = 'errors.txt'
+                brace_go_next_line(file_path, line_number, error_description)
 
 def clean_errors_file(errors_file_path):
     errors_file_path = 'errors.txt'
@@ -158,21 +162,6 @@ def fix_missing_blank_line_after_declaration(file_path, line_number, errors_file
     exctract_errors(file_path, errors_file_path)
 
     return True  # Line is fixed, return True
-
-
-
-# def fix_missing_blank_line_after_declaration(file_path, line_number):
-    # Read the file content
-    # with open(file_path, 'r') as file:
-        # lines = file.readlines()
-# 
-    # Insert a newline character at the beginning of the specified line number
-    # lines.insert(int(line_number) - 1, '\n')
-# 
-    # Write the modified content back to the file
-    # with open(file_path, 'w') as file:
-        # file.writelines(lines)
-# Implement specific fixes for each error type
 
 def fix_should_be_foo_star_star_bar(file_path, line_number, error_description): #done
     # Specify the specifier
@@ -414,6 +403,35 @@ def fix_space_required_before_the_open_parenthesis(file_path, line_number, error
     # Write the modified content back to the file
     with open(file_path, 'w') as file:
         file.writelines(lines)
+        
+def brace_go_next_line(file_path, line_number, error_description):
+    specifier = '{'
+
+    # Read the file content
+    with open(file_path, 'r') as file:
+        lines = file.readlines()
+
+    # Find the line with the error
+    error_line = lines[int(line_number) - 1]
+
+    # Check if the specifier is present in the error description
+    if specifier in error_description:
+        # Replace the specifier with a newline before the specifier
+        fixed_line = error_line.replace(f'{specifier}', f'\n{specifier}')
+
+        # Replace the line in the file
+        lines[int(line_number) - 1] = fixed_line
+
+        # Write the modified content back to the file
+        with open(file_path, 'w') as file:
+            file.writelines(lines)
+
+        # Clean 'errors.txt' before extracting new errors
+        # clean_errors_file(errors_file_path)
+
+        # Update Betty errors in errors.txt
+        # exctract_errors(file_path, errors_file_path)
+
 def fix_space_prohibited_before_semicolon(file_path, line_number, specifier):
 
     # Read the file content

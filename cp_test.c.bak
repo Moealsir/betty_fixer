@@ -1,5 +1,4 @@
-int func0(int var, __attribute__((unused)) int test)
-{
+int func0(int var, __attribute__((unused)) int test){
 	do {
 		int **t;
 		t = sizeof(var);
@@ -8,8 +7,7 @@ int func0(int var, __attribute__((unused)) int test)
 }
 
 
-int func1(int var, __attribute__((unused)) int test)
-{
+int func1(int var, __attribute__((unused)) int test){
 	do {
 		int **t;
 
