@@ -95,7 +95,6 @@ def remove_blank_lines_inside_comments(file_path):
                     with open(file_path, 'w') as file:
                         file.writelines(lines)
                     return
-
 def fix_betty_style(file_paths):
     for file_path in file_paths:
         create_backup(file_path)
@@ -113,7 +112,8 @@ def fix_betty_style(file_paths):
             process_errors(file_path_with_errors)
 
         # Extract functions with no description from 'errors.txt'
-        functions_with_no_description = extract_functions_with_no_description('errors.txt')
+        errors_file_path = 'errors.txt'
+        functions_with_no_description = extract_functions_with_no_description(errors_file_path)
 
         # Iterate through each line in path_file and remove extra spaces
         with open(file_path, 'r') as file:
@@ -129,9 +129,12 @@ def fix_betty_style(file_paths):
         for function_name in functions_with_no_description:
             remove_unused_attribute(file_path, function_name)
         run_vi_script(file_path)
-
-        fix_missing_blank_line_after_declarations('errors.txt')
+        fix_missing_blank_line_after_declarations(errors_file_path)
+        fix_brace_should_be_on_the_previous_line(errors_file_path)
         remove_blank_lines_inside_comments(file_path)
+
+        
+        
 if __name__ == "__main__":
     if len(sys.argv) < 2:
         print("Usage: python betty_fixer.py file1.c file2.c ...")
