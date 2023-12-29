@@ -60,7 +60,7 @@ def fix_errors_from_file(file_path, line_number, error_description):
         "space required before the open brace",
         "space required after that close brac",
         "should be \"foo **bar\"",
-        "Missing a blank line after declarations"
+        "Missing a blank line after declarations",
     ]
 
     # Check each error message
@@ -149,20 +149,6 @@ def fix_missing_blank_line_after_declaration(file_path, line_number):
     with open(file_path, 'w') as file:
         file.writelines(lines)
 
-
-# def fix_missing_blank_line_after_declaration(file_path, line_number):
-    # Read the file content
-    # with open(file_path, 'r') as file:
-        # lines = file.readlines()
-# 
-    # Insert a newline character at the beginning of the specified line number
-    # lines.insert(int(line_number) - 1, '\n')
-# 
-    # Write the modified content back to the file
-    # with open(file_path, 'w') as file:
-        # file.writelines(lines)
-# Implement specific fixes for each error type
-
 def fix_should_be_foo_star_star_bar(file_path, line_number, error_description): #done
     # Specify the specifier
     specifier = '**'
@@ -181,6 +167,8 @@ def fix_should_be_foo_star_star_bar(file_path, line_number, error_description): 
         fixed_line = error_line.replace(f'{specifier} ', f'{specifier}')
     elif f'foo**bar' in error_description:
         fixed_line = error_line.replace(f'{specifier}', f' {specifier}')
+    elif f'foo* *bar' in error_description:
+        fixed_line = error_line.replace('* *', f' {specifier}')
     else:
         # If none of the conditions match, return without making changes
         return
