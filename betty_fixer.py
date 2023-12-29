@@ -66,7 +66,7 @@ def process_errors(file_path):
 def fix_betty_warnings(content, file_path):
     # Run Betty and append errors to the common errors.txt file
     content = remove_consecutive_blank_lines(content)
-    exctract_errors(file_path, 'errors.txt')
+    clean_errors_file('errors.txt')
 
     content = fix_comments(content)
     content = remove_trailing_whitespaces(content)
@@ -75,7 +75,7 @@ def fix_betty_warnings(content, file_path):
     return file_path
 
 def remove_blank_lines_inside_comments(file_path):
-    exctract_errors(file_path, 'errors.txt')
+    clean_errors_file('errors.txt')
     # Read the content of the file
     with open(file_path, 'r') as file:
         lines = file.readlines()
@@ -96,14 +96,7 @@ def remove_blank_lines_inside_comments(file_path):
                         file.writelines(lines)
                     return
 
-def clean_errors_file(errors_file_path):
-    # Clear the content of the errors.txt file before appending new errors
-    open(errors_file_path, 'w').close()
-
 def fix_betty_style(file_paths):
-    errors_file_path = 'errors.txt'
-    processed_functions = set()
-
     for file_path in file_paths:
         create_backup(file_path)
         run_vi_script(file_path)
@@ -120,12 +113,12 @@ def fix_betty_style(file_paths):
             process_errors(file_path_with_errors)
 
         # Extract functions with no description from 'errors.txt'
-        functions_with_no_description = extract_functions_with_no_description(errors_file_path)
+        functions_with_no_description = extract_functions_with_no_description('errors.txt')
 
         # Iterate through each line in path_file and remove extra spaces
         with open(file_path, 'r') as file:
             lines = file.readlines()
-
+        
         cleaned_lines = [remove_extra_spaces(line) for line in lines]
 
         # Write the cleaned lines back to the file
@@ -134,17 +127,11 @@ def fix_betty_style(file_paths):
 
         # Generate documentation for each function with no description
         for function_name in functions_with_no_description:
-            if function_name not in processed_functions:
-                remove_unused_attribute(file_path, function_name)
-                processed_functions.add(function_name)
-        
+            remove_unused_attribute(file_path, function_name)
         run_vi_script(file_path)
 
-        # Fix missing blank line after declarations
-        fix_missing_blank_line_after_declarations(file_path, errors_file_path)
+        fix_missing_blank_line_after_declarations('errors.txt')
         remove_blank_lines_inside_comments(file_path)
-        
-        
 if __name__ == "__main__":
     if len(sys.argv) < 2:
         print("Usage: python betty_fixer.py file1.c file2.c ...")
