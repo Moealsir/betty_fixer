@@ -133,6 +133,76 @@ def fix_betty_style(file_paths):
         fix_brace_should_be_on_the_previous_line(errors_file_path)
         remove_blank_lines_inside_comments(file_path)
         fix_should_be_void(errors_file_path)
+        More_than_5_functions_in_the_file(errors_file_path)
+
+
+def More_than_5_functions_in_the_file(errors_file_path):
+    # Set to True initially to enter the loop
+    errors_fixed = True
+
+    while errors_fixed:
+        errors_fixed = False  # Reset the flag at the beginning of each iteration
+
+        with open(errors_file_path, 'r') as errors_file:
+            # Read all lines at once to allow modification of the list while iterating
+            error_lines = errors_file.readlines()
+
+            for error_line in error_lines:
+                if 'More than 5 functions in the file' in error_line:
+                    variables = extract_and_print_variables(error_line)
+                    if len(variables) >= 2:
+                        file_path, _ = variables[:2]
+                        line_number = 1  # Assuming you want to start from the first line
+                        with open(file_path, 'r') as file:
+                            lines = file.readlines()
+
+                        # Find the next available file name (file1.c, file2.c, etc.)
+                        new_file_path = find_available_file_name(file_path)
+
+                        # Count the /** ... */ blocks
+                        counter = 0
+                        inside_block = False
+                        block_start_line = 0
+                        for idx, line in enumerate(lines):
+                            if line.strip().startswith('/**'):
+                                inside_block = True
+                                block_start_line = idx
+                            elif inside_block and line.strip().startswith('*/'):
+                                inside_block = False
+                                counter += 1
+
+                            if counter == 6:
+                                # Create a new file with the content from the specified line to the end of the file
+                                copy_remaining_lines(lines, block_start_line, new_file_path)
+                                # Remove the content from the main file
+                                del lines[block_start_line:]
+                                # Write the modified content back to the main file
+                                with open(file_path, 'w') as main_file:
+                                    main_file.write(''.join(lines))
+                                # Clean 'errors.txt' before extracting new errors
+                                open(errors_file_path, 'w').close()
+                                # Update Betty errors in errors.txt
+                                exctract_errors(new_file_path, errors_file_path)
+                                errors_fixed = True  # Set the flag if a line is fixed
+                                break
+
+                            line_number += 1
+                            
+                            
+def find_available_file_name(original_file_path):
+    base_name, extension = os.path.splitext(original_file_path)
+    counter = 1
+
+    while True:
+        new_file_path = f'{base_name}{counter}{extension}'
+        if not os.path.exists(new_file_path):
+            return new_file_path
+        counter += 1
+
+def copy_remaining_lines(lines, start_line, new_file_path):
+    # Create a new file with the content from the specified line to the end of the file
+    with open(new_file_path, 'w') as new_file:
+        new_file.write(''.join(lines[start_line:]))                    
 
         
         
