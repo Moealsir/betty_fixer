@@ -1,0 +1,5 @@
+
+========== test.c ==========
+test.c:5: ERROR: int finc1() should probably be int finc1(void)
+total: 1 errors, 0 warnings, 11 lines checked
+finc1
