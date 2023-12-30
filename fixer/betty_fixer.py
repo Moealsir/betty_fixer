@@ -132,6 +132,7 @@ def fix_betty_style(file_paths):
         fix_missing_blank_line_after_declarations(errors_file_path)
         fix_brace_should_be_on_the_previous_line(errors_file_path)
         remove_blank_lines_inside_comments(file_path)
+        fix_should_be_void(errors_file_path)
 
         
         
