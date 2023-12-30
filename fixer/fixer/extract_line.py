@@ -63,8 +63,6 @@ def fix_errors_from_file(file_path, line_number, error_description):
         "should be \"foo **bar\"",
         "Statements should start on a tabstop",
         "following function declarations go on the next line",
-        "that open brace { should be on the previous line"
-        "(void)"
     ]
 
     # Check each error message
@@ -476,6 +474,60 @@ def brace_go_next_line(file_path, line_number, error_description):
             file.writelines(lines)
 
 
+
+def fix_brace_should_be_on_the_next_line(errors_file_path):
+    errors_fixed = True  # Set to True initially to enter the loop
+
+    while errors_fixed:
+        errors_fixed = False  # Reset the flag at the beginning of each iteration
+
+        with open(errors_file_path, 'r') as errors_file:
+            # Read all lines at once to allow modification of the list while iterating
+            error_lines = errors_file.readlines()
+
+            for error_line in error_lines:
+                if 'that open brace { should be on the next line' in error_line:
+                    # Extract (file_path, line_number) from the error line
+                    variables = extract_and_print_variables(error_line)
+                    if len(variables) >= 2:
+                        file_path, line_number = variables[:2]  # Take the first two values
+
+                        # Fix missing blank line after declaration
+                        if fix_brace_on_the_next_line(file_path, line_number, 'errors.txt'):
+                            errors_fixed = True  # Set the flag if a line is fixed
+
+def fix_brace_on_the_next_line(file_path, line_number, errors_file_path):
+    # Convert line_number to integer
+    line_number = int(line_number)
+
+    # Read the content of the file
+    with open(file_path, 'r') as file:
+        lines = file.readlines()
+        
+    # Find the position of the '{'
+    brace_position = lines[line_number].rfind('{')
+
+    # Move the '{' to the next line if it's not already at the end of the line
+    if brace_position != len(lines[line_number]) - 2:
+        lines[line_number] = lines[line_number][:brace_position + 1] + '\n' + lines[line_number][brace_position + 1:]
+
+        # Write the modified content back to the file
+        with open(file_path, 'w') as file:
+            file.writelines(lines)
+    
+    # Clean 'errors.txt' before extracting new errors
+    clean_errors_file(errors_file_path)
+
+    # Update Betty errors in errors.txt
+    exctract_errors(file_path, errors_file_path)
+
+    return True  # Line is fixed, return True
+
+
+
+
+
+
 def fix_brace_should_be_on_the_previous_line(errors_file_path):
     errors_fixed = True  # Set to True initially to enter the loop
 
@@ -879,7 +931,7 @@ def fix_space_required_after_that(file_path, line_number, error_description):
     error_line = lines[int(line_number) - 1]
 
     # Fix line according to the context conditions
-    if context == 'WxV' or context == 'VxV':
+    if context == 'WxV' or context == 'VxV' or context == 'BxV':
         fixed_line = error_line.replace(f'{specifier}', f'{specifier} ')
     else:
         # If the context doesn't match known conditions, return without making changes
