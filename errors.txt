@@ -1,4 +1,7 @@
 
-========== 6_functions.c ==========
-
-========== 6_functions.c ==========
+========== 6_functions111.c ==========
+func15
+func16
+func17
+func18
+func19
