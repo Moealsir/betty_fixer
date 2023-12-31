@@ -62,8 +62,6 @@ def fix_errors_from_file(file_path, line_number, error_description):
         "space required after that close brac",
         "should be \"foo **bar\"",
         "Statements should start on a tabstop",
-        # "following function declarations go on the next line",
-        # "that open brace { should be on the previous line"
     ]
 
     # Check each error message
@@ -101,57 +99,6 @@ def fix_errors_from_file(file_path, line_number, error_description):
                 fix_should_be_foo_star_star_bar(file_path, line_number, error_description)
             elif i == 15:
                 run_vi_script(file_path)
-               
-                
-def fix_brace_should_be_on_the_next_line(errors_file_path):
-    errors_fixed = True  # Set to True initially to enter the loop
-
-    while errors_fixed:
-        errors_fixed = False  # Reset the flag at the beginning of each iteration
-
-        with open(errors_file_path, 'r') as errors_file:
-            # Read all lines at once to allow modification of the list while iterating
-            error_lines = errors_file.readlines()
-
-            for error_line in error_lines:
-                if 'following function declarations go on the next line' in error_line:
-                    # Extract (file_path, line_number) from the error line
-                    variables = extract_and_print_variables(error_line)
-                    if len(variables) >= 2:
-                        file_path, line_number = variables[:2]  # Take the first two values
-
-                        # Fix missing blank line after declaration
-                        if fix_brace_on_the_next_line(file_path, line_number):
-                            errors_fixed = True  # Set the flag if a line is fixed
-
-def fix_brace_on_the_next_line(file_path, line_number):
-    # Convert line_number to integer
-    line_number = int(line_number)
-    specifier = '{'
-
-    # Read the content of the file
-    with open(file_path, 'r') as file:
-        lines = file.readlines()
-
-    # Check if the line number is valid
-    if 0 < line_number <= len(lines):
-        # Extract indentation from the original line
-        indentation = lines[line_number - 1].split(specifier)[0]
-
-        # Insert a newline before the line containing the opening brace with preserved indentation
-        lines[line_number - 1] = f'{indentation}{specifier}\n'
-
-        # Write the modified content back to the file
-        with open(file_path, 'w') as file:
-            file.writelines(lines)
-
-        return True  # Line is fixed, return True
-
-    return False  # Line number is invalid, return False
-
-
-                
-
 
 def fix_should_be_void(errors_file_path):
     errors_fixed = True  # Set to True initially to enter the loop
