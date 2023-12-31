@@ -135,7 +135,7 @@ def fix_betty_style(file_paths):
         fix_should_be_void(errors_file_path)
         More_than_5_functions_in_the_file(errors_file_path)
         fix_brace_should_be_on_the_next_line(errors_file_path)
-
+ 
 
 def More_than_5_functions_in_the_file(errors_file_path):
     # Set to True initially to enter the loop

@@ -103,8 +103,56 @@ def fix_errors_from_file(file_path, line_number, error_description):
                 run_vi_script(file_path)
             elif i == 16:
                 brace_go_next_line(file_path, line_number, error_description)
-            # elif i == 17:
-                # brace_should_be_on_the_previous_line(file_path, line_number)
+                
+                
+def fix_should_be_void(errors_file_path):
+    errors_fixed = True  # Set to True initially to enter the loop
+
+    while errors_fixed:
+        errors_fixed = False  # Reset the flag at the beginning of each iteration
+
+        with open(errors_file_path, 'r') as errors_file:
+            # Read all lines at once to allow modification of the list while iterating
+            error_lines = errors_file.readlines()
+
+            for error_line in error_lines:
+                if 'should probably be' in error_line and '(void)' in error_line:
+                    # Extract (file_path, line_number) from the error line
+                    variables = extract_and_print_variables(error_line)
+                    if len(variables) >= 2:
+                        file_path, line_number = variables[:2]  # Take the first two values
+
+                        # Fix missing blank line after declaration
+                        if should_be_void(file_path, line_number, 'errors.txt'):
+                            errors_fixed = True  # Set the flag if a line is fixed
+
+
+def should_be_void(file_path, line_number, errors_file_path):
+    # Convert line_number to integer
+    line_number = int(line_number)
+    specifier = '()'
+    replacement = '(void)'
+
+    # Read the content of the file
+    with open(file_path, 'r') as file:
+        lines = file.readlines()
+
+    # Replace '()' with '(void)' in the specified line
+    lines[line_number - 1] = lines[line_number - 1].replace(specifier, replacement)
+
+    # Write the modified content back to the file
+    with open(file_path, 'w') as file:
+        file.writelines(lines)
+    
+    # Clean 'errors.txt' before extracting new errors
+    clean_errors_file(errors_file_path)
+
+    # Update Betty errors in errors.txt
+    exctract_errors(file_path, errors_file_path)
+
+    return True  # Line is fixed, return True
+
+
 
 def clean_errors_file(errors_file_path):
     errors_file_path = 'errors.txt'
