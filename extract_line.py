@@ -62,8 +62,8 @@ def fix_errors_from_file(file_path, line_number, error_description):
         "space required after that close brac",
         "should be \"foo **bar\"",
         "Statements should start on a tabstop",
-        "following function declarations go on the next line",
-        "that open brace { should be on the previous line"
+        # "following function declarations go on the next line",
+        # "that open brace { should be on the previous line"
     ]
 
     # Check each error message
@@ -101,10 +101,58 @@ def fix_errors_from_file(file_path, line_number, error_description):
                 fix_should_be_foo_star_star_bar(file_path, line_number, error_description)
             elif i == 15:
                 run_vi_script(file_path)
-            elif i == 16:
-                brace_go_next_line(file_path, line_number, error_description)
+               
                 
+def fix_brace_should_be_on_the_next_line(errors_file_path):
+    errors_fixed = True  # Set to True initially to enter the loop
+
+    while errors_fixed:
+        errors_fixed = False  # Reset the flag at the beginning of each iteration
+
+        with open(errors_file_path, 'r') as errors_file:
+            # Read all lines at once to allow modification of the list while iterating
+            error_lines = errors_file.readlines()
+
+            for error_line in error_lines:
+                if 'following function declarations go on the next line' in error_line:
+                    # Extract (file_path, line_number) from the error line
+                    variables = extract_and_print_variables(error_line)
+                    if len(variables) >= 2:
+                        file_path, line_number = variables[:2]  # Take the first two values
+
+                        # Fix missing blank line after declaration
+                        if fix_brace_on_the_next_line(file_path, line_number):
+                            errors_fixed = True  # Set the flag if a line is fixed
+
+def fix_brace_on_the_next_line(file_path, line_number):
+    # Convert line_number to integer
+    line_number = int(line_number)
+    specifier = '{'
+
+    # Read the content of the file
+    with open(file_path, 'r') as file:
+        lines = file.readlines()
+
+    # Check if the line number is valid
+    if 0 < line_number <= len(lines):
+        # Extract indentation from the original line
+        indentation = lines[line_number - 1].split(specifier)[0]
+
+        # Insert a newline before the line containing the opening brace with preserved indentation
+        lines[line_number - 1] = f'{indentation}{specifier}\n'
+
+        # Write the modified content back to the file
+        with open(file_path, 'w') as file:
+            file.writelines(lines)
+
+        return True  # Line is fixed, return True
+
+    return False  # Line number is invalid, return False
+
+
                 
+
+
 def fix_should_be_void(errors_file_path):
     errors_fixed = True  # Set to True initially to enter the loop
 
@@ -207,9 +255,6 @@ def fix_missing_blank_line_after_declaration(file_path, line_number, errors_file
     
     # Clean 'errors.txt' before extracting new errors
     clean_errors_file(errors_file_path)
-
-    # Update Betty errors in errors.txt
-    exctract_errors(file_path, errors_file_path)
 
     return True  # Line is fixed, return True
 
@@ -451,6 +496,55 @@ def fix_space_required_before_the_open_parenthesis(file_path, line_number, error
     with open(file_path, 'w') as file:
         file.writelines(lines)
         
+def fix_brace_should_be_on_the_next_line(errors_file_path):
+    errors_fixed = True  # Set to True initially to enter the loop
+
+    while errors_fixed:
+        errors_fixed = False  # Reset the flag at the beginning of each iteration
+
+        with open(errors_file_path, 'r') as errors_file:
+            # Read all lines at once to allow modification of the list while iterating
+            error_lines = errors_file.readlines()
+
+            for error_line in error_lines:
+                if 'following function declarations go on the next line' in error_line:
+                    # Extract (file_path, line_number) from the error line
+                    variables = extract_and_print_variables(error_line)
+                    if len(variables) >= 2:
+                        file_path, line_number = variables[:2]  # Take the first two values
+
+                        # Fix missing blank line after declaration
+                        if fix_brace_on_the_next_line(file_path, line_number, 'errors.txt'):
+                            errors_fixed = True  # Set the flag if a line is fixed
+
+def fix_brace_on_the_next_line(file_path, line_number, errors_file_path):
+    # Convert line_number to integer
+    line_number = int(line_number)
+
+    # Read the content of the file
+    with open(file_path, 'r') as file:
+        lines = file.readlines()
+
+    # Check if the specified line is within the file's range
+    if 1 <= line_number <= len(lines):
+        # Find the brace '{' in the line
+        line = lines[line_number - 1]
+        
+        # Replace '{' with '\n{' to move it to the next line
+        lines[line_number - 1] = line.replace('{', '\n{')
+           
+        # Write the modified content back to the file
+        with open(file_path, 'w') as file:
+            file.writelines(lines)
+
+        # Clean 'errors.txt' before extracting new errors
+        clean_errors_file(errors_file_path)
+
+        return True  # Line is fixed, return True
+
+    return False 
+
+        
 def brace_go_next_line(file_path, line_number, error_description):
     specifier = '{'
 
@@ -524,39 +618,8 @@ def fix_brace_on_the_previous_line(file_path, line_number, errors_file_path):
     # Clean 'errors.txt' before extracting new errors
     clean_errors_file(errors_file_path)
 
-    # Update Betty errors in errors.txt
-    exctract_errors(file_path, errors_file_path)
-
     return True  # Line is fixed, return True
 
-
-def brace_should_be_on_the_previous_line(file_path, line_number):
-    specifier = '{'
-    errors_file_path = 'errors.txt'
-    
-    # Convert line_number to integer
-    line_number = int(line_number) - 1
-
-    # Read the file content
-    with open(file_path, 'r') as file:
-        lines = file.readlines()
-        
-    print(lines[line_number])
-    
-    # Delete the line_number line
-    del lines[line_number]
-    
-    print(lines[line_number])
-    
-    # Write the modified content back to the file
-    with open(file_path, 'w') as file:
-        file.writelines(lines)
-    
-    # Clean 'errors.txt' before extracting new errors
-    clean_errors_file(errors_file_path)
-
-    # Update Betty errors in errors.txt
-    exctract_errors(file_path, errors_file_path)
 
 def fix_space_prohibited_before_semicolon(file_path, line_number, specifier):
 

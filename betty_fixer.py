@@ -134,6 +134,10 @@ def fix_betty_style(file_paths):
         remove_blank_lines_inside_comments(file_path)
         fix_should_be_void(errors_file_path)
         More_than_5_functions_in_the_file(errors_file_path)
+        fix_brace_should_be_on_the_next_line(errors_file_path)
+        content = read_file(file_path)
+        content = remove_trailing_whitespaces(content)
+        write_file(file_path, content)
         betty_handler(errors_file_path)
 
 
@@ -286,3 +290,6 @@ if __name__ == "__main__":
     open('errors.txt', 'w').close()
     # Fix Betty style
     fix_betty_style(file_paths)
+    for file in file_paths:
+        run_vi_script(file)
+    
