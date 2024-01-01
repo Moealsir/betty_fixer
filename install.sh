@@ -41,3 +41,12 @@ echo "#############################################################"
 
 # Ensure the user has read the warning
 read -p "Press [Enter] key to continue ..."
+
+# Enhanced outro message
+clear
+echo -e "\n\e[1;35m###########################################################\e[0m"
+echo -e "\e[1;32m       Program Successfully Installed and Ready to Go!\e[0m\n"
+echo -e "                 \e[1;36mCoded by: Moealsir\e[0m"
+echo -e "  Thank you for choosing this Fixer. "
+echo -e "                               \e[1;34mEnjoy your experience!!\e[0m"
+echo -e "\e[1;35m###########################################################\e[0m\n"
