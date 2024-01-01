@@ -1,7 +1,0 @@
-open brace '{' following function declarations go on the next line
-that open brace { should be on the next line
-that open brace { should be on the previous line
-
-adding a line without newline at end of file
-do not use C99 // comments
-no description found for function
