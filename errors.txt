@@ -1,17 +1,4 @@
 
 ========== test.c ==========
-test.c:5: ERROR: trailing whitespace
-test.c:8: ERROR: trailing whitespace
-test.c:13: ERROR: trailing whitespace
-test.c:18: ERROR: trailing whitespace
-test.c:23: ERROR: trailing whitespace
-test.c:28: ERROR: trailing whitespace
-test.c:42: ERROR: trailing whitespace
-test.c:48: ERROR: trailing whitespace
-test.c:53: ERROR: trailing whitespace
-test.c:58: ERROR: trailing whitespace
-test.c:63: ERROR: trailing whitespace
-test.c:68: ERROR: trailing whitespace
-total: 12 errors, 0 warnings, 78 lines checked
-func
+func0
 func1
