@@ -1,3 +1,14 @@
+/**
+ * func0 - a Function that ...
+ * Return: Description of the return value.
+ */
+int func0(void)
+{
+	int a;
+
+	a = 0;
+}
+
 
 /**
  * func1 - a Function that ...
@@ -5,36 +16,22 @@
  */
 int func1(void)
 {
-	do {
-		return (0);
-	} while (a < b);
+	int a;
 
-	return (0);
+	a = 0;
 }
-
-/**
- * func2 - a Function that ...
- * Return: Description of the return value.
- */
-int func2(void)
-{
-	do {
-		return (0); } while (a < b);
-
-	return (0);
-}
-
 /**
  * func3 - a Function that ...
  * Return: Description of the return value.
  */
 int func3(void)
 {
-	do {
-		return (0);
-	} while (a < b);
+	int a;
 
-	return (0);
+	while (a)
+	{
+		a = 5;
+	}
 }
 
 /**
@@ -43,9 +40,13 @@ int func3(void)
  */
 int func4(void)
 {
-	do {
-		return (0); } while (a < b);
 
-	return (0);
+	int a;
+
+	while (a)
+	{
+		a = 5;
+	}
+
 }
 

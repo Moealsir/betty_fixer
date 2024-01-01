@@ -1,30 +1,23 @@
-
-int func1(){
-	do{
-		return (0);
-	} while (a<b);
-
-	return (0);
+int func0() {
+	int a;
+	a = 0;
 }
 
-int func2(){
-	do{
-		return (0); } while (a<b);
-
-	return (0);
+int func1() {
+	int a;
+	a = 0;
+}
+int func3(void) {
+	int a;
+	while (a){
+		a = 5;
+	}
 }
 
-int func3(){
-	do{
-		return (0);
-	} while (a<b);
-
-	return (0);
-}
-
-int func4(){
-	do{
-		return (0); } while (a<b);
-
-	return (0);
+int func4(void) {
+	int a;
+	while (a) {
+		a = 5;
+	}
+	
 }

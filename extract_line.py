@@ -453,8 +453,8 @@ def fix_brace_should_be_on_the_next_line(errors_file_path):
             # Read all lines at once to allow modification of the list while iterating
             error_lines = errors_file.readlines()
 
-            for error_line in error_lines:
-                if 'following function declarations go on the next line' in error_line:
+            for i, error_line in enumerate(error_lines):
+                if 'that open brace { should be on the next line' in error_line:
                     # Extract (file_path, line_number) from the error line
                     variables = extract_and_print_variables(error_line)
                     if len(variables) >= 2:
@@ -463,6 +463,24 @@ def fix_brace_should_be_on_the_next_line(errors_file_path):
                         # Fix missing blank line after declaration
                         if fix_brace_on_the_next_line(file_path, line_number, 'errors.txt'):
                             errors_fixed = True  # Set the flag if a line is fixed
+
+                            # Add a message in the error line
+                            error_lines[i] += " (brace moved to the next line)"
+
+                elif 'following function declarations go on the next line' in error_line:
+                    # Extract (file_path, line_number) from the error line
+                    variables = extract_and_print_variables(error_line)
+                    if len(variables) >= 2:
+                        file_path, line_number = variables[:2]  # Take the first two values
+
+                        # Fix missing blank line after declaration
+                        if fix_brace_on_the_next_line(file_path, line_number, 'errors.txt'):
+                            errors_fixed = True  # Set the flag if a line is fixed
+
+                            # Add a message in the error line
+                            error_lines[i] += " (brace moved to the next line)"
+
+
 
 def fix_brace_on_the_next_line(file_path, line_number, errors_file_path):
     # Convert line_number to integer
