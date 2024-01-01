@@ -62,7 +62,6 @@ def fix_errors_from_file(file_path, line_number, error_description):
         "space required after that close brac",
         "should be \"foo **bar\"",
         "Statements should start on a tabstop",
-        "that open brace { should be on the previous line"
     ]
 
     # Check each error message
@@ -100,9 +99,6 @@ def fix_errors_from_file(file_path, line_number, error_description):
                 fix_should_be_foo_star_star_bar(file_path, line_number, error_description)
             elif i == 15:
                 run_vi_script(file_path)
-            elif i == 16:
-                fix_brace_on_the_previous_line(file_path, line_number)
-                
 
 def fix_should_be_void(errors_file_path):
     errors_fixed = True  # Set to True initially to enter the loop
@@ -536,7 +532,28 @@ def brace_go_next_line(file_path, line_number, error_description):
         with open(file_path, 'w') as file:
             file.writelines(lines)
 
-def fix_brace_on_the_previous_line(file_path, line_number):
+def fix_brace_should_be_on_the_previous_line(errors_file_path):
+    errors_fixed = True  # Set to True initially to enter the loop
+
+    while errors_fixed:
+        errors_fixed = False  # Reset the flag at the beginning of each iteration
+
+        with open(errors_file_path, 'r') as errors_file:
+            # Read all lines at once to allow modification of the list while iterating
+            error_lines = errors_file.readlines()
+
+            for error_line in error_lines:
+                if 'that open brace { should be on the previous line' in error_line:
+                    # Extract (file_path, line_number) from the error line
+                    variables = extract_and_print_variables(error_line)
+                    if len(variables) >= 2:
+                        file_path, line_number = variables[:2]  # Take the first two values
+
+                        # Fix missing blank line after declaration
+                        if fix_brace_on_the_previous_line(file_path, line_number, 'errors.txt'):
+                            errors_fixed = True  # Set the flag if a line is fixed
+
+def fix_brace_on_the_previous_line(file_path, line_number, errors_file_path):
     # Convert line_number to integer
     line_number = int(line_number)
 

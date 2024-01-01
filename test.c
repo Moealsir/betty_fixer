@@ -1,52 +1,78 @@
 /**
- * func0 - a Function that ...
+ * func - a Function that ...
  * Return: Description of the return value.
  */
-int func0(void)
+int func(void)
+
 {
-	int a;
-
-	a = 0;
+	if (1)
+	{
+		func0();
+		return (1);
+	}
+	else if (2)
+	{
+		func0();
+		return (2);
+	}
+	else
+	{
+		func0();
+		return (0);
+	}
+	while (1)
+	{
+		func0();
+		return (1);
+	}
+	for (; 1;)
+	{
+		func0();
+		return (1);
+	}
+	do {
+		func0();
+		return (1);
+	} while (1);
 }
-
-
 /**
  * func1 - a Function that ...
  * Return: Description of the return value.
  */
 int func1(void)
-{
-	int a;
 
-	a = 0;
-}
-/**
- * func3 - a Function that ...
- * Return: Description of the return value.
- */
-int func3(void)
-{
-	int a;
 
-	while (a)
+
+
+{
+	if (1)
 	{
-		a = 5;
+		func1();
+		return (1);
 	}
-}
-
-/**
- * func4 - a Function that ...
- * Return: Description of the return value.
- */
-int func4(void)
-{
-
-	int a;
-
-	while (a)
+	else if (2)
 	{
-		a = 5;
+		func1();
+		return (2);
 	}
-
+	else
+	{
+		func1();
+		return (0);
+	}
+	while (1)
+	{
+		func1();
+		return (1);
+	}
+	for (; 1;)
+	{
+		func1();
+		return (1);
+	}
+	do {
+		func1();
+		return (1);
+	} while (1);
 }
 
