@@ -13,4 +13,18 @@ int func2(){
 
 	return (0);
 }
-s
+
+int func3(){
+	do{
+		return (0);
+	} while (a<b);
+
+	return (0);
+}
+
+int func4(){
+	do{
+		return (0); } while (a<b);
+
+	return (0);
+}

@@ -3,6 +3,11 @@
 test.c:6: ERROR: trailing whitespace
 test.c:19: ERROR: trailing whitespace
 test.c:22: WARNING: Multiple instructions on a single line is forbidden
-total: 2 errors, 1 warnings, 27 lines checked
+test.c:31: ERROR: trailing whitespace
+test.c:44: ERROR: trailing whitespace
+test.c:47: WARNING: Multiple instructions on a single line is forbidden
+total: 4 errors, 2 warnings, 51 lines checked
 func1
 func2
+func3
+func4
