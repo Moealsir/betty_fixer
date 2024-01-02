@@ -1,8 +1,7 @@
 import os
 import sys
-import shutil
 
-def other_handler(file_path)
+def other_handler(file_path):
     create_tasks_directory()
     copy_files_to_tasks(file_path)
     modify_main_files(file_path)

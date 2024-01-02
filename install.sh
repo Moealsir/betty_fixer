@@ -1,5 +1,12 @@
 #!/bin/bash
 
+# Check if the script is run with sudo
+if [ "$EUID" -ne 0 ]; then
+    echo -e "\e[1;31mPlease run with sudo:\n
+    sudo ./install.sh\e[0m"
+    exit 1
+fi
+
 # Clear the terminal
 clear 
 
