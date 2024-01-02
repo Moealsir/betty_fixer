@@ -44,10 +44,6 @@ If you'd like to contribute to Betty Fixer, please follow these steps:
 4. Test your changes thoroughly.
 5. Create a pull request with a clear description of your changes.
 
-## Acknowledgments
-
-- The Betty linter authors and contributors for the Betty coding style guidelines.
-- Open-source community for inspiration and collaboration.
 
 Happy coding!
 
