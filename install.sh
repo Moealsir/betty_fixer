@@ -9,16 +9,14 @@ fi
 
 # Check if betty is installed, if not, install it
 if ! command -v betty &> /dev/null; then
-    # Clone the repo to your local machine
-    git clone https://github.com/alx-tools/Betty.git
     # cd into the Betty directory
-    cd Betty
+    cd .Betty
     # Install the linter with sudo ./install.sh
     (sudo ./install.sh &)
     # Go back to the main dir
     cd ..
     # Run sudo cp betty /bin/
-    sudo cp Betty/betty /bin/
+    sudo cp .betty /bin/
 fi
 
 
