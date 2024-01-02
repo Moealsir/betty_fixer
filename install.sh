@@ -2,10 +2,25 @@
 
 # Check if the script is run with sudo
 if [ "$EUID" -ne 0 ]; then
-    echo -e "\e[1;31mPlease run with sudo:\n
+    echo -e "\e[1;31mPlease run with sudo:
     sudo ./install.sh\e[0m"
     exit 1
 fi
+
+# Check if betty is installed, if not, install it
+if ! command -v betty &> /dev/null; then
+    # Clone the repo to your local machine
+    git clone https://github.com/alx-tools/Betty.git
+    # cd into the Betty directory
+    cd Betty
+    # Install the linter with sudo ./install.sh
+    (sudo ./install.sh &)
+    # Go back to the main dir
+    cd ..
+    # Run sudo cp betty /bin/
+    sudo cp Betty/betty /bin/
+fi
+
 
 # Clear the terminal
 clear 
