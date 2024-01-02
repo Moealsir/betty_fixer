@@ -25,7 +25,7 @@ Before using Betty Fixer, ensure you have the following installed:
 2. Run install script:
 
     ```bash
-    ./install.sh
+    sudo ./install.sh
     ```
 
 3. Run Betty Fixer on your C files:
