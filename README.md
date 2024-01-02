@@ -19,7 +19,7 @@ Before using Betty Fixer, ensure you have the following installed:
 1. Clone the repository:
 
     ```bash
-    git clone https://github.com/Moelsir/betty_fixer.git
+    git clone https://github.com/Moealsir/betty_fixer.git
     cd betty_fixer
     ```
 2. Run install script:
