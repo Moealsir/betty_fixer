@@ -16,7 +16,7 @@ if ! command -v betty &> /dev/null; then
     # Go back to the main dir
     cd ..
     # Run sudo cp betty /bin/
-    sudo cp .betty /bin/
+    sudo cp .betty /bin/betty
 fi
 
 
