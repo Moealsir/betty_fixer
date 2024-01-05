@@ -2,9 +2,9 @@ import re
 import sys
 import os
 import subprocess
-from backup import *
-from errors_extractor import *
-from extract_line import *
+from bettyfixer.backup import *
+from bettyfixer.errors_extractor import *
+from bettyfixer.extract_line import *
 
 
 def read_file(file_path):
@@ -52,11 +52,6 @@ def remove_trailing_whitespaces(content):
     # Remove trailing whitespaces at the end of lines
     return re.sub(r'[ \t]+$', '', content, flags=re.MULTILINE)
 
-def run_vi_script(filename):
-    # Specify the file you want to edit
-    filename = os.path.abspath(filename)
-    # Run the vi command with gg=G using the -c option
-    subprocess.run(['vi', '-c', 'normal! gg=G', '-c', 'wq', filename])
 
 def process_errors(file_path):
     # Process the errors for the specified file
@@ -279,11 +274,9 @@ def modify_main_files(files):
         with open(file_path, 'w') as main_file:
             main_file.write('\n'.join(include_lines + [f'#include "tasks/{os.path.basename(file_path)}"\n']))
 
-
-        
-if __name__ == "__main__":
+def main():
     if len(sys.argv) < 2:
-        print("Usage: python betty_fixer.py file1.c file2.c ...")
+        print("Usage: python -m betty_fixer_package.betty_fixer file1.c file2.c ...")
         sys.exit(1)
 
     file_paths = sys.argv[1:]
@@ -292,4 +285,6 @@ if __name__ == "__main__":
     fix_betty_style(file_paths)
     for file in file_paths:
         run_vi_script(file)
-    
+
+if __name__ == "__main__":
+    main()

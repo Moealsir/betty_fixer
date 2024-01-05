@@ -50,3 +50,13 @@ Happy coding!
 
 
 ### Creaters: [@Moealsir](https://github.com/Moealsir) && [@malazmuzamil98](https://github.com/malazmuzamil98)
+
+## some notes
+1- install :
+$ python3 setup.py sdist bdist_wheel
+$ pip install .
+2- uninstall :
+$ pip list | grep betty 
+$ pip uninstall betty_fixer_package
+$ pip show betty_fixer_package
+$ rm -r betty_fixer.egg-info betty_fixer_package.egg-info/ build dist
