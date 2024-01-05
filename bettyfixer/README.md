@@ -58,3 +58,9 @@ Happy coding!
 ### 2- uninstall :
     $ pip uninstall bettyfixer
     $ rm -r bettyfixer.egg-info build dist
+### 3- publish it on pypi
+#### A- Create a PyPI Account    
+#### B- Upload it to PyPI throw `twine` package
+    $ pip install twine
+    $ python setup.py sdist bdist_wheel
+    $ twine upload dist/*
