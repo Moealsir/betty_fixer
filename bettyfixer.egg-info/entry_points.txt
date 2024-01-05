@@ -1,3 +1,0 @@
-[console_scripts]
-bettyfixer = bettyfixer.betty_fixer:main
-
