@@ -275,35 +275,7 @@ def modify_main_files(files):
         with open(file_path, 'w') as main_file:
             main_file.write('\n'.join(include_lines + [f'#include "tasks/{os.path.basename(file_path)}"\n']))
 
-
-def install_betty():
-    print("Betty not found. Installing...")
-
-    # Assuming the .betty file is in the 'install_dependency' folder
-    betty_source_path = os.path.join(os.path.dirname(__file__), 'install_dependency', '.betty')
-    print("Checking if .betty file exists at:", betty_source_path)
-    print("Does the file exist?", os.path.isfile(betty_source_path))
-    subprocess.run(['cp', betty_source_path, '/bin/betty'], check=True)
-
-
-def is_betty_installed():
-    try:
-        # Use shutil.which to find the location of the 'betty' executable
-        betty_executable = shutil.which('betty')
-        if betty_executable is None:
-            install_betty()
-            #betty_executable = shutil.which('betty')  # Try finding it again after installation
-
-        #subprocess.run([betty_executable, '--version'], stdout=subprocess.PIPE, stderr=subprocess.PIPE, check=True)
-        return True
-    except subprocess.CalledProcessError:
-        return False
-
-
-
 def main():
-    if not is_betty_installed():
-        install_betty()
 
     if len(sys.argv) < 2:
         print("Usage: python -m betty_fixer_package.betty_fixer file1.c file2.c ...")
