@@ -50,21 +50,3 @@ Happy coding!
 
 
 ### Creaters: [@Moealsir](https://github.com/Moealsir) && [@malazmuzamil98](https://github.com/malazmuzamil98)
-
-## some notes
-### 1- install :
-    $ python3 setup.py sdist bdist_wheel
-    $ pip install .
-### 2- uninstall :
-    $ pip uninstall bettyfixer
-    $ rm -r bettyfixer.egg-info build dist
-### 3- publish it on pypi
-#### A- Create a PyPI Account
-#### B- Create a project token
-    account settings -> API token 
-#### C- Upload it to PyPI throw `twine` package
-    $ pip install twine
-    $ python3 setup.py sdist bdist_wheel
-    $ twine upload dist/* # use the username of the token and the token as the password
-
-
