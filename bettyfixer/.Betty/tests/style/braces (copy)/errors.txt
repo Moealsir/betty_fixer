@@ -1,0 +1,11 @@
+
+========== braces0.c ==========
+braces0.c:5: ERROR: trailing whitespace
+braces0.c:8: ERROR: trailing whitespace
+braces0.c:13: ERROR: trailing whitespace
+braces0.c:18: ERROR: trailing whitespace
+braces0.c:23: ERROR: trailing whitespace
+braces0.c:28: ERROR: trailing whitespace
+braces0.c:34: ERROR: that open brace { should be on the previous line
+total: 7 errors, 0 warnings, 39 lines checked
+func0
