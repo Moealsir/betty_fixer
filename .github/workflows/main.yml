@@ -29,8 +29,3 @@ jobs:
         sudo apt-get install -y python3-pip
         pip install bettyfixer
 
-    - name: Run test script
-      run: |
-        # Include your specific testing commands here
-        # For example, you might want to run a script that imports bettystyle and performs tests
-        python your_test_script.py
