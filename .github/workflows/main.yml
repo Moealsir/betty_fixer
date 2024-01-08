@@ -27,4 +27,12 @@ jobs:
         sudo apt-get update
         sudo apt-get install -y python3-pip
         pip install bettyfixer
-
+    - name: Create test files
+      run: |
+        echo -e "#include<stdio.h>\n\nint main(void) {\n  return 0;\n}" > test.c
+    - name: test the script
+      run: |
+        bettyfixer test.c
+        cat test.c
+       
+      
