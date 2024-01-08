@@ -1,7 +1,14 @@
 import re
 import sys
-from errors_extractor import exctract_errors
-from betty_fixer import run_vi_script
+from bettyfixer.errors_extractor import exctract_errors
+import os
+import subprocess
+
+def run_vi_script(filename):
+    # Specify the file you want to edit
+    filename = os.path.abspath(filename)
+    # Run the vi command with gg=G using the -c option
+    subprocess.run(['vi', '-c', 'normal! gg=G', '-c', 'wq', filename])
 
 def remove_extra_spaces(input_text):
     lines = input_text.split('\n')
