@@ -38,11 +38,13 @@ jobs:
     - name: Create test files and test the package
       run: |
         echo -e "#include<stdio.h>\n\nint main(void) {\n  return 0;\n}" > test.c
-        cat test.c
+        cp test.c temp_test.c
+        bettyfixer temp_test.c
         bettyfixer test.c
     - name: display the ouput
       run: |
         cat test.c
+        cat temp_test.c
     - name : Uninstall package and created files
       run: |
         pip uninstall -y bettyfixer
