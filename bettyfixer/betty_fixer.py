@@ -5,6 +5,7 @@ import subprocess
 from bettyfixer.backup import *
 from bettyfixer.errors_extractor import *
 from bettyfixer.extract_line import *
+from bettyfixer.autoprototype import *
 
 
 def read_file(file_path):
@@ -281,12 +282,22 @@ def main():
         print("Usage: python -m betty_fixer_package.betty_fixer file1.c file2.c ...")
         sys.exit(1)
 
-    file_paths = sys.argv[1:]
-    open('errors.txt', 'w').close()
-    # Fix Betty style
-    fix_betty_style(file_paths)
-    for file in file_paths:
-        run_vi_script(file)
+    if "-H" in sys.argv and len(sys.argv) > 2:
+        v = betty_check()
+        if (v == False):
+            print_check_betty_first()
+        else:
+            header = sys.argv[sys.argv.index("-H") + 1]
+            autoproto(".", header)
+    elif "-H" in sys.argv and len(sys.argv) <= 2:
+        print_header_name_missing()
+    else:
+        file_paths = sys.argv[1:]
+        open('errors.txt', 'w').close()
+        # Fix Betty style
+        fix_betty_style(file_paths)
+        for file in file_paths:
+            run_vi_script(file)
 
 if __name__ == "__main__":
     main()
