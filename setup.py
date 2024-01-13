@@ -1,5 +1,6 @@
 from setuptools import setup, find_packages
 from setuptools.command.install import install
+from pathlib import Path
 import subprocess
 import shutil
 
