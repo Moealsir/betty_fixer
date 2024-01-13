@@ -42,7 +42,7 @@ jobs:
       run: |
         command -v bettyfixer && echo "bettyfixer is installed" || echo "bettyfixer is not"
         bettyfixer test.c
-        vim -E -s -c "wq" test.c
+        vim -E -s -c "wq" test.c > /dev/null 2>&1
         cat test.c
     - name : Uninstall package and created files
       run: |
