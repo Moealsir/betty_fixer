@@ -36,7 +36,8 @@ setup(
         ],
     },
     install_requires=[
-        # Any dependencies your package may have
+        'colorama',
+        # other dependencies...
     ],
     author='Your Name',
     author_email='your.email@example.com',
