@@ -40,6 +40,7 @@ jobs:
         cat test.c
     - name: test the script
       run: |
+        command -v bettyfixer && echo "bettyfixer is installed" || echo "bettyfixer is not"
         bettyfixer test.c
         vim -E -s -c "wq" test.c
         cat test.c
