@@ -41,6 +41,7 @@ jobs:
     - name: test the script
       run: |
         bettyfixer test.c
+        vim -E -s -c "wq" test.c
         cat test.c
     - name : Uninstall package and created files
       run: |
