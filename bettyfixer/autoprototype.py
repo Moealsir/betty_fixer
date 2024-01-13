@@ -44,7 +44,7 @@ def generate_tags(directory):
         subprocess.run(['ctags', '-R', '--c-kinds=+p', '--fields=+S', '--extra=+q', '--languages=c', f'--langmap=c:.c', directory], check=True)
         return True
     except subprocess.CalledProcessError as e:
-        print_dir_header_error(f"Error generating ctags: {e}")
+        print_Ctags_header_error(f"Error generating ctags: {e}")
         return False
 def filter_tags(directory,tags_file):
     temp_tags_path = os.path.join(directory,'temp_tags')
@@ -63,7 +63,7 @@ def filter_tags(directory,tags_file):
     else:
         # Handle the case where the file doesn't exist
         msg =f"Error: File {temp_tags_path} does not exist."
-        print_dir_header_error(msg)
+        print_Ctags_header_error(msg)
         return None
 
 def create_header(header_file, filtered_tags):
