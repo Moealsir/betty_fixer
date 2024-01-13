@@ -6,6 +6,7 @@ Betty Fixer is a tool designed to automatically fix coding style issues in C fil
 
 - **Betty Style Fixes**: Automatically corrects coding style issues following the Betty style guidelines.
 - **Vi Script Execution**: Runs a Vi script for each fixed file, making it convenient for developers to review and further modify the code.
+- **Create header.h**: You can now create header file by specifing header file name after flag -H .
 
 ## Prerequisites
 
@@ -27,6 +28,13 @@ Before using Betty Fixer, ensure you have the following installed:
     ```bash
     bettyfixer file1.c file2.c ...
     ```
+
+3. To create header file run:
+
+    ```bash
+    bettyfixer -H <header_name>.h ...
+    ```
+
 
 ## Contributing
 
