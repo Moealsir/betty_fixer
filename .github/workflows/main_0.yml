@@ -34,3 +34,15 @@ jobs:
     - name: Test Betty installed or not
       run: |
         command -v betty && echo "betty is installed" || echo "betty is not"
+    - name: Create test files
+      run: |
+        echo -e "#include<stdio.h>\n\nint main(void) {\n  return 0;\n}" > test.c
+    - name: test the script
+      run: |
+        bettyfixer test.c
+        cat test.c
+    - name : Uninstall package and created files
+      run: |
+        pip uninstall bettyfixer
+        rm -r bettyfixer.egg-info build dist
+      
