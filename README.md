@@ -19,19 +19,13 @@ Before using Betty Fixer, ensure you have the following installed:
 1. Clone the repository:
 
     ```bash
-    git clone https://github.com/Moealsir/betty_fixer.git
-    cd betty_fixer
-    ```
-2. Run install script:
-
-    ```bash
-    sudo ./install.sh
+    pip install bettyfixer
     ```
 
-3. Run Betty Fixer on your C files:
+2. Run Betty Fixer on your C files:
 
     ```bash
-    fix file1.c file2.c ...
+    bettyfixer file1.c file2.c ...
     ```
 
 ## Contributing
