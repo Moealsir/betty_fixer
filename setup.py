@@ -39,9 +39,9 @@ setup(
         'colorama',
         # other dependencies...
     ],
-    author='Your Name',
-    author_email='your.email@example.com',
+    author='Moealsir',
+    author_email='mohamedwdalsir@gmail.com',
     description='A description of your package',
-    url='https://github.com/yourusername/betty-fixer',  # Replace with your GitHub repository URL
+    url='https://github.com/Mowalsir/betty_fixer',  # Replace with your GitHub repository URL
     license='MIT',  # Replace with your desired license
 )
