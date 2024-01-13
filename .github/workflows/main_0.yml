@@ -1,0 +1,52 @@
+name: Test local Installation
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  test_installation:
+    strategy:
+      matrix:
+        os: [ubuntu-20.04]
+
+    runs-on: ${{ matrix.os }}
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
+
+    - name: Set up Python
+      uses: actions/setup-python@v2
+      with:
+        python-version: 3.8
+
+    - name: Install dependencies
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y python3-pip
+    - name: Install the local bettyfixer
+      run: |
+        python3 -m pip install --upgrade pip wheel
+        python3 setup.py sdist bdist_wheel
+        pip install .     
+    - name: Test Betty and bettyfixer installed or not
+      run: |
+        command -v betty && echo "betty is installed" || echo "betty is not"
+        command -v bettyfixer && echo "bettyfixer is installed" || echo "bettyfixer is not"
+    - name: Create test files and test the package
+      run: |
+        echo -e "#include<stdio.h>\n\nint main(void) {\n  return 0;\n}" > test.c
+        cp test.c temp_test.c
+        bettyfixer temp_test.c
+        bettyfixer test.c
+    - name: display the ouput
+      run: |
+        cat test.c
+        cat temp_test.c
+    - name : Uninstall package and created files
+      run: |
+        pip uninstall -y bettyfixer
+        rm -r bettyfixer.egg-info build dist
+      

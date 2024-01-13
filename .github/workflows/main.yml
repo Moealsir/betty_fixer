@@ -21,16 +21,21 @@ jobs:
       uses: actions/setup-python@v2
       with:
         python-version: 3.8
-        use-mirror: true
 
     - name: Install dependencies
       run: |
         sudo apt-get update
         sudo apt-get install -y python3-pip
-        pip install bettyfixer
-
-    - name: Run test script
+        sudo pip install bettyfixer
+    - name: Test Betty installed or not
       run: |
-        # Include your specific testing commands here
-        # For example, you might want to run a script that imports bettystyle and performs tests
-        python your_test_script.py
+        command -v betty && echo "betty is installed" || echo "betty is not"
+    # - name: Create test files
+    #   run: |
+    #     echo -e "#include<stdio.h>\n\nint main(void) {\n  return 0;\n}" > test.c
+    # - name: test the script
+    #   run: |
+    #     bettyfixer test.c
+    #     cat test.c
+       
+      
