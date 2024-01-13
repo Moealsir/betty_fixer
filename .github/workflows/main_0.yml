@@ -31,18 +31,17 @@ jobs:
         python3 -m pip install --upgrade pip wheel
         python3 setup.py sdist bdist_wheel
         pip install .     
-    - name: Test Betty installed or not
+    - name: Test Betty and bettyfixer installed or not
       run: |
         command -v betty && echo "betty is installed" || echo "betty is not"
-    - name: Create test files
+        command -v bettyfixer && echo "bettyfixer is installed" || echo "bettyfixer is not"
+    - name: Create test files and test the package
       run: |
         echo -e "#include<stdio.h>\n\nint main(void) {\n  return 0;\n}" > test.c
         cat test.c
-    - name: test the script
-      run: |
-        command -v bettyfixer && echo "bettyfixer is installed" || echo "bettyfixer is not"
         bettyfixer test.c
-        vim -E -s -c "wq" test.c > /dev/null 2>&1
+    - name: display the ouput
+      run: |
         cat test.c
     - name : Uninstall package and created files
       run: |
