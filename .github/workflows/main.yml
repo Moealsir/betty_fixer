@@ -29,7 +29,7 @@ jobs:
         sudo pip install bettyfixer
     - name: Test Betty installed or not
       run: |
-        command -v betty && echo "betty is installed" || echo "betty is not
+        command -v betty && echo "betty is installed" || echo "betty is not"
     # - name: Create test files
     #   run: |
     #     echo -e "#include<stdio.h>\n\nint main(void) {\n  return 0;\n}" > test.c
