@@ -37,12 +37,13 @@ jobs:
     - name: Create test files
       run: |
         echo -e "#include<stdio.h>\n\nint main(void) {\n  return 0;\n}" > test.c
+        cat test.c
     - name: test the script
       run: |
         bettyfixer test.c
         cat test.c
     - name : Uninstall package and created files
       run: |
-        pip uninstall bettyfixer
+        pip uninstall -y bettyfixer
         rm -r bettyfixer.egg-info build dist
       
