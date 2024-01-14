@@ -1,12 +1,12 @@
 import re
 import sys
 import os
-import subprocess
 from bettyfixer.backup import *
 from bettyfixer.errors_extractor import *
 from bettyfixer.extract_line import *
 from bettyfixer.autoprototype import *
 
+HIDDEN_FILE_NAME = ".processed_files"
 
 def read_file(file_path):
     with open(file_path, 'r') as file:
@@ -276,7 +276,23 @@ def modify_main_files(files):
         with open(file_path, 'w') as main_file:
             main_file.write('\n'.join(include_lines + [f'#include "tasks/{os.path.basename(file_path)}"\n']))
 
+
+def record_processed_file(filename):
+    with open(HIDDEN_FILE_NAME, 'a') as hidden_file:
+        hidden_file.write(filename + '\n')
+
+def is_file_processed(filename):
+    if not os.path.exists(HIDDEN_FILE_NAME):
+        return False
+
+    with open(HIDDEN_FILE_NAME, 'r') as hidden_file:
+        processed_files = hidden_file.read().splitlines()
+        return filename in processed_files
+
 def main():
+    if is_file_processed(".processed_files"):
+        print("The files have already been processed. Skipping.")
+        sys.exit(1)
 
     if len(sys.argv) < 2:
         print("Usage: python -m betty_fixer_package.betty_fixer file1.c file2.c ...")
@@ -293,11 +309,22 @@ def main():
         print_header_name_missing()
     else:
         file_paths = sys.argv[1:]
+
+        # Check if any file has been processed before
+        if any(is_file_processed(file) for file in file_paths):
+            print("One or more files have already been processed. Skipping.")
+            sys.exit(1)
+
         open('errors.txt', 'w').close()
         # Fix Betty style
         fix_betty_style(file_paths)
         for file in file_paths:
             run_vi_script(file)
+            # Record processed file after completion
+            record_processed_file(file)
+
+        # Delete errors.txt file
+        os.remove('errors.txt')
 
 if __name__ == "__main__":
     main()
