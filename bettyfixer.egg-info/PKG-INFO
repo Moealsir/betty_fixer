@@ -1,0 +1,10 @@
+Metadata-Version: 2.1
+Name: bettyfixer
+Version: 1.3.1
+Summary: Betty Fixer is a tool designed to automatically fix coding style issues in C files based on the Betty coding style guidelines. It performs corrections to ensure that the code complies with the Betty style, making it more readable and consistent.
+Home-page: https://github.com/Moealsir/betty_fixer
+Author: Moealsir
+Author-email: mohamedwdalsir@gmail.com
+License: MIT
+License-File: AUTHORS
+Requires-Dist: colorama
