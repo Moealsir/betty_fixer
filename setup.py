@@ -27,7 +27,7 @@ class CustomInstallCommand(install):
 
 setup(
     name='bettyfixer',
-    version='1.3.1',
+    version='1.3.2',
     packages=find_packages(),
     cmdclass={'install': CustomInstallCommand},  # Use the custom install command
     entry_points={
