@@ -27,7 +27,7 @@ class CustomInstallCommand(install):
 
 setup(
     name='bettyfixer',
-    version='1.3.9',
+    version='1.4.2',
     packages=find_packages(),
     cmdclass={'install': CustomInstallCommand},  # Use the custom install command
     entry_points={
@@ -46,6 +46,6 @@ setup(
     url='https://github.com/Moealsir/betty_fixer',  # Replace with your GitHub repository URL
     license='MIT',  # Replace with your desired license
 
-    long_description="Betty Fixer is a tool designed to automatically fix coding style issues in C files based on the Betty coding style guidelines. It performs corrections to ensure that the code complies with the Betty style, making it more readable and consistent.",
+    long_description=(Path(__file__).parent / "README.md").read_text(),
     long_description_content_type="text/markdown"
 )
