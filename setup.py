@@ -42,7 +42,7 @@ import subprocess
  
 setup(
     name='bettyfixer',
-    version='1.4.5',
+    version='1.4.5.2',
     packages=find_packages(),
     scripts=['install.sh'],
     # cmdclass={'install': CustomInstallCommand},  # Use the custom install command
