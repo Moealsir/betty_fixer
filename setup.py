@@ -4,6 +4,10 @@ from pathlib import Path
 import subprocess
 import shutil
 
+from setuptools.command.install import install
+import shutil
+import subprocess
+
 class CustomInstallCommand(install):
     def run(self):
         install.run(self)
@@ -13,21 +17,31 @@ class CustomInstallCommand(install):
             print("Betty not found. Installing...")
             self.install_betty()
 
+        # Check if black is installed, if not install it
+        black_executable = shutil.which('black')
+        if black_executable is None:
+            print("Black not found. Installing...")
+            self.install_black()
+
+        # Check if exuberant-ctags is installed, if not install it
+        ctags_executable = shutil.which('ctags')
+        if ctags_executable is None:
+            print("Exuberant-ctags not found. Installing...")
+            self.install_ctags()
+
     def install_betty(self):
-        # Get the directory where this setup.py is located
-        current_directory = Path(__file__).resolve().parent
+        subprocess.run(["sh", "bettyfixer/install_dependency/.Betty/install.sh"])
+        subprocess.run(["sudo", "cp", "bettyfixer/install_dependency/.betty", "/bin/betty"])
 
-        # Add the commands to install Betty
-        betty_install_script = current_directory / 'bettyfixer' / 'install_dependency' / '.Betty' / 'install.sh'
-        betty_dest = Path('/usr/local/bin/betty')  # Adjust the destination if needed
+    def install_black(self):
+        subprocess.run(["sudo", "pip", "install", "black"])
 
-        subprocess.run(['bash', str(betty_install_script)])
-        shutil.copy(str(current_directory / 'bettyfixer' / 'install_dependency' / '.betty'), str(betty_dest))
-        betty_dest.chmod(0o755)  # Make sure the copied file is executable
+    def install_ctags(self):
+        subprocess.run(["sudo", "apt-get", "install", "exuberant-ctags"])
 
 setup(
     name='bettyfixer',
-    version='1.4.2',
+    version='1.4.5',
     packages=find_packages(),
     cmdclass={'install': CustomInstallCommand},  # Use the custom install command
     entry_points={
