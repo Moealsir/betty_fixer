@@ -40,15 +40,18 @@ Before using Betty Fixer, ensure you have the following installed:
 
 If you'd like to contribute to Betty Fixer, please follow these steps:
 
-1. Fork the repository.
-2. Create a new branch for your feature or bug fix.
-3. Make your changes and ensure the code style follows the project conventions.
-4. Test your changes thoroughly.
-5. Create a pull request with a clear description of your changes.
+1. Go to the github repository.
+2. Fork the repository.
+3. Create a new branch for your feature or bug fix.
+4. Make your changes and ensure the code style follows the project conventions.
+5. Test your changes thoroughly.
+6. Create a pull request with a clear description of your changes.
 
 
 Happy coding!
 
 
 
-### Creaters: [@Moealsir](https://github.com/Moealsir) && [@malazmuzamil98](https://github.com/malazmuzamil98)
+### Creaters: - 
+[@Moealsir](https://github.com/Moealsir) <br>
+[@malazmuzamil98](https://github.com/malazmuzamil98)
