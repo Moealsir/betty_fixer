@@ -38,7 +38,7 @@ class CustomInstallCommand(install):
 
     def install_ctags(self):
         subprocess.run(["sudo", "apt-get", "install", "exuberant-ctags"])
-
+ 
 setup(
     name='bettyfixer',
     version='1.4.5',
@@ -51,7 +51,7 @@ setup(
         ],
     },
     install_requires=[
-        'colorama',
+        'colorama', 'black',
         # other dependencies...
     ],
     author='Moealsir',
