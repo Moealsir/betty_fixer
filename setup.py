@@ -2,50 +2,60 @@ from setuptools import setup, find_packages
 from setuptools.command.install import install
 from pathlib import Path
 import subprocess
+import time
 import shutil
 
-from setuptools.command.install import install
-import shutil
-import subprocess
+class CustomInstallCommand(install):
+    def run(self):
+        install.run(self)
 
-# class CustomInstallCommand(install):
-#     def run(self):
-#         install.run(self)
-#         # Check if Betty is installed
-#         betty_executable = shutil.which('betty')
-#         if betty_executable is None:
-#             print("Betty not found. Installing...")
-#             self.install_betty()
+        # Check if Betty is installed
+        betty_executable = shutil.which('betty')
+        if betty_executable is None:
+            print("Betty not found. Installing...")
+            self.install_betty()
 
-#         # Check if black is installed, if not install it
-#         black_executable = shutil.which('black')
-#         if black_executable is None:
-#             print("Black not found. Installing...")
-#             self.install_black()
+        # Check if exuberant-ctags is installed, if not install it
+        ctags_executable = shutil.which('ctags')
+        if ctags_executable is None:
+            print("Exuberant-ctags not found. Installing...")
+            self.install_ctags()
 
-#         # Check if exuberant-ctags is installed, if not install it
-#         ctags_executable = shutil.which('ctags')
-#         if ctags_executable is None:
-#             print("Exuberant-ctags not found. Installing...")
-#             self.install_ctags()
+    def install_betty(self):
+        try:
+            # Clone Betty repository
+            subprocess.run(["git", "clone", "https://github.com/alx-tools/Betty.git"])
 
-#     def install_betty(self):
-#         subprocess.run(["sh", "bettyfixer/install_dependency/.Betty/install.sh"])
-#         subprocess.run([
-#             "sudo", "cp", "bettyfixer/install_dependency/.betty", "/bin/betty"])
+            # Wait until cloning finishes
+            cloned_directory = Path("Betty")
+            while not cloned_directory.exists():
+                time.sleep(1)  # Adjust the sleep interval as needed
+            
+            # Run Betty install script
+            subprocess.run(["sudo", "./Betty/install.sh"])
 
-#     def install_black(self):
-#         subprocess.run(["sudo", "pip", "install", "black"])
+            # Download and copy .betty file
+            subprocess.run(["wget", "https://github.com/Moealsir/betty_fixer/raw/main/bettyfixer/install_dependency/.betty"])
+            subprocess.run(["sudo", "cp", ".betty", "/bin/betty"])
 
-#     def install_ctags(self):
-#         subprocess.run(["sudo", "apt-get", "install", "exuberant-ctags"])
+            # Clean up
+            subprocess.run(["rm", "-rf", "Betty", ".betty"])
+        except Exception as e:
+            print(f"Error installing Betty: {e}")
+
+    def install_ctags(self):
+        try:
+            # Install exuberant-ctags
+            subprocess.run(["sudo", "apt-get", "install", "exuberant-ctags"])
+        except Exception as e:
+            print(f"Error installing exuberant-ctags: {e}")
+
  
 setup(
     name='bettyfixer',
-    version='1.4.5.2',
+    version='1.4.5.3',
     packages=find_packages(),
-    scripts=['install.sh'],
-    # cmdclass={'install': CustomInstallCommand},  # Use the custom install command
+    cmdclass={'install': CustomInstallCommand},  # Use the custom install command
     entry_points={
         'console_scripts': [
             'bettyfixer = bettyfixer.betty_fixer:main',
