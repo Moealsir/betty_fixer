@@ -1,0 +1,3 @@
+[console_scripts]
+bettyfixer = bettyfixer.betty_fixer:main
+show-changelog = show_changelog:main
