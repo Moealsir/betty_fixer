@@ -1,7 +1,16 @@
+"""
+Error Extractor module to extract errors from files using Betty style checker.
+"""
 import subprocess
 import sys
 
 def exctract_errors(file_path, output_file):
+    """
+    Extract errors from a file using Betty style checker and append them to common errors.txt file.
+    Args:
+        file_path (str): The path of the file to extract errors from.
+        output_file (str): The path of the common errors.txt file to append the errors to.
+    """
     try:
         # Run Betty on the specified file
         result = subprocess.run(['betty', file_path], capture_output=True, text=True, check=True)
@@ -10,13 +19,13 @@ def exctract_errors(file_path, output_file):
         output = result.stdout
 
         # Append the output to the common errors.txt file
-        with open(output_file, 'a') as errors_file_path:
+        with open(output_file, 'a', encoding='utf-8') as errors_file_path:
             errors_file_path.write(output)
     except subprocess.CalledProcessError as e:
         # Handle the case when Betty returns a non-zero exit code
         pass
         # Append the error output to the common errors.txt file
-        with open(output_file, 'a') as errors_file_path:
+        with open(output_file, 'a', encoding='utf-8') as errors_file_path:
             errors_file_path.write(e.stdout)
             errors_file_path.write(e.stderr)
 
@@ -30,7 +39,7 @@ if __name__ == "__main__":
     errors_file_path = 'errors.txt'
 
     # Clear the content of the errors.txt file before appending new errors
-    open(errors_file_path, 'w').close()
+    open(errors_file_path, 'w', encoding='utf-8').close()
 
     # Iterate over each file provided as a command-line argument
     for file_path in sys.argv[1:]:
