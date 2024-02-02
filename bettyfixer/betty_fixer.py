@@ -9,14 +9,17 @@ from bettyfixer.autoprototype import *
 
 HIDDEN_FILE_NAME = ".processed_files"
 
+
 def read_file(file_path):
     with open(file_path, 'r') as file:
         content = file.read()
     return content
 
+
 def write_file(file_path, content):
     with open(file_path, 'w') as file:
         file.write(content)
+
 
 def add_line_without_newline(file_path, line):
     # Add a line without a newline at the end of the file if not found
@@ -27,10 +30,12 @@ def add_line_without_newline(file_path, line):
     if not last_line.strip() == line.strip():
         with open(file_path, 'a') as file:
             file.write(line)
-            
+
+
 def remove_consecutive_blank_lines(content):
     # Remove multiple consecutive blank lines
     return re.sub('\n{3,}', '\n\n', content)
+
 
 def add_parentheses_around_return(content):
     # Add parentheses around return values if not already present
@@ -46,9 +51,11 @@ def add_parentheses_around_return(content):
 
     return content
 
+
 def fix_comments(content):
     # Remove single-line comments (//) found alone in a line or after a code line
     return re.sub(r'([^;])\s*//.*|^\s*//.*', r'\1', content, flags=re.MULTILINE)
+
 
 def remove_trailing_whitespaces(content):
     # Remove trailing whitespaces at the end of lines
@@ -60,6 +67,7 @@ def process_errors(file_path):
     errors_file_path = 'errors.txt'
     process_error_file(errors_file_path)
 
+
 def fix_betty_warnings(content, file_path):
     # Run Betty and append errors to the common errors.txt file
     content = remove_consecutive_blank_lines(content)
@@ -70,6 +78,7 @@ def fix_betty_warnings(content, file_path):
 
     # Return the file path for further processing
     return file_path
+
 
 def remove_blank_lines_inside_comments(file_path):
     clean_errors_file('errors.txt')
@@ -92,6 +101,8 @@ def remove_blank_lines_inside_comments(file_path):
                     with open(file_path, 'w') as file:
                         file.writelines(lines)
                     return
+
+
 def fix_betty_style(file_paths):
     for file_path in file_paths:
         create_backup(file_path)
@@ -110,12 +121,13 @@ def fix_betty_style(file_paths):
 
         # Extract functions with no description from 'errors.txt'
         errors_file_path = 'errors.txt'
-        functions_with_no_description = extract_functions_with_no_description(errors_file_path)
+        functions_with_no_description = extract_functions_with_no_description(
+            errors_file_path)
 
         # Iterate through each line in path_file and remove extra spaces
         with open(file_path, 'r') as file:
             lines = file.readlines()
-        
+
         cleaned_lines = [remove_extra_spaces(line) for line in lines]
 
         # Write the cleaned lines back to the file
@@ -136,7 +148,6 @@ def fix_betty_style(file_paths):
         content = remove_trailing_whitespaces(content)
         write_file(file_path, content)
         betty_handler(errors_file_path)
-
 
 
 def More_than_5_functions_in_the_file(errors_file_path):
@@ -176,7 +187,8 @@ def More_than_5_functions_in_the_file(errors_file_path):
 
                             if counter == 6:
                                 # Create a new file with the content from the specified line to the end of the file
-                                copy_remaining_lines(lines, block_start_line, new_file_path)
+                                copy_remaining_lines(
+                                    lines, block_start_line, new_file_path)
                                 # Remove the content from the main file
                                 del lines[block_start_line:]
                                 # Write the modified content back to the main file
@@ -185,11 +197,13 @@ def More_than_5_functions_in_the_file(errors_file_path):
                                 # Clean 'errors.txt' before extracting new errors
                                 open(errors_file_path, 'w').close()
                                 # Update Betty errors in errors.txt
-                                exctract_errors(new_file_path, errors_file_path)
+                                exctract_errors(
+                                    new_file_path, errors_file_path)
                                 errors_fixed = True  # Set the flag if a line is fixed
                                 break
 
                             line_number += 1
+
 
 def find_available_file_name(original_file_path):
     base_name, extension = os.path.splitext(original_file_path)
@@ -202,11 +216,12 @@ def find_available_file_name(original_file_path):
             return new_file_path
         counter += 1
 
+
 def copy_remaining_lines(lines, start_line, new_file_path):
     # Create a new file with the content from the specified line to the end of the file
     with open(new_file_path, 'w') as new_file:
         new_file.write(''.join(lines[start_line:]))
-        
+
 
 def betty_handler(errors_file_path):
     with open(errors_file_path, 'r') as errors_file:
@@ -226,6 +241,7 @@ def betty_handler(errors_file_path):
                         file_path = variables[0]
                         other_handlers(file_path)
 
+
 def other_handlers(file_path):
     errors_file_path = 'errors.txt'
     # Your logic code
@@ -241,10 +257,12 @@ def other_handlers(file_path):
     # Update Betty errors in errors.txt
     exctract_errors(file_path, errors_file_path)
 
+
 def create_tasks_directory():
     # Create tasks directory if not found
     if not os.path.exists("tasks"):
         os.makedirs("tasks")
+
 
 def copy_files_to_tasks(files):
     # Copy files to tasks directory
@@ -256,7 +274,8 @@ def copy_files_to_tasks(files):
                 content = source_file.readlines()
 
             # Exclude lines starting with #include and ending with '.h"'
-            filtered_content = [line for line in content if not line.strip().startswith("#include") or not line.strip().endswith('.h"')]
+            filtered_content = [line for line in content if not line.strip(
+            ).startswith("#include") or not line.strip().endswith('.h"')]
 
             # Write the modified content to the destination file
             with open(destination_path, 'w') as destination_file:
@@ -271,16 +290,19 @@ def modify_main_files(files):
             content = main_file.readlines()
 
         # Keep only lines with #include that end with '.h"'
-        include_lines = [line.strip() for line in content if line.strip().startswith("#include") and line.strip().endswith('.h"')]
+        include_lines = [line.strip() for line in content if line.strip(
+        ).startswith("#include") and line.strip().endswith('.h"')]
 
         # Write the modified content to the main file, adding an empty line at the end
         with open(file_path, 'w') as main_file:
-            main_file.write('\n'.join(include_lines + [f'#include "tasks/{os.path.basename(file_path)}"\n']))
+            main_file.write('\n'.join(
+                include_lines + [f'#include "tasks/{os.path.basename(file_path)}"\n']))
 
 
 def record_processed_file(filename):
     with open(HIDDEN_FILE_NAME, 'a') as hidden_file:
         hidden_file.write(filename + '\n')
+
 
 def is_file_processed(filename):
     if not os.path.exists(HIDDEN_FILE_NAME):
@@ -289,6 +311,7 @@ def is_file_processed(filename):
     with open(HIDDEN_FILE_NAME, 'r') as hidden_file:
         processed_files = hidden_file.read().splitlines()
         return filename in processed_files
+
 
 def main():
     if is_file_processed(".processed_files"):
@@ -326,6 +349,7 @@ def main():
 
         # Delete errors.txt file
         os.remove('errors.txt')
+
 
 if __name__ == "__main__":
     main()
