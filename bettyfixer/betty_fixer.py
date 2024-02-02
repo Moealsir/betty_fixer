@@ -1,3 +1,4 @@
+"""Betty Fixer main module."""
 import re
 import sys
 import os
