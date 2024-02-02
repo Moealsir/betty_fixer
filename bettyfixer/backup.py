@@ -3,6 +3,7 @@ This module provides a function to create a backup copy of a file.
 """
 import shutil
 
+
 def create_backup(file_path):
     """
     Create a backup copy of the original file.
