@@ -4,6 +4,7 @@ Error Extractor module to extract errors from files using Betty style checker.
 import subprocess
 import sys
 
+
 def exctract_errors(file_path, output_file):
     """
     Extract errors from a file using Betty style checker and append them to common errors.txt file.
@@ -13,7 +14,8 @@ def exctract_errors(file_path, output_file):
     """
     try:
         # Run Betty on the specified file
-        result = subprocess.run(['betty', file_path], capture_output=True, text=True, check=True)
+        result = subprocess.run(['betty', file_path],
+                                capture_output=True, text=True, check=True)
 
         # Extract the output, including errors and warnings
         output = result.stdout
@@ -28,6 +30,7 @@ def exctract_errors(file_path, output_file):
         with open(output_file, 'a', encoding='utf-8') as errors_file_path:
             errors_file_path.write(e.stdout)
             errors_file_path.write(e.stderr)
+
 
 if __name__ == "__main__":
     # Check if at least one file path is provided as a command-line argument
