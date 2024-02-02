@@ -8,6 +8,7 @@ copies the specified files to the tasks directory, and modifies the main files.
 import os
 import sys
 
+
 def other_handler(file_path):
     """
     This function creates a tasks directory if one doesn't exist,
@@ -17,6 +18,7 @@ def other_handler(file_path):
     copy_files_to_tasks(file_path)
     modify_main_files(file_path)
 
+
 def create_tasks_directory():
     """
     Create a tasks directory if one doesn't exist.
@@ -24,6 +26,7 @@ def create_tasks_directory():
     # Create tasks directory if not found
     if not os.path.exists("tasks"):
         os.makedirs("tasks")
+
 
 def copy_files_to_tasks(files):
     """
@@ -39,11 +42,13 @@ def copy_files_to_tasks(files):
                 content = source_file.readlines()
 
             # Exclude lines starting with #include and ending with '.h"'
-            filtered_content = [line for line in content if not line.strip().startswith("#include") or not line.strip().endswith('.h"')]
+            filtered_content = [line for line in content if not line.strip(
+            ).startswith("#include") or not line.strip().endswith('.h"')]
 
             # Write the modified content to the destination file
             with open(destination_path, 'w', encoding='utf-8') as destination_file:
                 destination_file.write(''.join(filtered_content))
+
 
 def modify_main_files(files):
     """
@@ -59,11 +64,14 @@ def modify_main_files(files):
             content = main_file.readlines()
 
         # Keep only lines with #include that end with '.h"'
-        include_lines = [line.strip() for line in content if line.strip().startswith("#include") and line.strip().endswith('.h"')]
+        include_lines = [line.strip() for line in content if line.strip(
+        ).startswith("#include") and line.strip().endswith('.h"')]
 
         # Write the modified content to the main file, adding an empty line at the end
         with open(file_path, 'w', encoding='utf-8') as main_file:
-            main_file.write('\n'.join(include_lines + [f'#include "tasks/{os.path.basename(file_path)}"\n']))
+            main_file.write('\n'.join(
+                include_lines + [f'#include "tasks/{os.path.basename(file_path)}"\n']))
+
 
 if __name__ == "__main__":
     # Check if the correct number of arguments is provided
