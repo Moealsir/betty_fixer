@@ -463,7 +463,7 @@ def generate_documentation(lines, function_start_line, function_name):
             arguments = []
         else:
             while ')' not in args_text and '\n' not in lines[function_start_line]:
-            # Iterate through the remaining lines until a closing parenthesis or a new line is encountered
+                # Iterate through the remaining lines until a closing parenthesis or a new line is encountered
                 function_start_line += 1
                 args_text += lines[function_start_line].strip()
 
