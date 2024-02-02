@@ -56,7 +56,7 @@ If you'd like to contribute to Betty Fixer, please follow these steps:
 
 
 
-### Creaters: - 
+### Creators: - 
 [@Moealsir](https://github.com/Moealsir) <br>
 [@Malazmuzamil98](https://github.com/malazmuzamil98)<br>
 [@AhedEisa](https://github.com/be-great)
