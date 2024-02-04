@@ -44,13 +44,13 @@ def remove_extra_spaces(input_text):
     return cleaned_text
 
 
-def process_error_file(errors_file_path):
+def process_error_file(error_file_path):
     """
     Process the errors from the errors.txt file.
     Args:
-        errors_file_path (str): The path of the errors.txt file.
+        error_file_path (str): The path of the errors.txt file.
     """
-    with open(errors_file_path, 'r', encoding='utf-8') as errors_file:
+    with open(error_file_path, 'r', encoding='utf-8') as errors_file:
         for error_line in errors_file:
             variables = extract_and_print_variables(error_line)
             if variables:
@@ -180,42 +180,42 @@ def fix_errors_from_file(file_path, line_number, error_description):
                 run_vi_script(file_path)
 
 
-def fix_should_be_void(errors_file_path):
+def fix_should_be_void(error_file_path):
     """
     Fix errors in the specified file.
     Args:
-        errors_file_path (str): The path of the file to fix errors in.
+        error_file_path (str): The path of the file to fix errors in.
     """
     errors_fixed = True  # Set to True initially to enter the loop
 
     while errors_fixed:
         errors_fixed = False  # Resets flag at the beginning of each iteration
 
-        with open(errors_file_path, 'r', encoding='utf-8') as errors_file:
+        with open(error_file_path, 'r', encoding='utf-8') as errors_file:
             # Read all lines at once to allow modification
             # of the list while iterating
             error_lines = errors_file.readlines()
 
-            for error_line in error_lines:
-                if 'should probably be' in error_line and '(void)' in error_line:
-                    # Extract (file_path, line_number) from the error line
-                    variables = extract_and_print_variables(error_line)
+            for err_line in error_lines:
+                if 'should probably be' in err_line and '(void)' in err_line:
+                    # Extract (file_path, line_number) from the err line
+                    variables = extract_and_print_variables(err_line)
                     if len(variables) >= 2:
                         # Take the first two values
-                        file_path, line_number = variables[:2]
+                        file_path, line_num = variables[:2]
 
                         # Fix missing blank line after declaration
-                        if should_be_void(file_path, line_number, 'errors.txt'):
-                            errors_fixed = True  # Set the flag if a line is fixed
+                        if should_be_void(file_path, line_num, 'errors.txt'):
+                            errors_fixed = True  # Set flag if line is fixed
 
 
-def should_be_void(file_path, line_number, errors_file_path):
+def should_be_void(file_path, line_number, error_file_path):
     """
     Fix the specified line in the file.
     Args:
         file_path (str): The path of the file to fix the specified line in.
         line_number (str): The line number to fix.
-        errors_file_path (str): The path of the errors.txt file.
+        error_file_path (str): The path of the errors.txt file.
     Returns:
         bool: True if the line is fixed, False otherwise.
     """
@@ -237,10 +237,10 @@ def should_be_void(file_path, line_number, errors_file_path):
         file.writelines(lines)
 
     # Clean 'errors.txt' before extracting new errors
-    clean_errors_file(errors_file_path)
+    clean_errors_file(error_file_path)
 
     # Update Betty errors in errors.txt
-    exctract_errors(file_path, errors_file_path)
+    exctract_errors(file_path, error_file_path)
 
     return True  # Line is fixed, return True
 
@@ -270,10 +270,11 @@ def fix_missing_blank_line_after_declarations(errors_file_path):
     errors_fixed = True  # Set to True initially to enter the loop
 
     while errors_fixed:
-        errors_fixed = False  # Reset the flag at the beginning of each iteration
+        errors_fixed = False  # Reset flag at the beginning of each iteration
 
         with open(errors_file_path, 'r', encoding='utf-8') as errors_file:
-            # Read all lines at once to allow modification of the list while iterating
+            # Read all lines at once to allow
+            # modification of the list while iterating
             error_lines = errors_file.readlines()
 
             for error_line in error_lines:
@@ -282,16 +283,16 @@ def fix_missing_blank_line_after_declarations(errors_file_path):
                     variables = extract_and_print_variables(error_line)
                     if len(variables) >= 2:
                         # Take the first two values
-                        file_path, line_number = variables[:2]
+                        file_path, line_num = variables[:2]
 
                         # Fix missing blank line after declaration
-                        if fix_missing_blank_line_after_declaration(file_path, line_number, 'errors.txt'):
+                        if fix_missing_line_after_declaration(file_path, line_num, 'errors.txt'):
                             errors_fixed = True  # Set the flag if a line is fixed
 
 
-def fix_missing_blank_line_after_declaration(file_path, line_number, errors_file_path):
+def fix_missing_line_after_declaration(file_path, line_number, errors_file_path):
     """
-    Fix the specified line in the file.
+    Fix missing blank line after the specified line in the file.
     Args:
         file_path (str): The path of the file to fix the specified line in.
         line_number (str): The line number to fix.
