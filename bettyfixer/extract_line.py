@@ -384,30 +384,30 @@ def remove_unused_attribute(file_name, function_name):
 
         for i, line in enumerate(lines):
             if re.search(pattern, line):
-                fn_start_line = i
+                fn_st_line = i  # function start line
                 # Save the original line
-                function_declarations[function_name] = lines[fn_start_line]
+                function_declarations[function_name] = lines[fn_st_line]
                 break
         else:
             pass
         # took a copy from the original function declaration
-        original_declaration = lines[fn_start_line]  # ❗ Unused variable
+        original_declaration = lines[fn_st_line]  # ❗ Unused variable
 
         # Extract and remove __attribute__((unused))
         match = re.search(
-            r'(__attribute__\s*\(\s*\(\s*unused\s*\)\s*\))', lines[fn_start_line])
+         r'(__attribute__\s*\(\s*\(\s*unused\s*\)\s*\))', lines[fn_st_line])
         unused_attribute = match.group(1) if match else None
-        lines[fn_start_line] = re.sub(
-            r'__attribute__\s*\(\s*\(\s*unused\s*\)\s*\)', '', lines[fn_start_line])
+        lines[fn_st_line] = re.sub(
+         r'__attribute__\s*\(\s*\(\s*unused\s*\)\s*\)', '', lines[fn_st_line])
 
         # Call the existing function to generate documentation
-        generate_documentation(lines, fn_start_line, function_name)
+        generate_documentation(lines, fn_st_line, function_name)
 
         # Restore __attribute__((unused))
         if unused_attribute:
-            lines[fn_start_line] = lines[fn_start_line].\
-                replace(lines[fn_start_line].strip(
-                ), lines[fn_start_line].strip() + ' ' + unused_attribute).strip()
+            lines[fn_st_line] = lines[fn_st_line].\
+                replace(lines[fn_st_line].strip(
+                ), lines[fn_st_line].strip() + ' ' + unused_attribute).strip()
 
         # Write back to the file
         with open(file_name, 'w', encoding='utf-8') as file:
@@ -439,7 +439,7 @@ def fix_lines_in_file(file_name, function_declarations):
                         # Replace the line with the desired format
                         lines[i] = f' */\n{original_line}'
 
-                        # Check if the next line is a blank line; if so, delete it
+                        # Check if the next line is a blank; if so, delete it
                         if i + 1 < len(lines) and lines[i + 1] == '\n':
                             del lines[i + 1]
                         break
@@ -451,16 +451,16 @@ def fix_lines_in_file(file_name, function_declarations):
         print(f"Error: {e}")
 
 
-def generate_documentation(lines, function_start_line, function_name):
+def generate_documentation(lines, fn_start_ln, function_name):
     """
     Generate documentation for the specified function in the file.
     Args:
         lines (list): A list of lines in the file.
-        function_start_line (int): The line number where the function starts.
-        function_name (str): The name of the function to generate documentation for.
+        fn_start_ln (int): The line number where the function starts.
+        function_name (str): The name of the function to generate documentation
     """
     # Extract function arguments
-    args_match = re.search(r'\(([^)]*)\)', lines[function_start_line])
+    args_match = re.search(r'\(([^)]*)\)', lines[fn_start_ln])
     if args_match:
         # Extract arguments from the updated text
         args_text = args_match.group(1).strip()
@@ -469,11 +469,11 @@ def generate_documentation(lines, function_start_line, function_name):
         if args_text.lower() == 'void':
             arguments = []
         else:
-            while ')' not in args_text and '\n' not in lines[function_start_line]:
+            while ')' not in args_text and '\n' not in lines[fn_start_ln]:
                 # Iterate through the remaining lines until a closing parenthesis
                 #  or a new line is encountered
-                function_start_line += 1
-                args_text += lines[function_start_line].strip()
+                fn_start_ln += 1
+                args_text += lines[fn_start_ln].strip()
 
             # Continue searching for closing parenthesis in the line
                 # and take the word before it as the second argument
@@ -501,7 +501,7 @@ def generate_documentation(lines, function_start_line, function_name):
         documentation.append(' */\n')  # Add a new line after closing '/'
 
         # Insert documentation into the file
-        lines.insert(function_start_line, '\n'.join(documentation))
+        lines.insert(fn_start_ln, '\n'.join(documentation))
 
 
 def extract_functions_with_no_description(file_path):
