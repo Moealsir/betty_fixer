@@ -384,30 +384,30 @@ def remove_unused_attribute(file_name, function_name):
 
         for i, line in enumerate(lines):
             if re.search(pattern, line):
-                function_start_line = i
+                fn_start_line = i
                 # Save the original line
-                function_declarations[function_name] = lines[function_start_line]
+                function_declarations[function_name] = lines[fn_start_line]
                 break
         else:
             pass
         # took a copy from the original function declaration
-        original_declaration = lines[function_start_line]  # ❗ Unused variable
+        original_declaration = lines[fn_start_line]  # ❗ Unused variable
 
         # Extract and remove __attribute__((unused))
         match = re.search(
-            r'(__attribute__\s*\(\s*\(\s*unused\s*\)\s*\))', lines[function_start_line])
+            r'(__attribute__\s*\(\s*\(\s*unused\s*\)\s*\))', lines[fn_start_line])
         unused_attribute = match.group(1) if match else None
-        lines[function_start_line] = re.sub(
-            r'__attribute__\s*\(\s*\(\s*unused\s*\)\s*\)', '', lines[function_start_line])
+        lines[fn_start_line] = re.sub(
+            r'__attribute__\s*\(\s*\(\s*unused\s*\)\s*\)', '', lines[fn_start_line])
 
         # Call the existing function to generate documentation
-        generate_documentation(lines, function_start_line, function_name)
+        generate_documentation(lines, fn_start_line, function_name)
 
         # Restore __attribute__((unused))
         if unused_attribute:
-            lines[function_start_line] = lines[function_start_line].\
-                replace(lines[function_start_line].strip(
-                ), lines[function_start_line].strip() + ' ' + unused_attribute).strip()
+            lines[fn_start_line] = lines[fn_start_line].\
+                replace(lines[fn_start_line].strip(
+                ), lines[fn_start_line].strip() + ' ' + unused_attribute).strip()
 
         # Write back to the file
         with open(file_name, 'w', encoding='utf-8') as file:
