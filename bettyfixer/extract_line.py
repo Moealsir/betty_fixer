@@ -517,9 +517,10 @@ def extract_functions_with_no_description(file_path):
     file_path = 'errors.txt'
     with open(file_path, 'r', encoding='utf-8') as errors_file:
         for line in errors_file:
-            # Check if the error description contains 'no description found for function'
+            # Check if the error description contains msg
             if 'no description found for function' in line:
-                # Split the line by space and get the word after 'no description found for function'
+                # Split the line by space and get the word after
+                # 'no description found for function'
                 words = line.split()
                 # Adjust index based on the specific position of the function name
                 index = words.index('no') + 5
