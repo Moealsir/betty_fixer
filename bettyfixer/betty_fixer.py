@@ -2,10 +2,27 @@
 import re
 import sys
 import os
-from bettyfixer.backup import *
-from bettyfixer.errors_extractor import *
-from bettyfixer.extract_line import *
-from bettyfixer.autoprototype import *
+from bettyfixer.backup import create_backup
+from bettyfixer.errors_extractor import exctract_errors
+from bettyfixer.extract_line import (
+    process_error_file,
+    clean_errors_file,
+    run_vi_script,
+    extract_functions_with_no_description,
+    remove_extra_spaces,
+    remove_unused_attribute,
+    fix_missing_blank_line_after_declarations,
+    fix_should_be_void,
+    fix_brace_should_be_on_the_next_line,
+    fix_brace_should_be_on_the_previous_line,
+    extract_and_print_variables
+)
+from bettyfixer.autoprototype import (
+    betty_check,
+    print_check_betty_first,
+    print_header_name_missing,
+    autoproto
+)
 
 HIDDEN_FILE_NAME = ".processed_files"
 
@@ -211,7 +228,7 @@ def fix_betty_style(file_paths):
         fix_missing_blank_line_after_declarations(errors_file_path)
         remove_blank_lines_inside_comments(file_path)
         fix_should_be_void(errors_file_path)
-        More_than_5_functions_in_the_file(errors_file_path)
+        more_than_5_functions_in_the_file(errors_file_path)
         fix_brace_should_be_on_the_next_line(errors_file_path)
         fix_brace_should_be_on_the_previous_line(errors_file_path)
         content = read_file(file_path)
@@ -220,7 +237,7 @@ def fix_betty_style(file_paths):
         betty_handler(errors_file_path)
 
 
-def More_than_5_functions_in_the_file(errors_file_path):
+def more_than_5_functions_in_the_file(errors_file_path):
     """
     Fix the error 'More than 5 functions in the file' in the specified file.
     Args:
@@ -285,7 +302,8 @@ def find_available_file_name(original_file_path):
     """
     Find the next available file name based on the specified file path.
     Args:
-        original_file_path (str): The path of the original file to find the next available file name for.
+        original_file_path (str): 
+            The path of the original file to find the next available file name for.
     Returns:
         str: The next available file name based on the original file path.
     """
