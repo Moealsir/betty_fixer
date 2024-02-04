@@ -132,16 +132,16 @@ def fix_errors_from_file(file_path, line_number, error_description):
     for i, message in enumerate(error_messages):
         if message in error_description:
             if i == 0:
-                fix_space_prohibited_between_func_name_and_open_parenthesis(
+                fix_space_between_func_name_open_parenthesis(
                     file_path, line_number, error_description)
             elif i == 1:
-                fix_space_prohibited_after_that_open_parenthesis(
+                fix_space_after_that_open_parenthesis(
                     file_path, line_number, error_description)
             elif i == 2:
-                fix_space_prohibited_before_that_close_parenthesis(
+                fix_space_before_that_close_parenthesis(
                     file_path, line_number, error_description)
             elif i == 3:
-                fix_space_required_before_the_open_parenthesis(
+                fix_space_required_before_open_parenthesis(
                     file_path, line_number, error_description)
             elif i == 4:
                 fix_space_prohibited_before_semicolon(
@@ -395,10 +395,10 @@ def remove_unused_attribute(file_name, function_name):
 
         # Extract and remove __attribute__((unused))
         match = re.search(
-         r'(__attribute__\s*\(\s*\(\s*unused\s*\)\s*\))', lines[fn_st_line])
+            r'(__attribute__\s*\(\s*\(\s*unused\s*\)\s*\))', lines[fn_st_line])
         unused_attribute = match.group(1) if match else None
         lines[fn_st_line] = re.sub(
-         r'__attribute__\s*\(\s*\(\s*unused\s*\)\s*\)', '', lines[fn_st_line])
+            r'__attribute__\s*\(\s*\(\s*unused\s*\)\s*\)', '', lines[fn_st_line])
 
         # Call the existing function to generate documentation
         generate_documentation(lines, fn_st_line, function_name)
@@ -522,7 +522,7 @@ def extract_functions_with_no_description(file_path):
                 # Split the line by space and get the word after
                 # 'no description found for function'
                 words = line.split()
-                # Adjust index based on the specific position of the function name
+                # Adjust idx based on specific position of the function name
                 index = words.index('no') + 5
                 function_name = words[index]
 
@@ -532,121 +532,122 @@ def extract_functions_with_no_description(file_path):
     return functions
 
 
-def fix_space_prohibited_between_func_name_and_open_parenthesis(file_path, line_number, error_description):
+def fix_space_between_func_name_open_parenthesis(file_path, ln_num, err_desc):
     """
-    Fix space prohibited between function name and open parenthesis in the specified file.
+    Fix space prohibited between function name and
+        open parenthesis in the specified file.
     Args:
         file_path (str): The path of the file to fix the specified line in.
-        line_number (str): The line number to fix.
-        error_description (str): The description of the error.
+        ln_num (str): The line number to fix.
+        err_desc (str): The description of the error.
     """
-    # Extract specifier from error_description
-    specifier_index = error_description.find("'") + 1
-    specifier = error_description[specifier_index:-1]
+    # Extract specifier from err_desc
+    specifier_index = err_desc.find("'") + 1
+    specifier = err_desc[specifier_index:-1]
 
     # Read the file content
     with open(file_path, 'r', encoding='utf-8') as file:
         lines = file.readlines()
 
     # Find the line with the error
-    error_line = lines[int(line_number) - 1]
+    error_line = lines[int(ln_num) - 1]
 
     # Find the specifier in the line and fix it
     fixed_line = error_line.replace(f' {specifier}', specifier)
 
     # Replace the line in the file
-    lines[int(line_number) - 1] = fixed_line
+    lines[int(ln_num) - 1] = fixed_line
 
     # Write the modified content back to the file
     with open(file_path, 'w', encoding='utf-8') as file:
         file.writelines(lines)
 
 
-def fix_space_prohibited_after_that_open_parenthesis(file_path, line_number, error_description):
+def fix_space_after_that_open_parenthesis(file_path, ln_num, err_desc):
     """
-    Fix the specified line in the file.
+    Fix space prohibited after that open parenthesis in the specified file.
     Args:
         file_path (str): The path of the file to fix the specified line in.
-        line_number (str): The line number to fix.
-        error_description (str): The description of the error.
+        ln_num (str): The line number to fix.
+        err_desc (str): The description of the error.
 
     """
-    # Extract specifier from error_description
-    specifier_index = error_description.find("'") + 1
-    specifier = error_description[specifier_index:-1]
+    # Extract specifier from err_desc
+    specifier_index = err_desc.find("'") + 1
+    specifier = err_desc[specifier_index:-1]
 
     # Read the file content
     with open(file_path, 'r', encoding='utf-8') as file:
         lines = file.readlines()
 
     # Find the line with the error
-    error_line = lines[int(line_number) - 1]
+    error_line = lines[int(ln_num) - 1]
 
     # Find the specifier in the line and fix it
     fixed_line = error_line.replace(f'{specifier} ', specifier)
 
     # Replace the line in the file
-    lines[int(line_number) - 1] = fixed_line
+    lines[int(ln_num) - 1] = fixed_line
 
     # Write the modified content back to the file
     with open(file_path, 'w', encoding='utf-8') as file:
         file.writelines(lines)
 
 
-def fix_space_prohibited_before_that_close_parenthesis(file_path, line_number, error_description):
+def fix_space_before_that_close_parenthesis(file_path, ln_num, err_desc):
     """
-    Fix the specified line in the file.
+    Fix space prohibited before that close parenthesis in the specified file.
     Args:
         file_path (str): The path of the file to fix the specified line in.
-        line_number (str): The line number to fix.
-        error_description (str): The description of the error.
+        ln_num (str): The line number to fix.
+        err_desc (str): The description of the error.
     """
-    # Extract specifier from error_description
-    specifier_index = error_description.find("'") + 1
-    specifier = error_description[specifier_index:-1]
+    # Extract specifier from err_desc
+    specifier_index = err_desc.find("'") + 1
+    specifier = err_desc[specifier_index:-1]
 
     # Read the file content
     with open(file_path, 'r', encoding='utf-8') as file:
         lines = file.readlines()
 
     # Find the line with the error
-    error_line = lines[int(line_number) - 1]
+    error_line = lines[int(ln_num) - 1]
     error_line = clean_up_line(error_line)
     # Find the specifier in the line and fix it
     fixed_line = error_line.replace(f' {specifier}', specifier)
 
     # Replace the line in the file
-    lines[int(line_number) - 1] = fixed_line
+    lines[int(ln_num) - 1] = fixed_line
 
     # Write the modified content back to the file
     with open(file_path, 'w', encoding='utf-8') as file:
         file.writelines(lines)
 
 
-def fix_space_required_before_the_open_parenthesis(file_path, line_number, error_description):
+def fix_space_required_before_open_parenthesis(file_path, ln_num, err_desc):
     """
-    Fix the specified line in the file.
+    Fix space required before the open parenthesis in the specified file.
     Args:
         file_path (str): The path of the file to fix the specified line in.
-        line_number (str): The line number to fix.
-        error_description (str): The description of the error.
+        ln_num (str): The line number to fix.
+        err_desc (str): The description of the error.
     """
-    # Extract specifier from error_description
-    specifier_index = error_description.find("'") + 1
-    specifier = error_description[specifier_index:-1]
+    # Extract specifier from err_desc
+    specifier_index = err_desc.find("'") + 1
+    specifier = err_desc[specifier_index:-1]
 
     # Read the file content
     with open(file_path, 'r', encoding='utf-8') as file:
         lines = file.readlines()
 
     # Find the line with the error
-    error_line = lines[int(line_number) - 1]
+    error_line = lines[int(ln_num) - 1]
     error_line = clean_up_line(error_line)
     # Find the specifier in the line and fix it
     fixed_line = error_line.replace(specifier, f' {specifier}')
 
     # Replace the line in the file
-    lines[int(line_number) - 1] = fixed_line
+    lines[int(ln_num) - 1] = fixed_line
 
     # Write the modified content back to the file
     with open(file_path, 'w', encoding='utf-8') as file:
@@ -662,66 +663,66 @@ def fix_brace_should_be_on_the_next_line(errors_file_path):
     errors_fixed = True  # Set to True initially to enter the loop
 
     while errors_fixed:
-        errors_fixed = False  # Reset the flag at the beginning of each iteration
+        errors_fixed = False  # Reset flag at the beginning of each iteration
 
         with open(errors_file_path, 'r', encoding='utf-8') as errors_file:
-            # Read all lines at once to allow modification of the list while iterating
+            # Read all lines at once to allow modification list while iterating
             error_lines = errors_file.readlines()
 
-            for i, error_line in enumerate(error_lines):
-                if 'that open brace { should be on the next line' in error_line:
+            for i, err_line in enumerate(error_lines):
+                if 'that open brace { should be on the next line' in err_line:
                     # Extract (file_path, line_number) from the error line
-                    variables = extract_and_print_variables(error_line)
+                    variables = extract_and_print_variables(err_line)
                     if len(variables) >= 2:
                         # Take the first two values
-                        file_path, line_number = variables[:2]
+                        f_path, ln_num = variables[:2]
 
                         # Fix missing blank line after declaration
-                        if fix_brace_on_the_next_line(file_path, line_number, 'errors.txt'):
+                        if fix_brace_on_next_line(f_path, ln_num, 'errors.txt'):
                             errors_fixed = True  # Set the flag if a line is fixed
 
                             # Add a message in the error line
                             error_lines[i] += " (brace moved to the next line)"
 
-                elif 'following function declarations go on the next line' in error_line:
-                    # Extract (file_path, line_number) from the error line
-                    variables = extract_and_print_variables(error_line)
+                elif 'following function declarations go on the next line' in err_line:
+                    # Extract (f_path, ln_num) from the error line
+                    variables = extract_and_print_variables(err_line)
                     if len(variables) >= 2:
                         # Take the first two values
-                        file_path, line_number = variables[:2]
+                        f_path, ln_num = variables[:2]
 
                         # Fix missing blank line after declaration
-                        if fix_brace_on_the_next_line(file_path, line_number, 'errors.txt'):
+                        if fix_brace_on_next_line(f_path, ln_num, 'errors.txt'):
                             errors_fixed = True  # Set the flag if a line is fixed
 
                             # Add a message in the error line
                             error_lines[i] += " (brace moved to the next line)"
 
 
-def fix_brace_on_the_next_line(file_path, line_number, errors_file_path):
+def fix_brace_on_next_line(file_path, ln_num, errors_file_path):
     """
     Fix the specified line in the file.
     Args:
         file_path (str): The path of the file to fix the specified line in.
-        line_number (str): The line number to fix.
+        ln_num (str): The line number to fix.
         errors_file_path (str): The path of the errors.txt file.
     Returns:
         bool: True if the line is fixed, False otherwise.
     """
-    # Convert line_number to integer
-    line_number = int(line_number)
+    # Convert ln_num to integer
+    ln_num = int(ln_num)
 
     # Read the content of the file
     with open(file_path, 'r', encoding='utf-8') as file:
         lines = file.readlines()
 
     # Check if the specified line is within the file's range
-    if 1 <= line_number <= len(lines):
+    if 1 <= ln_num <= len(lines):
         # Find the brace '{' in the line
-        line = lines[line_number - 1]
+        line = lines[ln_num - 1]
 
         # Replace '{' with '\n{' to move it to the next line
-        lines[line_number - 1] = line.replace('{', '\n{')
+        lines[ln_num - 1] = line.replace('{', '\n{')
 
         # Write the modified content back to the file
         with open(file_path, 'w', encoding='utf-8') as file:
