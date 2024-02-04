@@ -64,7 +64,8 @@ def extract_and_print_variables(error_line):
     Args:
         error_line (str): The error line to extract variables from.
     Returns:
-        tuple: A tuple containing the file path, line number, and error description.
+        tuple: A tuple containing the file path, line number,
+        and error description.
     """
 
     # Split the error line to extract variables
@@ -72,7 +73,8 @@ def extract_and_print_variables(error_line):
     if len(parts) >= 3:
         # Extracting file path and line number
         file_path, line_number, *error_parts = parts
-        # Join all parts except the file path and line number to get the error description
+        # Join all parts except the file path and line number
+        # to get the error description
         error_description = ":".join(error_parts[1:]).strip()
 
         # Further processing if needed
@@ -130,7 +132,7 @@ def fix_errors_from_file(file_path, line_number, error_description):
     for i, message in enumerate(error_messages):
         if message in error_description:
             if i == 0:
-                fix_space_prohibited_between_function_name_and_open_parenthesis(
+                fix_space_prohibited_between_func_name_and_open_parenthesis(
                     file_path, line_number, error_description)
             elif i == 1:
                 fix_space_prohibited_after_that_open_parenthesis(
@@ -187,10 +189,11 @@ def fix_should_be_void(errors_file_path):
     errors_fixed = True  # Set to True initially to enter the loop
 
     while errors_fixed:
-        errors_fixed = False  # Reset the flag at the beginning of each iteration
+        errors_fixed = False  # Resets flag at the beginning of each iteration
 
         with open(errors_file_path, 'r', encoding='utf-8') as errors_file:
-            # Read all lines at once to allow modification of the list while iterating
+            # Read all lines at once to allow modification
+            # of the list while iterating
             error_lines = errors_file.readlines()
 
             for error_line in error_lines:
@@ -340,13 +343,13 @@ def fix_should_be_foo_star_star_bar(file_path, line_number, error_description):
     error_line = lines[int(line_number) - 1]
 
     # Check conditions and fix the line accordingly
-    if f'foo** bar' in error_description:
+    if 'foo** bar' in error_description:
         fixed_line = error_line.replace(f'{specifier} ', f' {specifier}')
-    elif f'foo ** bar' in error_description:
+    elif 'foo ** bar' in error_description:
         fixed_line = error_line.replace(f'{specifier} ', f'{specifier}')
-    elif f'foo**bar' in error_description:
+    elif 'foo**bar' in error_description:
         fixed_line = error_line.replace(f'{specifier}', f' {specifier}')
-    elif f'foo* *bar' in error_description:
+    elif 'foo* *bar' in error_description:
         fixed_line = error_line.replace('* *', f' {specifier}')
     else:
         # If none of the conditions match, return without making changes
@@ -520,7 +523,7 @@ def extract_functions_with_no_description(file_path):
     return functions
 
 
-def fix_space_prohibited_between_function_name_and_open_parenthesis(file_path, line_number, error_description):
+def fix_space_prohibited_between_func_name_and_open_parenthesis(file_path, line_number, error_description):
     """
     Fix the specified line in the file.
     Args:
