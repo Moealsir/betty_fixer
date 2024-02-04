@@ -405,8 +405,9 @@ def remove_unused_attribute(file_name, function_name):
 
         # Restore __attribute__((unused))
         if unused_attribute:
-            lines[function_start_line] = lines[function_start_line].replace(lines[function_start_line].strip(
-            ), lines[function_start_line].strip() + ' ' + unused_attribute).strip()
+            lines[function_start_line] = lines[function_start_line].\
+                replace(lines[function_start_line].strip(
+                ), lines[function_start_line].strip() + ' ' + unused_attribute).strip()
 
         # Write back to the file
         with open(file_name, 'w', encoding='utf-8') as file:
@@ -474,7 +475,8 @@ def generate_documentation(lines, function_start_line, function_name):
                 function_start_line += 1
                 args_text += lines[function_start_line].strip()
 
-            # Continue searching for closing parenthesis in the line and take the word before it as the second argument
+            # Continue searching for closing parenthesis in the line
+                # and take the word before it as the second argument
             closing_parenthesis_pos = args_text.find(')')
             if closing_parenthesis_pos != -1:
                 args_text = args_text[:closing_parenthesis_pos].strip()
@@ -489,7 +491,8 @@ def generate_documentation(lines, function_start_line, function_name):
         documentation.append(f' * {function_name} - a Function that ...')
         if arguments:
             for arg in arguments:
-                # Correctly identify the second argument as the word before the last closing parenthesis
+                # Correctly identify the second argument as
+                # the word before the last closing parenthesis
                 if arg == arguments[-1]:
                     documentation.append(f' * @{arg}: Description of {arg}.')
                 else:
@@ -515,7 +518,7 @@ def extract_functions_with_no_description(file_path):
         for line in errors_file:
             # Check if the error description contains 'no description found for function'
             if 'no description found for function' in line:
-                # Split the line by spaces and get the word after 'no description found for function'
+                # Split the line by space and get the word after 'no description found for function'
                 words = line.split()
                 # Adjust index based on the specific position of the function name
                 index = words.index('no') + 5
@@ -529,7 +532,7 @@ def extract_functions_with_no_description(file_path):
 
 def fix_space_prohibited_between_func_name_and_open_parenthesis(file_path, line_number, error_description):
     """
-    Fix the specified line in the file.
+    Fix space prohibited between function name and open parenthesis in the specified file.
     Args:
         file_path (str): The path of the file to fix the specified line in.
         line_number (str): The line number to fix.
@@ -540,7 +543,7 @@ def fix_space_prohibited_between_func_name_and_open_parenthesis(file_path, line_
     specifier = error_description[specifier_index:-1]
 
     # Read the file content
-    with open(file_path, 'r') as file:
+    with open(file_path, 'r', encoding='utf-8') as file:
         lines = file.readlines()
 
     # Find the line with the error
@@ -553,7 +556,7 @@ def fix_space_prohibited_between_func_name_and_open_parenthesis(file_path, line_
     lines[int(line_number) - 1] = fixed_line
 
     # Write the modified content back to the file
-    with open(file_path, 'w') as file:
+    with open(file_path, 'w', encoding='utf-8') as file:
         file.writelines(lines)
 
 
@@ -1268,7 +1271,7 @@ def fix_space_required_after_the_close_brace(file_path, line_number, error_descr
     """
     # Extract specifier from error_description
     specifier_index = error_description.find("'") + 1
-    specifier = error_description[specifier_index:-1] 
+    specifier = error_description[specifier_index:-1]
 
     # Read the file content
     with open(file_path, 'r', encoding='utf-8') as file:
@@ -1278,7 +1281,8 @@ def fix_space_required_after_the_close_brace(file_path, line_number, error_descr
     error_line = lines[int(line_number) - 1]
     error_line = clean_up_line(error_line)
     # Find the specifier in the line and fix it
-    fixed_line = error_line.replace(specifier, f'{specifier} ') # ❗ Unused variable
+    fixed_line = error_line.replace(
+        specifier, f'{specifier} ')  # ❗ Unused variable
 
     # Replace the line in the file
     with open(file_path, 'w', encoding='utf-8') as file:
