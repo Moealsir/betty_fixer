@@ -283,16 +283,16 @@ def fix_missing_blank_line_after_declarations(errors_file_path):
                     variables = extract_and_print_variables(error_line)
                     if len(variables) >= 2:
                         # Take the first two values
-                        file_path, line_num = variables[:2]
+                        fpath, line_num = variables[:2]
 
                         # Fix missing blank line after declaration
-                        if fix_missing_line_after_declaration(file_path, line_num, 'errors.txt'):
-                            errors_fixed = True  # Set the flag if a line is fixed
+                        if fix_ln_after_declare(fpath, line_num, 'errors.txt'):
+                            errors_fixed = True  # Setflag if line is fixed
 
 
-def fix_missing_line_after_declaration(file_path, line_number, errors_file_path):
+def fix_ln_after_declare(file_path, line_number, errors_file_path):
     """
-    Fix missing blank line after the specified line in the file.
+    Fix missing blank line after declaration.
     Args:
         file_path (str): The path of the file to fix the specified line in.
         line_number (str): The line number to fix.
@@ -368,8 +368,10 @@ def remove_unused_attribute(file_name, function_name):
     """
     Remove __attribute__((unused)) from the specified function in the file.
     Args:
-        file_name (str): The path of the file to remove __attribute__((unused)) from.
-        function_name (str): The name of the function to remove __attribute__((unused)) from.
+        file_name (str): The path of the file to remove
+            __attribute__((unused)) from.
+        function_name (str): The name of the function to remove
+            __attribute__((unused)) from.
     """
     try:
         with open(file_name, 'r', encoding='utf-8') as file:
@@ -378,7 +380,7 @@ def remove_unused_attribute(file_name, function_name):
         # Search for the function
         pattern = r'\b' + re.escape(function_name) + r'\b[^(]*\([^)]*\)'
 
-        function_declarations = {}  # Dictionary to store function_name and its original line
+        function_declarations = {}  # Dict to store function_name and its line
 
         for i, line in enumerate(lines):
             if re.search(pattern, line):
@@ -389,7 +391,7 @@ def remove_unused_attribute(file_name, function_name):
         else:
             pass
         # took a copy from the original function declaration
-        original_declaration = lines[function_start_line]
+        original_declaration = lines[function_start_line]  # ❗ Unused variable
 
         # Extract and remove __attribute__((unused))
         match = re.search(
@@ -467,7 +469,8 @@ def generate_documentation(lines, function_start_line, function_name):
             arguments = []
         else:
             while ')' not in args_text and '\n' not in lines[function_start_line]:
-                # Iterate through the remaining lines until a closing parenthesis or a new line is encountered
+                # Iterate through the remaining lines until a closing parenthesis
+                #  or a new line is encountered
                 function_start_line += 1
                 args_text += lines[function_start_line].strip()
 
@@ -876,13 +879,13 @@ def fix_should_be_foo_star_bar(file_path, line_number, error_description):  # do
     error_line = lines[int(line_number) - 1]
 
     # Check conditions and fix the line accordingly
-    if f'foo** bar' in error_description:
+    if 'foo** bar' in error_description:
         fixed_line = error_line.replace(f'{specifier} ', f' {specifier}')
-    elif f'foo* bar' in error_description:
+    elif 'foo* bar' in error_description:
         fixed_line = error_line.replace(f'{specifier} ', f' {specifier}')
-    elif f'foo * bar' in error_description:
+    elif 'foo * bar' in error_description:
         fixed_line = error_line.replace(f'{specifier} ', f'{specifier}')
-    elif f'foo*bar' in error_description:
+    elif 'foo*bar' in error_description:
         fixed_line = error_line.replace(f'{specifier}', f' {specifier}')
     else:
         # If none of the conditions match, return without making changes
@@ -892,7 +895,7 @@ def fix_should_be_foo_star_bar(file_path, line_number, error_description):  # do
     lines[int(line_number) - 1] = fixed_line
 
     # Write the modified content back to the file
-    with open(file_path, 'w') as file:
+    with open(file_path, 'w', encoding='utf-8') as file:
         file.writelines(lines)
 
 
@@ -929,7 +932,7 @@ def fix_spaces_prohibited_around_that(file_path, line_number, error_description)
         lines = file.readlines()
 
     # Check if the provided line number is within the valid range
-    if not (1 <= int(line_number) <= len(lines)):
+    if not 1 <= int(line_number) <= len(lines):
         # Invalid line number, return without making changes
         return
 
@@ -1036,7 +1039,7 @@ def fix_space_prohibited_before_that(file_path, line_number, error_description):
     context = error_description[context_start:context_end].strip()
 
     # Read the file content
-    with open(file_path, 'r') as file:
+    with open(file_path, 'r', encoding='utf-8') as file:
         lines = file.readlines()
 
     # Find the line with the error
@@ -1053,7 +1056,7 @@ def fix_space_prohibited_before_that(file_path, line_number, error_description):
     lines[int(line_number) - 1] = fixed_line
 
     # Write the modified content back to the file
-    with open(file_path, 'w') as file:
+    with open(file_path, 'w', encoding='utf-8') as file:
         file.writelines(lines)
 
 
@@ -1086,7 +1089,7 @@ def fix_spaces_preferred_around_that(file_path, line_number, error_description):
     context = error_description[context_start:context_end].strip()
 
     # Read the file content
-    with open(file_path, 'r') as file:
+    with open(file_path, 'r', encoding='utf-8') as file:
         lines = file.readlines()
 
     # Find the line with the error
@@ -1112,7 +1115,7 @@ def fix_spaces_preferred_around_that(file_path, line_number, error_description):
     lines[int(line_number) - 1] = fixed_line
 
     # Write the modified content back to the file
-    with open(file_path, 'w') as file:
+    with open(file_path, 'w', encoding='utf-8') as file:
         file.writelines(lines)
 
 
@@ -1145,7 +1148,7 @@ def fix_space_required_around_that(file_path, line_number, error_description):  
     context = error_description[context_start:context_end].strip()
 
     # Read the file content
-    with open(file_path, 'r') as file:
+    with open(file_path, 'r', encoding='utf-8') as file:
         lines = file.readlines()
 
     # Find the line with the error
@@ -1171,7 +1174,7 @@ def fix_space_required_around_that(file_path, line_number, error_description):  
     lines[int(line_number) - 1] = fixed_line
 
     # Write the modified content back to the file
-    with open(file_path, 'w') as file:
+    with open(file_path, 'w', encoding='utf-8') as file:
         file.writelines(lines)
 
 
@@ -1204,7 +1207,7 @@ def fix_space_required_after_that(file_path, line_number, error_description):
     context = error_description[context_start:context_end].strip()
 
     # Read the file content
-    with open(file_path, 'r') as file:
+    with open(file_path, 'r', encoding='utf-8') as file:
         lines = file.readlines()
 
     # Find the line with the error
@@ -1221,7 +1224,7 @@ def fix_space_required_after_that(file_path, line_number, error_description):
     lines[int(line_number) - 1] = fixed_line
 
     # Write the modified content back to the file
-    with open(file_path, 'w') as file:
+    with open(file_path, 'w', encoding='utf-8') as file:
         file.writelines(lines)
 
 
@@ -1238,7 +1241,7 @@ def fix_space_required_before_the_open_brace(file_path, line_number, error_descr
     specifier = error_description[specifier_index:-1]
 
     # Read the file content
-    with open(file_path, 'r') as file:
+    with open(file_path, 'r', encoding='utf-8') as file:
         lines = file.readlines()
 
     # Find the line with the error
@@ -1251,7 +1254,7 @@ def fix_space_required_before_the_open_brace(file_path, line_number, error_descr
     lines[int(line_number) - 1] = fixed_line
 
     # Write the modified content back to the file
-    with open(file_path, 'w') as file:
+    with open(file_path, 'w', encoding='utf-8') as file:
         file.writelines(lines)
 
 
@@ -1265,28 +1268,25 @@ def fix_space_required_after_the_close_brace(file_path, line_number, error_descr
     """
     # Extract specifier from error_description
     specifier_index = error_description.find("'") + 1
-    specifier = error_description[specifier_index:-1]
+    specifier = error_description[specifier_index:-1] 
 
     # Read the file content
-    with open(file_path, 'r') as file:
+    with open(file_path, 'r', encoding='utf-8') as file:
         lines = file.readlines()
 
     # Find the line with the error
     error_line = lines[int(line_number) - 1]
     error_line = clean_up_line(error_line)
     # Find the specifier in the line and fix it
-    fixed_line = error_line.replace(specifier, f'{specifier} ')
+    fixed_line = error_line.replace(specifier, f'{specifier} ') # ❗ Unused variable
 
     # Replace the line in the file
-    lines[int(line_number) - 1] = fixed_line
-
-    # Write the modified content back to the file
-    with open(file_path, 'w') as file:
+    with open(file_path, 'w', encoding='utf-8') as file:
         file.writelines(lines)
 
 
 # Example usage
 if __name__ == "__main__":
     # Assuming you have an errors.txt file with test data
-    errors_file_path = 'errors.txt'
-    process_error_file(errors_file_path)
+    ERROR_FILE_PATH = 'errors.txt'
+    process_error_file(ERROR_FILE_PATH)
