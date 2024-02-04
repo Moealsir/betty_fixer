@@ -470,7 +470,7 @@ def generate_documentation(lines, fn_start_ln, function_name):
             arguments = []
         else:
             while ')' not in args_text and '\n' not in lines[fn_start_ln]:
-                # Iterate through the remaining lines until a closing parenthesis
+                # Iterate through the remaining lines until a closing '()'
                 #  or a new line is encountered
                 fn_start_ln += 1
                 args_text += lines[fn_start_ln].strip()
@@ -482,8 +482,9 @@ def generate_documentation(lines, fn_start_ln, function_name):
                 args_text = args_text[:closing_parenthesis_pos].strip()
 
             arguments = args_text.split(',')
-            arguments = [arg.strip().split(' ')[-1].lstrip('*') if '*' in arg else arg.strip(
-            ).split(' ')[-1] for arg in arguments if arg.strip()]
+            arguments = [arg.strip().split(' ')[-1].
+                         lstrip('*') if '*' in arg else arg.strip().
+                         split(' ')[-1] for arg in arguments if arg.strip()]
 
         # Create documentation
         documentation = []
