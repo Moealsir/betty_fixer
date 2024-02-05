@@ -391,7 +391,7 @@ def remove_unused_attribute(file_name, function_name):
         else:
             pass
         # took a copy from the original function declaration
-        original_declaration = lines[fn_st_line]  # ❗ Unused variable
+        original_declaration = lines[fn_st_line]  # ❗ Unused variable [Younis]
 
         # Extract and remove __attribute__((unused))
         match = re.search(
@@ -1285,7 +1285,7 @@ def fix_space_required_after_the_close_brace(file_path, line_number, error_descr
     error_line = clean_up_line(error_line)
     # Find the specifier in the line and fix it
     fixed_line = error_line.replace(
-        specifier, f'{specifier} ')  # ❗ Unused variable
+        specifier, f'{specifier} ')  # ❗ Unused variable [Younis]
 
     # Replace the line in the file
     with open(file_path, 'w', encoding='utf-8') as file:
