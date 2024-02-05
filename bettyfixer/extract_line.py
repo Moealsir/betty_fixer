@@ -431,18 +431,18 @@ def fix_lines_in_file(file_name, function_declarations):
             lines = file.readlines()
 
         # Iterate through each line in file
-        for i, line in enumerate(lines):
-            if '*/' in line and 'unused' in line:
-                # Check if any function_name is found in this line
-                for func_name, original_line in function_declarations.items():
-                    if func_name in line:
-                        # Replace the line with the desired format
-                        lines[i] = f' */\n{original_line}'
+            for i, line in enumerate(lines):
+                if '*/' in line and 'unused' in line:
+                    # Check if any function_name is found in this line
+                    for func_name, original_line in function_declarations.items():
+                        if func_name in line:
+                            # Replace the line with the desired format
+                            lines[i] = f' */\n{original_line}'
 
-                        # Check if the next line is a blank; if so, delete it
-                        if i + 1 < len(lines) and lines[i + 1] == '\n':
-                            del lines[i + 1]
-                        break
+                            # Check if the next line is a blank; if so, delete it
+                            if i + 1 < len(lines) and lines[i + 1] == '\n':
+                                del lines[i + 1]
+                            break
 
         # Write back to the file
         with open(file_name, 'w', encoding='utf-8') as file:
