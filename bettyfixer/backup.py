@@ -15,5 +15,11 @@ def create_backup(file_path):
         shutil.copy2(file_path, backup_path)
     except FileNotFoundError:
         print(f"Error creating backup for {file_path}: File not found.")
-    except Exception as e:
+    except shutil.SameFileError:
+        print(f"Error creating backup for {file_path}: Same file error.")
+    except IsADirectoryError:
+        print(f"Error creating backup for {file_path}: Is a directory error.")
+    except PermissionError:
+        print(f"Error creating backup for {file_path}: Permission error.")
+    except OSError as e:
         print(f"Unexpected error in create_backup for {file_path}: {e}")
