@@ -278,7 +278,7 @@ def more_than_5_functions_in_the_file(errors_file_path):
                                 counter += 1
 
                             if counter == 6:
-                                # Create a new file with the content 
+                                # Create a new file with the content
                                 # from the specified line to the end of the file
                                 copy_remaining_lines(
                                     lines, block_start_line, new_file_path)
