@@ -133,7 +133,7 @@ def delete_files(tags, temp_tags):
         tags (str): Tags file name.
         temp_tags (str): Temp tags file name.
     """
-    command = "rm {0} {1}".format(tags, temp_tags)
+    command = f"rm {tags} {temp_tags}"
     subprocess.run(command, shell=True, check=True)
 
 
@@ -162,9 +162,9 @@ def autoproto(directory, header):
     """
     check1, msg1 = check_header_file(header)
     check2, msg2 = check_ctags()
-    if (not check1):
+    if not check1:
         print_ctags_header_error(msg1)
-    elif (not check2):
+    elif not check2:
         print_ctags_header_error(msg2)
     if generate_tags(directory) is not False:
         filtered_tags = filter_tags(directory, 'tags')
