@@ -91,8 +91,11 @@ def filter_tags(directory, tags_file):
     temp_tags_path = os.path.join(directory, 'temp_tags')
     tags_path = os.path.join(directory, tags_file)
 
-    sed_command = r"cat {0} | sed -n 's/^.*\/^\(.*\)/\1/p'  | sed 's/\(.*\)\$.*/\1/' | sed 's/;$//' | uniq | sed '/int main(/d' | sed '/.*:/d' | sed 's/$/;/g' > {1}".format(
-        tags_path, temp_tags_path)
+    sed_command = (
+        f"cat {tags_path} | sed -n 's/^.*\\/\\(.*\\)/\\1/p'  | "
+        f"sed 's/\\(.*\\)\\$.*/\\1/' | sed 's/;$//' | uniq | "
+        f"sed '/int main(/d' | sed '/.*:/d' | sed 's/$/;/g' > {temp_tags_path}"
+    )
 
     # Run the sed_command using subprocess
     subprocess.run(sed_command, shell=True, check=True)
