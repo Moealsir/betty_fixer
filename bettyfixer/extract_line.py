@@ -698,7 +698,8 @@ def fix_brace_should_be_on_the_next_line(errors_file_path):
                             # Add a message in the error line
                             error_lines[i] += " (brace moved to the next line)"
 
-                elif 'following function declarations go on the next line' in err_line:
+                elif ('following function declarations go on '
+                      'the next line') in err_line:
                     # Extract (f_path, ln_num) from the error line
                     variables = extract_and_print_variables(err_line)
                     if len(variables) >= 2:
@@ -707,7 +708,7 @@ def fix_brace_should_be_on_the_next_line(errors_file_path):
 
                         # Fix missing blank line after declaration
                         if fix_brace_next_line(f_path, ln_num, 'errors.txt'):
-                            errors_fixed = True  # Set the flag if a line is fixed
+                            errors_fixed = True  # Set flag if a line is fixed
 
                             # Add a message in the error line
                             error_lines[i] += " (brace moved to the next line)"
@@ -790,14 +791,15 @@ def fix_brace_should_be_on_the_previous_line(errors_file_path):
     errors_fixed = True  # Set to True initially to enter the loop
 
     while errors_fixed:
-        errors_fixed = False  # Reset the flag at the beginning of each iteration
+        errors_fixed = False  # Reset flag at the beginning of each iteration
 
         with open(errors_file_path, 'r', encoding='utf-8') as errors_file:
-            # Read all lines at once to allow modification of the list while iterating
+            # Read all lines at once allow modification of list while iterating
             error_lines = errors_file.readlines()
 
             for error_line in error_lines:
-                if 'that open brace { should be on the previous line' in error_line:
+                if ('that open brace { '
+                        'should be on the previous line') in error_line:
                     # Extract (file_path, line_number) from the error line
                     variables = extract_and_print_variables(error_line)
                     if len(variables) >= 2:
@@ -805,8 +807,12 @@ def fix_brace_should_be_on_the_previous_line(errors_file_path):
                         file_path, line_number = variables[:2]
 
                         # Fix missing blank line after declaration
-                        if fix_brace_on_the_previous_line(file_path, line_number, 'errors.txt'):
-                            errors_fixed = True  # Set the flag if a line is fixed
+                        if fix_brace_on_the_previous_line(
+                                file_path,
+                                line_number,
+                                'errors.txt'
+                        ):
+                            errors_fixed = True  # Set flag if a line is fixed
 
 
 def fix_brace_on_the_previous_line(file_path, line_number, errors_file_path):
@@ -840,8 +846,9 @@ def fix_brace_on_the_previous_line(file_path, line_number, errors_file_path):
 
     # Delete the previous '\n' character to move the brace to the previous line
     if lines[line_number - 1].endswith('\n'):
-        lines[line_number - 1] = lines[line_number - 1].rstrip() + ' ' if not lines[line_number -
-                                                                                    1].endswith(' ') else lines[line_number - 1].rstrip()
+        lines[line_number - 1] = lines[line_number - 1]\
+            .rstrip() + ' ' if not lines[line_number - 1]\
+            .endswith(' ') else lines[line_number - 1].rstrip()
 
     # Write the modified content back to the file
     with open(file_path, 'w', encoding='utf-8') as file:
@@ -880,7 +887,7 @@ def fix_space_prohibited_before_semicolon(file_path, line_number, specifier):
         file.writelines(lines)
 
 
-def fix_should_be_foo_star_bar(file_path, line_number, error_description):  # done
+def fix_should_be_foo_star_bar(file_path, line_number, error_description):
     """
     Fix the specified line in the file.
     Args:
@@ -919,33 +926,33 @@ def fix_should_be_foo_star_bar(file_path, line_number, error_description):  # do
         file.writelines(lines)
 
 
-def fix_spaces_prohibited_around_that(file_path, line_number, error_description):
+def fix_spaces_prohibited_around_that(file_path, line_number, err_desc):
     """
     Fix the specified line in the file.
     Args:
         file_path (str): The path of the file to fix the specified line in.
         line_number (str): The line number to fix.
-        error_description (str): The description of the error.
+        err_desc (str): The description of the error.
     """
-    # Find the specifier between two single quotes in the error_description
-    specifier_start = error_description.find("'") + 1
-    specifier_end = error_description.rfind("'")
+    # Find the specifier between two single quotes in the err_desc
+    specifier_start = err_desc.find("'") + 1
+    specifier_end = err_desc.rfind("'")
 
     if specifier_start < 0 or specifier_end < 0:
         # Unable to find valid specifier, return without making changes
         return
 
-    specifier = error_description[specifier_start:specifier_end]
+    specifier = err_desc[specifier_start:specifier_end]
 
-    # Extract context from the end of error_description (ctx:context) between : and )
-    context_start = error_description.rfind(':') + 1
-    context_end = error_description.rfind(')')
+    # Extract context from the end of err_desc (ctx:context) between : and )
+    context_start = err_desc.rfind(':') + 1
+    context_end = err_desc.rfind(')')
 
     if context_start < 0 or context_end < 0:
         # Unable to find valid context, return without making changes
         return
 
-    context = error_description[context_start:context_end].strip()
+    context = err_desc[context_start:context_end].strip()
 
     # Read the file content
     with open(file_path, 'r', encoding='utf-8') as file:
@@ -967,7 +974,8 @@ def fix_spaces_prohibited_around_that(file_path, line_number, error_description)
     elif context == 'VxW':
         fixed_line = error_line.replace(f'{specifier} ', f'{specifier}')
     else:
-        # If the context doesn't match known conditions, return without making changes
+        # If the context doesn't match known conditions
+        # return without making changes
         return
 
     # Replace the line in the file
@@ -996,7 +1004,8 @@ def fix_space_prohibited_after_that(file_path, line_number, error_description):
 
     specifier = error_description[specifier_start:specifier_end]
 
-    # Extract context from the end of error_description (ctx:context) between : and )
+    # Extract context from the end of error_description
+    # (ctx:context) between : and )
     context_start = error_description.rfind(':') + 1
     context_end = error_description.rfind(')')
 
@@ -1019,7 +1028,8 @@ def fix_space_prohibited_after_that(file_path, line_number, error_description):
     elif context == 'ExW':
         fixed_line = error_line.replace(f'{specifier} ', f'{specifier}')
     else:
-        # If the context doesn't match known conditions, return without making changes
+        # If the context doesn't match known conditions,
+        # return without making changes
         return
 
     # Replace the line in the file
@@ -1030,33 +1040,33 @@ def fix_space_prohibited_after_that(file_path, line_number, error_description):
         file.writelines(lines)
 
 
-def fix_space_prohibited_before_that(file_path, line_number, error_description):
+def fix_space_prohibited_before_that(file_path, line_number, err_desc):
     """
     Fix the specified line in the file.
     Args:
         file_path (str): The path of the file to fix the specified line in.
         line_number (str): The line number to fix.
-        error_description (str): The description of the error.
+        err_desc (str): The description of the error.
     """
-    # Find the specifier between two single quotes in the error_description
-    specifier_start = error_description.find("'") + 1
-    specifier_end = error_description.rfind("'")
+    # Find the specifier between two single quotes in the err_desc
+    specifier_start = err_desc.find("'") + 1
+    specifier_end = err_desc.rfind("'")
 
     if specifier_start < 0 or specifier_end < 0:
         # Unable to find valid specifier, return without making changes
         return
 
-    specifier = error_description[specifier_start:specifier_end]
+    specifier = err_desc[specifier_start:specifier_end]
 
-    # Extract context from the end of error_description (ctx:context) between : and )
-    context_start = error_description.rfind(':') + 1
-    context_end = error_description.rfind(')')
+    # Extract context from the end of err_desc (ctx:context) between : and )
+    context_start = err_desc.rfind(':') + 1
+    context_end = err_desc.rfind(')')
 
     if context_start < 0 or context_end < 0:
         # Unable to find valid context, return without making changes
         return
 
-    context = error_description[context_start:context_end].strip()
+    context = err_desc[context_start:context_end].strip()
 
     # Read the file content
     with open(file_path, 'r', encoding='utf-8') as file:
@@ -1066,10 +1076,11 @@ def fix_space_prohibited_before_that(file_path, line_number, error_description):
     error_line = lines[int(line_number) - 1]
 
     # Fix line according to the context conditions
-    if context == 'WxV' or context == 'WxO' or context == 'WxE' or context == 'WxW':
+    if context in ['WxV', 'WxO', 'WxE', 'WxW']:
         fixed_line = error_line.replace(f' {specifier}', f'{specifier}')
     else:
-        # If the context doesn't match known conditions, return without making changes
+        # If the context doesn't match known conditions,
+        # return without making changes
         return
 
     # Replace the line in the file
@@ -1080,33 +1091,33 @@ def fix_space_prohibited_before_that(file_path, line_number, error_description):
         file.writelines(lines)
 
 
-def fix_spaces_preferred_around_that(file_path, line_number, error_description):
+def fix_spaces_preferred_around_that(file_path, line_number, err_desc):
     """
     Fix the specified line in the file.
     Args:
         file_path (str): The path of the file to fix the specified line in.
         line_number (str): The line number to fix.
-        error_description (str): The description of the error.
+        err_desc (str): The description of the error.
     """
-    # Find the specifier between two single quotes in the error_description
-    specifier_start = error_description.find("'") + 1
-    specifier_end = error_description.rfind("'")
+    # Find the specifier between two single quotes in the err_desc
+    specifier_start = err_desc.find("'") + 1
+    specifier_end = err_desc.rfind("'")
 
     if specifier_start < 0 or specifier_end < 0:
         # Unable to find valid specifier, return without making changes
         return
 
-    specifier = error_description[specifier_start:specifier_end]
+    specifier = err_desc[specifier_start:specifier_end]
 
-    # Extract context from the end of error_description (ctx:context) between : and )
-    context_start = error_description.rfind(':') + 1
-    context_end = error_description.rfind(')')
+    # Extract context from the end of err_desc (ctx:context) between : and )
+    context_start = err_desc.rfind(':') + 1
+    context_end = err_desc.rfind(')')
 
     if context_start < 0 or context_end < 0:
         # Unable to find valid context, return without making changes
         return
 
-    context = error_description[context_start:context_end].strip()
+    context = err_desc[context_start:context_end].strip()
 
     # Read the file content
     with open(file_path, 'r', encoding='utf-8') as file:
@@ -1128,7 +1139,8 @@ def fix_spaces_preferred_around_that(file_path, line_number, error_description):
     elif context == 'VxW':
         fixed_line = error_line.replace(f'{specifier} ', f' {specifier} ')
     else:
-        # If the context doesn't match known conditions, return without making changes
+        # If the context doesn't match known conditions,
+        # return without making changes
         return
 
     # Replace the line in the file
@@ -1139,7 +1151,7 @@ def fix_spaces_preferred_around_that(file_path, line_number, error_description):
         file.writelines(lines)
 
 
-def fix_space_required_around_that(file_path, line_number, error_description):  # done
+def fix_space_required_around_that(file_path, line_number, error_description):
     """
     Fix the specified line in the file.
     Args:
