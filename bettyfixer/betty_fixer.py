@@ -134,8 +134,8 @@ def process_errors(file_path):
         file_path (str): The path of the file to process the errors for.
     """
     # Process the errors for the specified file
-    errors_file_path = 'errors.txt'
-    process_error_file(errors_file_path)
+    file_path = 'errors.txt'
+    process_error_file(file_path)
 
 
 def fix_betty_warnings(content, file_path):
