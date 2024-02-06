@@ -1200,7 +1200,8 @@ def fix_space_required_around_that(file_path, line_number, error_description):
     elif context == 'VxW':
         fixed_line = error_line.replace(f'{specifier} ', f' {specifier} ')
     else:
-        # If the context doesn't match known conditions, return without making changes
+        # If the context doesn't match known conditions,
+        # return without making changes
         return
 
     # Replace the line in the file
@@ -1229,7 +1230,8 @@ def fix_space_required_after_that(file_path, line_number, error_description):
 
     specifier = error_description[specifier_start:specifier_end]
 
-    # Extract context from the end of error_description (ctx:context) between : and )
+    # Extract context from the end of error_description
+    # (ctx:context) between : and )
     context_start = error_description.rfind(':') + 1
     context_end = error_description.rfind(')')
 
@@ -1250,7 +1252,8 @@ def fix_space_required_after_that(file_path, line_number, error_description):
     if context == 'WxV' or context == 'VxV':
         fixed_line = error_line.replace(f'{specifier}', f'{specifier} ')
     else:
-        # If the context doesn't match known conditions, return without making changes
+        # If the context doesn't match known conditions,
+        # return without making changes
         return
 
     # Replace the line in the file
@@ -1261,17 +1264,17 @@ def fix_space_required_after_that(file_path, line_number, error_description):
         file.writelines(lines)
 
 
-def fix_space_required_before_the_open_brace(file_path, line_number, error_description):
+def fix_space_required_before_the_open_brace(file_path, line_number, err_desc):
     """
     Fix the specified line in the file.
     Args:
         file_path (str): The path of the file to fix the specified line in.
         line_number (str): The line number to fix.
-        error_description (str): The description of the error.
+        err_desc (str): The description of the error.
     """
-    # Extract specifier from error_description
-    specifier_index = error_description.find("'") + 1
-    specifier = error_description[specifier_index:-1]
+    # Extract specifier from err_desc
+    specifier_index = err_desc.find("'") + 1
+    specifier = err_desc[specifier_index:-1]
 
     # Read the file content
     with open(file_path, 'r', encoding='utf-8') as file:
