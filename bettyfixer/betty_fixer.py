@@ -126,7 +126,8 @@ def remove_trailing_whitespaces(content):
     return re.sub(r'[ \t]+$', '', content, flags=re.MULTILINE)
 
 
-def process_errors(file_path): # ❗ This function doesn't make sense to me [Younis]
+# ❗ This function doesn't make sense to me [Younis]
+def process_errors(file_path):
     """
     Process the errors for the specified file.
     Args:
