@@ -326,7 +326,8 @@ def find_available_file_name(original_file_path):
     counter = 1
 
     while True:
-        # Remove :01d from the format to allow for sequential numbering without leading zeros
+        # Remove :01d from the format to allow for sequential
+        # numbering without leading zeros
         new_file_path = f'{base_name}{counter}{extension}'
         if not os.path.exists(new_file_path):
             return new_file_path
