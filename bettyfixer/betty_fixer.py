@@ -342,7 +342,7 @@ def copy_remaining_lines(lines, start_line, new_file_path):
         start_line (int): The line number to start copying from.
         new_file_path (str): The path of the new file to copy the lines to.
     """
-    # Create a new file with the content from the specified line to the end of the file
+    # Create a new file with content from the specified line to the end of file
     with open(new_file_path, 'w', encoding='utf-8') as new_file:
         new_file.write(''.join(lines[start_line:]))
 
@@ -351,10 +351,12 @@ def betty_handler(errors_file_path):
     """
     Handle Betty errors in the specified file.
     Args:
-        errors_file_path (str): The path of the errors file to handle Betty errors in.
+        errors_file_path (str):
+            The path of the errors file to handle Betty errors in.
     """
     with open(errors_file_path, 'r', encoding='utf-8') as errors_file:
-        # Read all lines at once to allow modification of the list while iterating
+        # Read all lines at once to allow modification
+        # of the list while iterating
         error_lines = errors_file.readlines()
 
         messages = ["More than 40 lines in a function",
@@ -420,8 +422,8 @@ def copy_files_to_tasks(files):
             ).startswith("#include") or not line.strip().endswith('.h"')]
 
             # Write the modified content to the destination file
-            with open(destination_path, 'w', encoding='utf-8') as destination_file:
-                destination_file.write(''.join(filtered_content))
+            with open(destination_path, 'w', encoding='utf-8') as dest_file:
+                dest_file.write(''.join(filtered_content))
 
 
 def modify_main_files(files):
@@ -440,10 +442,12 @@ def modify_main_files(files):
         include_lines = [line.strip() for line in content if line.strip(
         ).startswith("#include") and line.strip().endswith('.h"')]
 
-        # Write the modified content to the main file, adding an empty line at the end
+        # Write the modified content to the main file,
+        # adding an empty line at the end
         with open(file_path, 'w', encoding='utf-8') as main_file:
             main_file.write('\n'.join(
-                include_lines + [f'#include "tasks/{os.path.basename(file_path)}"\n']))
+                include_lines + [
+                    f'#include "tasks/{os.path.basename(file_path)}"\n']))
 
 
 def record_processed_file(filename):
@@ -481,7 +485,9 @@ def main():
         sys.exit(1)
 
     if len(sys.argv) < 2:
-        print("Usage: python -m betty_fixer_package.betty_fixer file1.c file2.c ...")
+        print(
+            "Usage: python -m betty_fixer_package.betty_fixer\
+                  file1.c file2.c ...")
         sys.exit(1)
 
     if "-H" in sys.argv and len(sys.argv) > 2:
