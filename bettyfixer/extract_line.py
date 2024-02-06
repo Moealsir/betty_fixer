@@ -391,14 +391,16 @@ def remove_unused_attribute(file_name, function_name):
         else:
             pass
         # took a copy from the original function declaration
-        original_declaration = lines[fn_st_line]  # ❗ Unused variable [Younis]
+        # original_declaration = lines[fn_st_line]# ❗ Unused variable [Younis]
 
         # Extract and remove __attribute__((unused))
         match = re.search(
             r'(__attribute__\s*\(\s*\(\s*unused\s*\)\s*\))', lines[fn_st_line])
         unused_attribute = match.group(1) if match else None
         lines[fn_st_line] = re.sub(
-            r'__attribute__\s*\(\s*\(\s*unused\s*\)\s*\)', '', lines[fn_st_line])
+            r'__attribute__\s*\(\s*\(\s*unused\s*\)\s*\)',
+            '',
+            lines[fn_st_line])
 
         # Call the existing function to generate documentation
         generate_documentation(lines, fn_st_line, function_name)
@@ -414,8 +416,14 @@ def remove_unused_attribute(file_name, function_name):
             file.writelines(lines)
 
         fix_lines_in_file(file_name, function_declarations)
-    except Exception as e:
-        print(f"Error: {e}")
+    except ValueError as e:
+        print(f"ValueError: {e}")
+    except FileNotFoundError as e:
+        print(f"FileNotFoundError: {e}")
+    except PermissionError as e:
+        print(f"PermissionError: {e}")
+    except OSError as e:
+        print(f"OSError: {e}")
 
 
 def fix_lines_in_file(file_name, function_declarations):
@@ -447,8 +455,14 @@ def fix_lines_in_file(file_name, function_declarations):
         # Write back to the file
         with open(file_name, 'w', encoding='utf-8') as file:
             file.writelines(lines)
-    except Exception as e:
-        print(f"Error: {e}")
+    except ValueError as e:
+        print(f"ValueError: {e}")
+    except FileNotFoundError as e:
+        print(f"FileNotFoundError: {e}")
+    except PermissionError as e:
+        print(f"PermissionError: {e}")
+    except OSError as e:
+        print(f"OSError: {e}")
 
 
 def generate_documentation(lines, fn_start_ln, function_name):
@@ -678,8 +692,8 @@ def fix_brace_should_be_on_the_next_line(errors_file_path):
                         f_path, ln_num = variables[:2]
 
                         # Fix missing blank line after declaration
-                        if fix_brace_on_next_line(f_path, ln_num, 'errors.txt'):
-                            errors_fixed = True  # Set the flag if a line is fixed
+                        if fix_brace_next_line(f_path, ln_num, 'errors.txt'):
+                            errors_fixed = True  # Set flag if a line is fixed
 
                             # Add a message in the error line
                             error_lines[i] += " (brace moved to the next line)"
@@ -692,14 +706,14 @@ def fix_brace_should_be_on_the_next_line(errors_file_path):
                         f_path, ln_num = variables[:2]
 
                         # Fix missing blank line after declaration
-                        if fix_brace_on_next_line(f_path, ln_num, 'errors.txt'):
+                        if fix_brace_next_line(f_path, ln_num, 'errors.txt'):
                             errors_fixed = True  # Set the flag if a line is fixed
 
                             # Add a message in the error line
                             error_lines[i] += " (brace moved to the next line)"
 
 
-def fix_brace_on_next_line(file_path, ln_num, errors_file_path):
+def fix_brace_next_line(file_path, ln_num, errors_file_path):
     """
     Fix the specified line in the file.
     Args:
@@ -1284,7 +1298,7 @@ def fix_space_required_after_the_close_brace(file_path, line_number, error_descr
     error_line = lines[int(line_number) - 1]
     error_line = clean_up_line(error_line)
     # Find the specifier in the line and fix it
-    fixed_line = error_line.replace(
+    error_line.replace(
         specifier, f'{specifier} ')  # ❗ Unused variable [Younis]
 
     # Replace the line in the file
