@@ -1294,17 +1294,17 @@ def fix_space_required_before_the_open_brace(file_path, line_number, err_desc):
         file.writelines(lines)
 
 
-def fix_space_required_after_the_close_brace(file_path, line_number, error_description):
+def fix_space_required_after_the_close_brace(file_path, line_number, err_desc):
     """
     Fix the specified line in the file.
     Args:
         file_path (str): The path of the file to fix the specified line in.
         line_number (str): The line number to fix.
-        error_description (str): The description of the error.
+        err_desc (str): The description of the error.
     """
-    # Extract specifier from error_description
-    specifier_index = error_description.find("'") + 1
-    specifier = error_description[specifier_index:-1]
+    # Extract specifier from err_desc
+    specifier_index = err_desc.find("'") + 1
+    specifier = err_desc[specifier_index:-1]
 
     # Read the file content
     with open(file_path, 'r', encoding='utf-8') as file:
