@@ -1169,7 +1169,8 @@ def fix_space_required_around_that(file_path, line_number, error_description):
 
     specifier = error_description[specifier_start:specifier_end]
 
-    # Extract context from the end of error_description (ctx:context) between : and )
+    # Extract context from the end of
+    # error_description (ctx:context) between : and )
     context_start = error_description.rfind(':') + 1
     context_end = error_description.rfind(')')
 
