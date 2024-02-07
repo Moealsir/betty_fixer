@@ -1249,7 +1249,7 @@ def fix_space_required_after_that(file_path, line_number, error_description):
     error_line = lines[int(line_number) - 1]
 
     # Fix line according to the context conditions
-    if context == 'WxV' or context == 'VxV':
+    if context in ('WxV', 'VxV'):
         fixed_line = error_line.replace(f'{specifier}', f'{specifier} ')
     else:
         # If the context doesn't match known conditions,
