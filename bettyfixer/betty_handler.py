@@ -1,7 +1,8 @@
 """
 This module contains functions for handling Betty style tasks.
 
-The module can be run as a script, taking a list of file paths as command-line arguments.
+The module can be run as a script, taking a list of file paths as command-line
+arguments.
 When run as a script, it creates a tasks directory if one doesn't exist,
 copies the specified files to the tasks directory, and modifies the main files.
 """
@@ -12,7 +13,8 @@ import sys
 def other_handler(file_path):
     """
     This function creates a tasks directory if one doesn't exist,
-    copies the specified files to the tasks directory, and modifies the main files.
+    copies the specified files to the tasks directory,
+        and modifies the main files.
     """
     create_tasks_directory()
     copy_files_to_tasks(file_path)
@@ -46,8 +48,8 @@ def copy_files_to_tasks(files):
             ).startswith("#include") or not line.strip().endswith('.h"')]
 
             # Write the modified content to the destination file
-            with open(destination_path, 'w', encoding='utf-8') as destination_file:
-                destination_file.write(''.join(filtered_content))
+            with open(destination_path, 'w', encoding='utf-8') as dest_file:
+                dest_file.write(''.join(filtered_content))
 
 
 def modify_main_files(files):
@@ -67,10 +69,12 @@ def modify_main_files(files):
         include_lines = [line.strip() for line in content if line.strip(
         ).startswith("#include") and line.strip().endswith('.h"')]
 
-        # Write the modified content to the main file, adding an empty line at the end
+        # Write the modified content to main file.
+        # adding an empty line at the end
         with open(file_path, 'w', encoding='utf-8') as main_file:
             main_file.write('\n'.join(
-                include_lines + [f'#include "tasks/{os.path.basename(file_path)}"\n']))
+                include_lines + [
+                    f'#include "tasks/{os.path.basename(file_path)}"\n']))
 
 
 if __name__ == "__main__":

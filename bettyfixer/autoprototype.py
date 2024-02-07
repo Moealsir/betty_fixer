@@ -11,12 +11,14 @@ from colorama import Fore
 def betty_check():
     """Check if betty is installed and if there are any errors in the files.
     Returns:
-        bool: True if betty is installed and there are no errors, False otherwise.
+        bool: True if betty is installed and there are no errors,
+            False otherwise.
     """
     try:
         c_files = glob.glob("*.c")
         result1 = subprocess.run(["betty"] + c_files, check=True,
-                                 stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
+                                 stdout=subprocess.PIPE,
+                                 stderr=subprocess.PIPE, text=True)
 
     except subprocess.CalledProcessError as e:
         print(e)
@@ -59,7 +61,8 @@ def check_ctags():
                        stderr=subprocess.PIPE, check=True)
         return True, None
     except subprocess.CalledProcessError:
-        msg = "ctags is not installed. Please install ctags before running this script."
+        msg = "ctags is not installed. \
+            Please install ctags before running this script."
         return False, msg
 
 
@@ -71,8 +74,10 @@ def generate_tags(directory):
         bool: True if ctags is generated successfully, False otherwise.
     """
     try:
-        subprocess.run(['ctags', '-R', '--c-kinds=+p', '--fields=+S', '--extra=+q',
-                       '--languages=c', '--langmap=c:.c', directory], check=True)
+        subprocess.run(['ctags', '-R', '--c-kinds=+p',
+                        '--fields=+S', '--extra=+q',
+                       '--languages=c', '--langmap=c:.c',
+                        directory], check=True)
         return True
     except subprocess.CalledProcessError as e:
         print_ctags_header_error(f"Error generating ctags: {e}")
@@ -92,9 +97,10 @@ def filter_tags(directory, tags_file):
     tags_path = os.path.join(directory, tags_file)
 
     sed_command = (
-        f"cat {tags_path} | sed -n 's/^.*\\/\\(.*\\)/\\1/p'  | "
-        f"sed 's/\\(.*\\)\\$.*/\\1/' | sed 's/;$//' | uniq | "
-        f"sed '/int main(/d' | sed '/.*:/d' | sed 's/$/;/g' > {temp_tags_path}"
+        f"cat {tags_path} | sed -n 's/^.*\\/^(.*)/\\1/p'  | "
+        "sed 's/(.*)\\$.*/\\1/' | sed 's/;$//' | "
+        "uniq | sed '/int main(/d' | sed '/.*:/d' | "
+        f"sed 's/$/;/g' > {temp_tags_path}"
     )
 
     # Run the sed_command using subprocess
@@ -158,7 +164,8 @@ def check_header_file(header_file):
 
 def autoproto(directory, header):
     """
-    Generate a header file with the prototypes of the functions in the directory.
+    Generate a header file with the prototypes of
+        the functions in the directory.
     Args:
         directory (str): Directory path.
         header (str): Header file name.
