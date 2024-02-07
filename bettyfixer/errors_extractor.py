@@ -44,7 +44,8 @@ if __name__ == "__main__":
     ERRORS_FILE_PATH = 'errors.txt'
 
     # Clear the content of the errors.txt file before appending new errors
-    open(ERRORS_FILE_PATH, 'w', encoding='utf-8').close()
+    with open(ERRORS_FILE_PATH, 'w', encoding='utf-8') as errors_file:
+        errors_file.close()
 
     # Iterate over each file provided as a command-line argument
     for fpath in sys.argv[1:]:
