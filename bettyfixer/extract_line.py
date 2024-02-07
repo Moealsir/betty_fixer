@@ -1,6 +1,7 @@
 """
 Extracts errors from the errors.txt file and fixes them in the specified file
 """
+# pylint: disable=too-many-lines
 import re
 import sys
 import os
@@ -98,6 +99,8 @@ def clean_up_line(line):
         cleaned_line += '\n'
 
     return cleaned_line
+
+# pylint: disable=too-many-branches
 
 
 def fix_errors_from_file(file_path, line_number, error_description):
@@ -254,7 +257,8 @@ def clean_errors_file(errors_file_path):
     errors_file_path = 'errors.txt'
 
     # Clear the content of the errors.txt file before appending new errors
-    open(errors_file_path, 'w', encoding='utf-8').close()
+    open(errors_file_path, 'w',  # pylint: disable=consider-using-with
+         encoding='utf-8').close()
 
     # Iterate over each file provided as a command-line argument
     for file_path in sys.argv[1:]:
@@ -434,7 +438,7 @@ def fix_lines_in_file(file_name, function_declarations):
         function_declarations (dict): A dictionary containing
             the function_name and its original line.
     """
-    try:
+    try:  # pylint: disable=too-many-nested-blocks
         with open(file_name, 'r', encoding='utf-8') as file:
             lines = file.readlines()
 
