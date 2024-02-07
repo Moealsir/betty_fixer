@@ -174,7 +174,7 @@ def remove_blank_lines_inside_comments(file_path):
         lines = file.readlines()
 
     # Find lines starting with '/**' (declaration beginning)
-    for i, line in enumerate(lines):
+    for i, line in enumerate(lines):  # pylint: disable=too-many-nested-blocks
         if line.strip().startswith('/**'):
             # Find the next line starting with ' */' (declaration ending)
             for j in range(i + 1, len(lines)):
@@ -242,6 +242,7 @@ def fix_betty_style(file_paths):
         betty_handler(errors_file_path)
 
 
+# pylint: disable=too-many-locals
 def more_than_5_functions_in_the_file(errors_file_path):
     """
     Fix the error 'More than 5 functions in the file' in the specified file.
@@ -299,7 +300,7 @@ def more_than_5_functions_in_the_file(errors_file_path):
                                 ) as main_file:
                                     main_file.write(''.join(lines))
                                 # Clean 'errors.txt' before
-                                    # extracting new errors
+                                    # pylint: disable=consider-using-with
                                 open(errors_file_path, 'w',
                                      encoding='utf-8').close()
                                 # Update Betty errors in errors.txt
@@ -506,7 +507,7 @@ def main():
         if any(is_file_processed(file) for file in file_paths):
             print("One or more files have already been processed. Skipping.")
             sys.exit(1)
-
+        # pylint: disable=consider-using-with
         open('errors.txt', 'w', encoding='utf-8').close()
         # Fix Betty style
         fix_betty_style(file_paths)
