@@ -13,7 +13,14 @@ def create_backup(file_path):
     try:
         backup_path = file_path + '.bak'
         shutil.copy2(file_path, backup_path)
+    except shutil.SameFileError:
+        print(
+            f"Err creating backup {file_path}: Src and dest are same file.")
     except FileNotFoundError:
         print(f"Error creating backup for {file_path}: File not found.")
-    except Exception as e:
-        print(f"Unexpected error in create_backup for {file_path}: {e}")
+    except IsADirectoryError:
+        print(f"Error creating backup for {file_path}: Is a directory.")
+    except PermissionError:
+        print(f"Error creating backup for {file_path}: Permission denied.")
+    except OSError as e:
+        print(f"Error creating backup for {file_path}: {e.strerror}")
