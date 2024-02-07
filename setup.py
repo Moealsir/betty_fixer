@@ -1,10 +1,13 @@
-from setuptools import setup, find_packages
-from setuptools.command.install import install
+"""
+This file is used to package the bettyfixer tool and install it in the system.
+"""
+# import subprocess
+# import time
+# import shutil
 from pathlib import Path
-import subprocess
-import time
-import shutil
- 
+from setuptools import setup, find_packages
+# from setuptools.command.install import install
+
 setup(
     name='bettyfixer',
     version='1.4.6',
@@ -22,7 +25,10 @@ setup(
     ],
     author='Moealsir',
     author_email='mohamedwdalsir@gmail.com',
-    description='Betty Fixer is a tool designed to automatically fix coding style issues in C files based on the Betty coding style guidelines. It performs corrections to ensure that the code complies with the Betty style, making it more readable and consistent.',
+    description='Betty Fixer is a tool designed to automatically fix coding style \
+        issues in C files based on the Betty coding style guidelines.\
+          It performs corrections to ensure that the code complies with the Betty style, \
+            making it more readable and consistent.',
     url='https://github.com/Moealsir/betty_fixer',  # Replace with your GitHub repository URL
     license='MIT',  # Replace with your desired license
 
