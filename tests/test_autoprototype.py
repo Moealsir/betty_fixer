@@ -142,12 +142,3 @@ class TestAutoprototypeSuite:
         # # Check the error message
         # captured = capsys.readouterr()
         # assert "Error: File" in captured.out
-
-    # def test_filter_tags_no_file(self,  mocker, tmpdir, capsys):
-    #     """Test the filter_tags function when the tags file does not exist."""
-    #     # Mock subprocess.run to simulate a successful command
-    #     mocker.patch("subprocess.run")
-
-    #     # Call the function with a non-existent tags file and check the result
-    #     result = filter_tags(str(tmpdir), "nonexistent")
-    #     assert result is None
