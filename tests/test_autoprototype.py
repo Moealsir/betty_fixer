@@ -151,7 +151,3 @@ class TestAutoprototypeSuite:
     #     # Call the function with a non-existent tags file and check the result
     #     result = filter_tags(str(tmpdir), "nonexistent")
     #     assert result is None
-
-    #     # Check the error message
-    #     captured = capsys.readouterr()
-    #     assert "Error: File" in captured.out
