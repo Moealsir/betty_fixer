@@ -6,7 +6,7 @@ from subprocess import CompletedProcess
 import subprocess
 import pytest
 from colorama import Fore
-from bettyfixer.autoprototype import (betty_check,
+from bettyfixer.autoprototype import (betty_check, generate_tags,
                                       print_check_betty_first,
                                       print_header_name_missing,
                                       print_ctags_header_error,
@@ -107,8 +107,7 @@ class TestAutoprototypeSuite:
         mock_run.return_value = CompletedProcess(args=['ctags', '-R', '.'],
                                                  returncode=0,
                                                  )
-        assert check_ctags()
-        mock_run.assert_called_once_with(['ctags', '-R', '.'],
-                                         stdout=subprocess.PIPE,
-                                         stderr=subprocess.PIPE,
-                                         check=True)
+        assert generate_tags('.')
+        mock_run.side_effect = subprocess.CalledProcessError(
+            returncode=1, cmd=['ctags', '-R', '.'], stderr="Error")
+        assert not generate_tags('.')
