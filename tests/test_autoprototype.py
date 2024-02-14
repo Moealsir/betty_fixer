@@ -28,18 +28,22 @@ class TestAutoprototypeSuite:
         yield
         os.remove("test.c")
 
-    def test_betty_check_installed(self, mocker):
+    def test_betty_check_installed(self, mocker, capsys):
         """ Test if betty is installed"""
         mock_run = mocker.patch("subprocess.run")
         mock_glob = mocker.patch("glob.glob")
         mock_glob.return_value = ["test.c"]
         mock_run.return_value = CompletedProcess(args=['betty'] + mock_glob.return_value,
                                                  returncode=0,
-                                                 stdout=b'ERROR: ',
-                                                 stderr=b'WARNING:'
+                                                 stdout='ERROR: ',
+                                                 stderr='WARNING:'
                                                  )
         betty_check_result = betty_check()
         assert betty_check_result is not None
+        assert betty_check_result is False
+        cap = capsys.readouterr()
+        assert "ERROR:" in cap.out
+        assert "WARNING:" in cap.err
 
     def test_betty_check_errors(self, capsys):
         """ Test if there are errors in the files
