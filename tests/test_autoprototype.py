@@ -2,13 +2,15 @@
     Test the autoprototype.py file
 """
 import os
+from subprocess import CompletedProcess
+import subprocess
 import pytest
 from colorama import Fore
 from bettyfixer.autoprototype import (betty_check,
                                       print_check_betty_first,
-                                      #   print_header_name_missing,
-                                      #   print_ctags_header_error,
-                                      #   check_ctags
+                                      print_header_name_missing,
+                                      print_ctags_header_error,
+                                      check_ctags
                                       )
 
 
@@ -21,13 +23,21 @@ class TestAutoprototypeSuite:
     def setup_method(self):
         """Set up the test """
         with open("test.c", "w", encoding="utf-8") as f:
-            f.write("int main() { return 0; }")
+            f.write(
+                "int main(int argc, char **argv){\nprintf(\"Hello World\"\nreturn 0; \n}")
         yield
         os.remove("test.c")
 
-    def test_betty_check_installed(self):
+    def test_betty_check_installed(self, mocker):
         """ Test if betty is installed"""
-        assert betty_check() is not None
+        mock_run = mocker.patch("subprocess.run")
+        mock_run.return_value = CompletedProcess(args=['betty', '--version'],
+                                                 returncode=0,
+                                                 stdout=b'',
+                                                 stderr=b''
+                                                 )
+        betty_check_result = betty_check()
+        assert betty_check_result is not None
 
     def test_betty_check_errors(self, capsys):
         """ Test if there are errors in the files
@@ -51,3 +61,35 @@ class TestAutoprototypeSuite:
         print_check_betty_first()
         captured = capsys.readouterr()
         assert captured.out == expected_output
+
+    def test_print_header_name_missing(self, capsys):
+        """Test the print_header_name_missing function from autoprototype.py"""
+        expected_output = Fore.RED + \
+            "Usage : bettyfixer -H <heahdername>.h" + Fore.RESET + "\n"
+        print_header_name_missing()
+        captured = capsys.readouterr()
+        assert captured.out == expected_output
+
+    def test_print_ctags_header_error(self, capsys):
+        """Test the print_ctags_header_error function from autoprototype.py"""
+        expected_output = Fore.RED + "Error" + Fore.RESET + "\n"
+        print_ctags_header_error("Error")
+        captured = capsys.readouterr()
+        assert captured.out == expected_output
+
+    def test_check_ctags_installed(self, mocker):
+        """ Test if ctags is installed"""
+        mock_run = mocker.patch("subprocess.run")
+        mock_run.return_value = CompletedProcess(args=['ctags', '--version'],
+                                                 returncode=0,
+                                                 )
+        ctag = check_ctags()
+        assert ctag[0] is True and ctag[1] is None
+
+    def test_check_ctags_not_installed(self, mocker):
+        """ Test if ctags is not installed"""
+        mock_run = mocker.patch("subprocess.run")
+        mock_run.side_effect = subprocess.CalledProcessError(
+            returncode=1, cmd=['ctags', '--version'], stderr=b'')
+        ctag = check_ctags()
+        assert ctag[0] is False and isinstance(ctag[1], str)
