@@ -31,10 +31,12 @@ class TestAutoprototypeSuite:
     def test_betty_check_installed(self, mocker):
         """ Test if betty is installed"""
         mock_run = mocker.patch("subprocess.run")
-        mock_run.return_value = CompletedProcess(args=['betty', '--version'],
+        mock_glob = mocker.patch("glob.glob")
+        mock_glob.return_value = ["test.c"]
+        mock_run.return_value = CompletedProcess(args=['betty'] + mock_glob.return_value,
                                                  returncode=0,
-                                                 stdout=b'',
-                                                 stderr=b''
+                                                 stdout=b'ERROR: ',
+                                                 stderr=b'WARNING:'
                                                  )
         betty_check_result = betty_check()
         assert betty_check_result is not None
