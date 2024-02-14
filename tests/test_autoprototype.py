@@ -100,3 +100,15 @@ class TestAutoprototypeSuite:
             returncode=1, cmd=['ctags', '--version'], stderr=b'')
         ctag = check_ctags()
         assert ctag[0] is False and isinstance(ctag[1], str)
+
+    def test_generate_tags(self, mocker):
+        """ Test the generate_tags function from autoprototype.py"""
+        mock_run = mocker.patch("subprocess.run")
+        mock_run.return_value = CompletedProcess(args=['ctags', '-R', '.'],
+                                                 returncode=0,
+                                                 )
+        assert check_ctags()
+        mock_run.assert_called_once_with(['ctags', '-R', '.'],
+                                         stdout=subprocess.PIPE,
+                                         stderr=subprocess.PIPE,
+                                         check=True)
