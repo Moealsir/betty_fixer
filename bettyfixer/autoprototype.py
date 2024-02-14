@@ -36,7 +36,7 @@ def print_check_betty_first():
     """Prints a message to the user to fix betty errors first."""
     print(
         Fore.RED + "You should fix betty Errors first before \
-            copy prototype functions into The header file" + Fore.RESET
+copy prototype functions into The header file" + Fore.RESET
     )
 
 
