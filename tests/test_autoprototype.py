@@ -6,7 +6,7 @@ from subprocess import CompletedProcess
 import subprocess
 import pytest
 from colorama import Fore
-from bettyfixer.autoprototype import (betty_check, generate_tags,
+from bettyfixer.autoprototype import (betty_check, filter_tags, generate_tags,
                                       print_check_betty_first,
                                       print_header_name_missing,
                                       print_ctags_header_error,
@@ -111,3 +111,38 @@ class TestAutoprototypeSuite:
         mock_run.side_effect = subprocess.CalledProcessError(
             returncode=1, cmd=['ctags', '-R', '.'], stderr="Error")
         assert not generate_tags('.')
+
+    def test_filter_tags_success(self, tmpdir):
+        """Test the filter_tags function when the subprocess command succeeds."""
+        generate_tags(".")
+        result = filter_tags(str(tmpdir), "tags")
+        print(result)
+        assert result is not None
+        assert "int main" in result
+
+    # def test_filter_tags_failure(self, mocker, tmpdir, capsys):
+    #     """Test the filter_tags function when the subprocess command fails."""
+    #     # Mock subprocess.run to simulate a failed command
+    #     mocker.patch("subprocess.run",
+    #                  side_effect=subprocess.CalledProcessError(1, "cmd"))
+
+    #     # Call the function and check the result
+    #     result = filter_tags(str(tmpdir), "tags")
+    #     assert result is None
+
+    #     # Check the error message
+    #     captured = capsys.readouterr()
+    #     assert "Error: File" in captured.out
+
+    # def test_filter_tags_no_file(self,  mocker, tmpdir, capsys):
+    #     """Test the filter_tags function when the tags file does not exist."""
+    #     # Mock subprocess.run to simulate a successful command
+    #     mocker.patch("subprocess.run")
+
+    #     # Call the function with a non-existent tags file and check the result
+    #     result = filter_tags(str(tmpdir), "nonexistent")
+    #     assert result is None
+
+    #     # Check the error message
+    #     captured = capsys.readouterr()
+    #     assert "Error: File" in captured.out
