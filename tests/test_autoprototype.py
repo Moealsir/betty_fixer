@@ -24,6 +24,7 @@ class TestAutoprototypeSuite:
         """Set up the test """
         if "filter_tag" in request.node.name:
             generate_tags(".")
+            filter_tags(".", "tags")
         with open("test.c", "w", encoding="utf-8") as f:
             f.write(
                 "int main(int argc, char **argv){\nprintf(\"Hello World\"\nreturn 0; \n}")
@@ -128,9 +129,15 @@ class TestAutoprototypeSuite:
 
     def test_filter_tags_failure(self, mocker):
         """Test the filter_tags function when the subprocess command fails."""
+        mock_run = mocker.patch("subprocess.run")
+        mock_run.return_value = CompletedProcess(args=['ctags', '-R', '.'],
+                                                 returncode=1,
+                                                 stderr="Error"
+                                                 )
 
         # Call the function and check the result
-        assert filter_tags('.', "tags") is None
+        assert not filter_tags('.', "tags")
+        assert os.path.exists("temp_tags") is True
 
         # # Check the error message
         # captured = capsys.readouterr()
