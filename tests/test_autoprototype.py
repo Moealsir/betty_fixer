@@ -20,13 +20,18 @@ class TestAutoprototypeSuite:
     """
 
     @pytest.fixture(autouse=True)
-    def setup_method(self):
+    def setup_method(self, request):
         """Set up the test """
+        if "filter_tag" in request.node.name:
+            generate_tags(".")
         with open("test.c", "w", encoding="utf-8") as f:
             f.write(
                 "int main(int argc, char **argv){\nprintf(\"Hello World\"\nreturn 0; \n}")
         yield
         os.remove("test.c")
+        if "filter_tag" in request.node.name:
+            os.remove("tags")
+            os.remove("temp_tags")
 
     def test_betty_check_installed(self, mocker):
         """ Test if betty is installed"""
@@ -112,27 +117,24 @@ class TestAutoprototypeSuite:
             returncode=1, cmd=['ctags', '-R', '.'], stderr="Error")
         assert not generate_tags('.')
 
-    def test_filter_tags_success(self, tmpdir):
+    def test_filter_tags_success(self):
         """Test the filter_tags function when the subprocess command succeeds."""
         generate_tags(".")
-        result = filter_tags(str(tmpdir), "tags")
-        print(result)
+        result = filter_tags('.', "tags")
+
         assert result is not None
-        assert "int main" in result
+        with open("tags", "r", encoding='utf-8') as f:
+            assert 'int main(int argc, char **argv)' in f.read()
 
-    # def test_filter_tags_failure(self, mocker, tmpdir, capsys):
-    #     """Test the filter_tags function when the subprocess command fails."""
-    #     # Mock subprocess.run to simulate a failed command
-    #     mocker.patch("subprocess.run",
-    #                  side_effect=subprocess.CalledProcessError(1, "cmd"))
+    def test_filter_tags_failure(self, mocker):
+        """Test the filter_tags function when the subprocess command fails."""
 
-    #     # Call the function and check the result
-    #     result = filter_tags(str(tmpdir), "tags")
-    #     assert result is None
+        # Call the function and check the result
+        assert filter_tags('.', "tags") is None
 
-    #     # Check the error message
-    #     captured = capsys.readouterr()
-    #     assert "Error: File" in captured.out
+        # # Check the error message
+        # captured = capsys.readouterr()
+        # assert "Error: File" in captured.out
 
     # def test_filter_tags_no_file(self,  mocker, tmpdir, capsys):
     #     """Test the filter_tags function when the tags file does not exist."""
