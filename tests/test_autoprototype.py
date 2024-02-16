@@ -225,11 +225,12 @@ class TestAutoprototypeSuite:
     @pytest.mark.usefixtures("setup_tear_down_temp_files")
     def test_autoproto(self, mocker):
         """ Test the autoproto function from autoprototype.py"""
-        mock_check_header_file, mock_filter_tags, mock_generate_tags, mock_create_header = mocker.patch(
-            "bettyfixer.autoprototype.check_header_file"), mocker.patch(
-            "bettyfixer.autoprototype.filter_tags"), mocker.patch(
-            "bettyfixer.autoprototype.generate_tags"), mocker.patch(
-            "bettyfixer.autoprototype.create_header")
+        mock_check_header_file, mock_filter_tags, \
+            mock_generate_tags, mock_create_header = mocker.patch(
+                "bettyfixer.autoprototype.check_header_file"), mocker.patch(
+                "bettyfixer.autoprototype.filter_tags"), mocker.patch(
+                "bettyfixer.autoprototype.generate_tags"), mocker.patch(
+                "bettyfixer.autoprototype.create_header")
 
         mock_check_header_file.return_value = (True, None)
         mock_generate_tags.return_value = True
