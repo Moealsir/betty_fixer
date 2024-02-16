@@ -84,7 +84,7 @@ def generate_tags(directory):
         return False
 
 
-def filter_tags(directory, tags_file):
+def filter_tags(directory, tags_file):  # ❗ This function has bugs
     """
     Filter the tags file to get only the function prototypes.
     Args:
