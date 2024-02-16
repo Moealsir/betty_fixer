@@ -22,22 +22,30 @@ class TestAutoprototypeSuite:
     @pytest.fixture(autouse=True)
     def setup_method(self, request):
         """Set up the test """
-        if "filter_tag" in request.node.name:
+        is_filter_tag_test = "filter_tag" in request.node.name
+
+        if is_filter_tag_test:
             generate_tags(".")
             filter_tags(".", "tags")
+
         with open("test.c", "w", encoding="utf-8") as f:
             f.write(
-                "int main(int argc, char **argv){\nprintf(\"Hello World\"\nreturn 0; \n}")
+                'int main(int argc, char **argv){\nprintf("Hello World"\nreturn 0; \n}')
+
         yield
+
         os.remove("test.c")
-        if "filter_tag" in request.node.name:
-            os.remove("tags")
-            os.remove("temp_tags")
+
+        if is_filter_tag_test:
+            for file in ["tags", "temp_tags"]:
+                os.remove(file)
 
     def test_betty_check_installed(self, mocker):
         """ Test if betty is installed"""
-        mock_run = mocker.patch("subprocess.run")
-        mock_glob = mocker.patch("glob.glob")
+
+        mock_run, mock_glob = mocker.patch(
+            "subprocess.run"), mocker.patch("glob.glob")
+
         mock_glob.return_value = ["test.c"]
         mock_run.return_value = CompletedProcess(args=['betty'] + mock_glob.return_value,
                                                  returncode=0,
@@ -107,16 +115,34 @@ class TestAutoprototypeSuite:
         ctag = check_ctags()
         assert ctag[0] is False and isinstance(ctag[1], str)
 
-    def test_generate_tags(self, mocker):
-        """ Test the generate_tags function from autoprototype.py"""
+    def test_generate_tags_failure(self, mocker):
+        """ Test the generate_tags function not working from autoprototype.py"""
         mock_run = mocker.patch("subprocess.run")
-        mock_run.return_value = CompletedProcess(args=['ctags', '-R', '.'],
-                                                 returncode=0,
-                                                 )
-        assert generate_tags('.')
         mock_run.side_effect = subprocess.CalledProcessError(
             returncode=1, cmd=['ctags', '-R', '.'], stderr="Error")
         assert not generate_tags('.')
+
+    def test_generate_tags_success(self, mocker):
+        """Test the generate_tags function when the subprocess command succeeds."""
+        mock_run = mocker.patch("subprocess.run")
+        mock_run.return_value = CompletedProcess(args=[
+            'ctags', '-R', '--c-kinds=+p',
+            '--fields=+S', '--extra=+q',
+            '--languages=c', '--langmap=c:.c'
+        ],
+            returncode=0,
+        )
+        assert generate_tags('.')
+        mock_run.assert_called_once_with(['ctags', '-R', '--c-kinds=+p',
+                                         '--fields=+S', '--extra=+q',
+                                          '--languages=c', '--langmap=c:.c',
+                                          '.'], check=True)
+        mocker.stopall()
+        result = generate_tags(".")
+        assert result is not None
+        assert os.path.exists("tags") is True
+        with open("tags", "r", encoding='utf-8') as f:
+            assert 'int main(int argc, char **argv)' in f.read()
 
     def test_filter_tags_success(self):
         """Test the filter_tags function when the subprocess command succeeds."""
@@ -124,8 +150,6 @@ class TestAutoprototypeSuite:
         result = filter_tags('.', "tags")
 
         assert result is not None
-        with open("tags", "r", encoding='utf-8') as f:
-            assert 'int main(int argc, char **argv)' in f.read()
 
     def test_filter_tags_failure(self, mocker):
         """Test the filter_tags function when the subprocess command fails."""
