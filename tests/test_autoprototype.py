@@ -10,7 +10,8 @@ from bettyfixer.autoprototype import (betty_check, filter_tags, generate_tags,
                                       print_check_betty_first,
                                       print_header_name_missing,
                                       print_ctags_header_error,
-                                      check_ctags, create_header
+                                      check_ctags, create_header,
+                                      delete_files
                                       )
 
 
@@ -187,3 +188,24 @@ class TestAutoprototypeSuite:
         with pytest.raises(FileNotFoundError):
             os.remove("tags")
             os.remove("temp_tags")
+
+    def test_delete_files(self):
+        """Test the delete_files function from autoprototype.py"""
+
+        with open("tags", "w", encoding="utf-8"):
+            pass
+        with open("temp_tags", "w", encoding="utf-8"):
+            pass
+        delete_files('tags', 'temp_tags')
+        assert os.path.exists("tags") is False
+        assert os.path.exists("temp_tags") is False
+
+    def test_delete_files_failure(self, mocker):
+        """Test the delete_files function from autoprototype.py"""
+        mock_remove = mocker.patch("subprocess.run")
+        mock_remove.side_effect = subprocess.CalledProcessError(
+            returncode=1, cmd=['rm', 'tags', 'temp_tags'], stderr="Error")
+        with pytest.raises(subprocess.CalledProcessError):
+            delete_files('tags', 'temp_tags')
+        mock_remove.assert_called_once_with(
+            'rm tags temp_tags', check=True, shell=True)
