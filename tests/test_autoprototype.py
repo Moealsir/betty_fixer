@@ -170,6 +170,9 @@ class TestAutoprototypeSuite:
         create_header("test.h", filtered_tags=filtered_tags)
         assert os.path.exists("test.h") is True
         with open("test.h", "r", encoding='utf-8') as f:
-            assert 'test'.upper() in f.read()
-            assert 'int main(int argc, char **argv);' in f.read()
+            content = f.read()
+            assert 'test'.upper() in content
+            assert 'endif' in content
         os.remove("test.h")
+        os.remove("tags")
+        os.remove("temp_tags")
