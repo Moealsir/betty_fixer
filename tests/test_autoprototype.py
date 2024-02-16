@@ -6,7 +6,7 @@ from subprocess import CompletedProcess
 import subprocess
 import pytest
 from colorama import Fore
-from pytest_mock.plugin import _mocker
+# from pytest_mock.plugin import _mocker
 from bettyfixer.autoprototype import (betty_check, filter_tags, generate_tags,
                                       print_check_betty_first,
                                       print_header_name_missing,
