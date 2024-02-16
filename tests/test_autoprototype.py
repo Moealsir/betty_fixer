@@ -10,7 +10,7 @@ from bettyfixer.autoprototype import (betty_check, filter_tags, generate_tags,
                                       print_check_betty_first,
                                       print_header_name_missing,
                                       print_ctags_header_error,
-                                      check_ctags
+                                      check_ctags, create_header
                                       )
 
 
@@ -31,7 +31,6 @@ class TestAutoprototypeSuite:
         with open("test.c", "w", encoding="utf-8") as f:
             f.write(
                 'int main(int argc, char **argv){\nprintf("Hello World"\nreturn 0; \n}')
-
         yield
 
         os.remove("test.c")
@@ -163,6 +162,9 @@ class TestAutoprototypeSuite:
         assert not filter_tags('.', "tags")
         assert os.path.exists("temp_tags") is True
 
-        # # Check the error message
-        # captured = capsys.readouterr()
-        # assert "Error: File" in captured.out
+    def test_create_header(self):
+        """Test the create_header function from autoprototype.py"""
+        assert create_header("test.h", "test.c")
+        with open("test.h", "r", encoding='utf-8') as f:
+            assert 'int main(int argc, char **argv);' in f.read()
+        os.remove("test.h")
