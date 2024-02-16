@@ -6,12 +6,14 @@ from subprocess import CompletedProcess
 import subprocess
 import pytest
 from colorama import Fore
+from pytest_mock.plugin import _mocker
 from bettyfixer.autoprototype import (betty_check, filter_tags, generate_tags,
                                       print_check_betty_first,
                                       print_header_name_missing,
                                       print_ctags_header_error,
                                       check_ctags, create_header,
-                                      delete_files
+                                      delete_files, check_header_file,
+                                      autoproto
                                       )
 
 
@@ -21,13 +23,8 @@ class TestAutoprototypeSuite:
     """
 
     @pytest.fixture(autouse=True)
-    def setup_method(self, request):
+    def setup_method(self):
         """Set up the test """
-        is_filter_tag_test = "filter_tag" in request.node.name
-
-        if is_filter_tag_test:
-            generate_tags(".")
-            filter_tags(".", "tags")
 
         with open("test.c", "w", encoding="utf-8") as f:
             f.write(
@@ -36,9 +33,18 @@ class TestAutoprototypeSuite:
 
         os.remove("test.c")
 
-        if is_filter_tag_test:
-            for file in ["tags", "temp_tags"]:
-                os.remove(file)
+    @pytest.fixture()
+    def setup_tear_down_temp_files(self):
+        """Set up the test """
+        generate_tags(".")
+        filter_tags(".", "tags")
+        yield
+        if os.path.exists("tags"):
+            os.remove("tags")
+        if os.path.exists("temp_tags"):
+            os.remove("temp_tags")
+        if os.path.exists("test.h"):
+            os.remove("test.h")
 
     def test_betty_check_installed(self, mocker):
         """ Test if betty is installed"""
@@ -144,6 +150,7 @@ class TestAutoprototypeSuite:
         with open("tags", "r", encoding='utf-8') as f:
             assert 'int main(int argc, char **argv)' in f.read()
 
+    @pytest.mark.usefixtures("setup_tear_down_temp_files")
     def test_filter_tags_success(self):
         """Test the filter_tags function when the subprocess command succeeds."""
         generate_tags(".")
@@ -151,6 +158,7 @@ class TestAutoprototypeSuite:
 
         assert result is not None
 
+    @pytest.mark.usefixtures("setup_tear_down_temp_files")
     def test_filter_tags_failure(self, mocker):
         """Test the filter_tags function when the subprocess command fails."""
         mock_run = mocker.patch("subprocess.run")
@@ -163,6 +171,7 @@ class TestAutoprototypeSuite:
         assert not filter_tags('.', "tags")
         assert os.path.exists("temp_tags") is True
 
+    @pytest.mark.usefixtures("setup_tear_down_temp_files")
     def test_create_header(self):
         """Test the create_header function from autoprototype.py"""
         generate_tags(".")
@@ -174,32 +183,24 @@ class TestAutoprototypeSuite:
             content = f.read()
             assert 'test'.upper() in content
             assert 'endif' in content
-        os.remove("test.h")
-        os.remove("tags")
-        os.remove("temp_tags")
 
+    @pytest.mark.usefixtures("setup_tear_down_temp_files")
     def test_create_header_failure(self, mocker):
         """Test the create_header function from autoprototype.py"""
         mock_open = mocker.patch("builtins.open")
         mock_open.side_effect = AttributeError
         with pytest.raises(AttributeError):
-            create_header(123, filtered_tags="test")
+            create_header(123, filtered_tags="tags")
         assert os.path.exists("test.h") is False
-        with pytest.raises(FileNotFoundError):
-            os.remove("tags")
-            os.remove("temp_tags")
 
+    @pytest.mark.usefixtures("setup_tear_down_temp_files")
     def test_delete_files(self):
         """Test the delete_files function from autoprototype.py"""
-
-        with open("tags", "w", encoding="utf-8"):
-            pass
-        with open("temp_tags", "w", encoding="utf-8"):
-            pass
         delete_files('tags', 'temp_tags')
         assert os.path.exists("tags") is False
         assert os.path.exists("temp_tags") is False
 
+    @pytest.mark.usefixtures("setup_tear_down_temp_files")
     def test_delete_files_failure(self, mocker):
         """Test the delete_files function from autoprototype.py"""
         mock_remove = mocker.patch("subprocess.run")
@@ -209,3 +210,36 @@ class TestAutoprototypeSuite:
             delete_files('tags', 'temp_tags')
         mock_remove.assert_called_once_with(
             'rm tags temp_tags', check=True, shell=True)
+        assert os.path.exists("tags") is True
+
+    def test_check_header_file(self):
+        """ Test the check_header_file function from autoprototype.py"""
+        os.mknod("test.h")
+        result = check_header_file("test.h")
+        assert result == (True, None)
+        os.remove("test.h")
+        result = check_header_file("test")
+        assert result == (
+            False, "Error: Invalid header file. It should have a '.h' extension.")
+
+    @pytest.mark.usefixtures("setup_tear_down_temp_files")
+    def test_autoproto(self, mocker):
+        """ Test the autoproto function from autoprototype.py"""
+        mock_check_header_file, mock_filter_tags, mock_generate_tags, mock_create_header = mocker.patch(
+            "bettyfixer.autoprototype.check_header_file"), mocker.patch(
+            "bettyfixer.autoprototype.filter_tags"), mocker.patch(
+            "bettyfixer.autoprototype.generate_tags"), mocker.patch(
+            "bettyfixer.autoprototype.create_header")
+
+        mock_check_header_file.return_value = (True, None)
+        mock_generate_tags.return_value = True
+        mock_filter_tags.return_value = True
+        mock_create_header.return_value = None
+
+        autoproto(".", "test.h")
+        mock_check_header_file.assert_called_once_with("test.h")
+        mock_generate_tags.assert_called_once()
+        mock_filter_tags.assert_called_once()
+        mock_create_header.assert_called_once_with(
+            "test.h", mock_filter_tags.return_value)
+        mocker.stopall()
