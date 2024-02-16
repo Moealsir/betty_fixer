@@ -238,7 +238,7 @@ class TestAutoprototypeSuite:
 
         autoproto(".", "test.h")
         mock_check_header_file.assert_called_once_with("test.h")
-        mock_generate_tags.assert_called_once()
+        mock_generate_tags.assert_called_once_with(".")
         mock_filter_tags.assert_called_once()
         mock_create_header.assert_called_once_with(
             "test.h", mock_filter_tags.return_value)
