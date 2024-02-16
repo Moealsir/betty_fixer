@@ -176,3 +176,14 @@ class TestAutoprototypeSuite:
         os.remove("test.h")
         os.remove("tags")
         os.remove("temp_tags")
+
+    def test_create_header_failure(self, mocker):
+        """Test the create_header function from autoprototype.py"""
+        mock_open = mocker.patch("builtins.open")
+        mock_open.side_effect = AttributeError
+        with pytest.raises(AttributeError):
+            create_header(123, filtered_tags="test")
+        assert os.path.exists("test.h") is False
+        with pytest.raises(FileNotFoundError):
+            os.remove("tags")
+            os.remove("temp_tags")
