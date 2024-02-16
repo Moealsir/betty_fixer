@@ -164,7 +164,12 @@ class TestAutoprototypeSuite:
 
     def test_create_header(self):
         """Test the create_header function from autoprototype.py"""
-        assert create_header("test.h", "test.c")
+        generate_tags(".")
+        filtered_tags = filter_tags(".", "tags")
+
+        create_header("test.h", filtered_tags=filtered_tags)
+        assert os.path.exists("test.h") is True
         with open("test.h", "r", encoding='utf-8') as f:
+            assert 'test'.upper() in f.read()
             assert 'int main(int argc, char **argv);' in f.read()
         os.remove("test.h")
