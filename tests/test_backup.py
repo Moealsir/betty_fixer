@@ -31,17 +31,14 @@ class TestBackup:
             assert 'int main(int argc,' in f.read()
         os.remove(self.test_file + '.bak')
 
-    def test_create_backup_same_file_error(self):
+    def test_create_backup_same_file_error(self, mocker, capsys):
         """Test the create_backup function with a same file error."""
-        with open(self.test_file + '.bak', 'w', encoding='utf-8') as f:
-            f.write(
-                'int main(int argc, char **argv){\nprintf("Hello World"\nreturn 0; \n}')
-        assert os.path.exists(self.test_file + '.bak')
-        with pytest.raises(shutil.SameFileError):
-            backup.create_backup(self.test_file)
-        with open(self.test_file + '.bak', 'r', encoding='utf-8') as f:
-            assert f.read() == 'test'
-        os.remove(self.test_file + '.bak')
+
+        mocker.patch('shutil.copy2', side_effect=shutil.SameFileError)
+        backup.create_backup(self.test_file)
+        captured = capsys.readouterr()
+        assert 'Err creating backup' in captured.out
+        assert not os.path.exists(self.test_file + '.bak')
 
     # def test_create_backup_file_not_found(self):
     #     """Test the create_backup function with a file not found error."""
