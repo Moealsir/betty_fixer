@@ -37,14 +37,16 @@ class TestBackup:
         mocker.patch('shutil.copy2', side_effect=shutil.SameFileError)
         backup.create_backup(self.test_file)
         captured = capsys.readouterr()
-        assert 'Err creating backup' in captured.out
+        assert 'Src and dest are same file' in captured.out
         assert not os.path.exists(self.test_file + '.bak')
 
-    # def test_create_backup_file_not_found(self):
-    #     """Test the create_backup function with a file not found error."""
-    #     os.remove(self.test_file)
-    #     backup.create_backup(self.test_file)
-    #     assert not os.path.exists(self.test_file + '.bak')
+    def test_create_backup_file_not_found(self, mocker, capsys):
+        """Test the create_backup function with a file not found error."""
+        mocker.patch('shutil.copy2', side_effect=FileNotFoundError)
+        backup.create_backup(self.test_file)
+        captured = capsys.readouterr()
+        assert 'File not found' in captured.out
+        assert not os.path.exists(self.test_file + '.bak')
 
     # def test_create_backup_is_a_directory_error(self):
     #     """Test the create_backup function with an is a directory error."""
