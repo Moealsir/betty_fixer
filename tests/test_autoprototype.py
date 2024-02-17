@@ -13,7 +13,7 @@ from bettyfixer.autoprototype import (betty_check, filter_tags, generate_tags,
                                       print_ctags_header_error,
                                       check_ctags, create_header,
                                       delete_files, check_header_file,
-                                      autoproto
+                                      autoproto, print_ctags_header_error
                                       )
 
 
@@ -159,7 +159,7 @@ class TestAutoprototypeSuite:
         assert result is not None
 
     @pytest.mark.usefixtures("setup_tear_down_temp_files")
-    def test_filter_tags_failure(self, mocker):
+    def test_filter_tags_failure(self, mocker, capsys):
         """Test the filter_tags function when the subprocess command fails."""
         mock_run = mocker.patch("subprocess.run")
         mock_run.return_value = CompletedProcess(args=['ctags', '-R', '.'],
@@ -170,6 +170,12 @@ class TestAutoprototypeSuite:
         # Call the function and check the result
         assert not filter_tags('.', "tags")
         assert os.path.exists("temp_tags") is True
+        mocker.stopall()
+        mock_run = mocker.patch("os.path.exists")
+        mock_run.return_value = False
+        assert filter_tags('.', "tags") is None
+        captured = capsys.readouterr()
+        assert "Error" in captured.out
 
     @pytest.mark.usefixtures("setup_tear_down_temp_files")
     def test_create_header(self):
@@ -226,11 +232,12 @@ class TestAutoprototypeSuite:
     def test_autoproto(self, mocker):
         """ Test the autoproto function from autoprototype.py"""
         mock_check_header_file, mock_filter_tags, \
-            mock_generate_tags, mock_create_header = mocker.patch(
+            mock_generate_tags, mock_create_header, mock_ctag_print = mocker.patch(
                 "bettyfixer.autoprototype.check_header_file"), mocker.patch(
                 "bettyfixer.autoprototype.filter_tags"), mocker.patch(
                 "bettyfixer.autoprototype.generate_tags"), mocker.patch(
-                "bettyfixer.autoprototype.create_header")
+                "bettyfixer.autoprototype.create_header"), mocker.patch(
+                "bettyfixer.autoprototype.print_ctags_header_error")
 
         mock_check_header_file.return_value = (True, None)
         mock_generate_tags.return_value = True
@@ -244,3 +251,6 @@ class TestAutoprototypeSuite:
         mock_create_header.assert_called_once_with(
             "test.h", mock_filter_tags.return_value)
         mocker.stopall()
+        # mock_check_header_file.return_value = (False, None)
+        # autoproto(".", "test.h")
+        # mock_ctag_print.assert_called_once()
