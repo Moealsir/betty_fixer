@@ -15,7 +15,7 @@ def create_backup(file_path):
         shutil.copy2(file_path, backup_path)
     except shutil.SameFileError:
         print(
-            f"Err creating backup {file_path}: Src and dest are same file.")
+            f"Error creating backup {file_path}: Src and dest are same file.")
     except FileNotFoundError:
         print(f"Error creating backup for {file_path}: File not found.")
     except IsADirectoryError:
