@@ -48,24 +48,26 @@ class TestBackup:
         assert 'File not found' in captured.out
         assert not os.path.exists(self.test_file + '.bak')
 
-    # def test_create_backup_is_a_directory_error(self):
-    #     """Test the create_backup function with an is a directory error."""
-    #     os.remove(self.test_file)
-    #     os.mkdir(self.test_file)
-    #     backup.create_backup(self.test_file)
-    #     assert not os.path.exists(self.test_file + '.bak')
+    def test_create_backup_is_a_directory_error(self, mocker, capsys):
+        """Test the create_backup function with an is a directory error."""
+        mocker.patch('shutil.copy2', side_effect=IsADirectoryError)
+        backup.create_backup(self.test_file)
+        captured = capsys.readouterr()
+        assert 'Is a directory error' in captured.out
+        assert not os.path.exists(self.test_file + '.bak')
 
-    # def test_create_backup_permission_error(self):
-    #     """Test the create_backup function with a permission error."""
-    #     os.chmod(self.test_file, 0o000)
-    #     backup.create_backup(self.test_file)
-    #     assert not os.path.exists(self.test_file + '.bak')
+    def test_create_backup_permission_error(self, mocker, capsys):
+        """Test the create_backup function with a permission error."""
+        mocker.patch('shutil.copy2', side_effect=PermissionError)
+        backup.create_backup(self.test_file)
+        captured = capsys.readouterr()
+        assert 'Permission error' in captured.out
+        assert not os.path.exists(self.test_file + '.bak')
 
-    # def test_create_backup_os_error(self):
-    #     """Test the create_backup function with an os error."""
-    #     os.remove(self.test_file)
-    #     with open(self.test_file, 'w', encoding='utf-8') as f:
-    #         f.write('test')
-    #     os.chmod(self.test_file, 0o000)
-    #     backup.create_backup(self.test_file)
-    #     assert not os.path.exists(self.test_file + '.bak')
+    def test_create_backup_os_error(self, mocker, capsys):
+        """Test the create_backup function with an os error."""
+        mocker.patch('shutil.copy2', side_effect=OSError)
+        backup.create_backup(self.test_file)
+        captured = capsys.readouterr()
+        assert 'Unexpected error' in captured.out
+        assert not os.path.exists(self.test_file + '.bak')
