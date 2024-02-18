@@ -31,8 +31,8 @@ fi
 for file in "$@"
 do
     # Change the file suffix to .txt
+    filename=$(basename "$file")
     output_file="${file%.py}.txt"
-
 
     echo -e "\n\nName: $NAME\n" >> "${PATHLOG}/${output_file}"
     echo -e "Date: $CURRENT_DATE\n" >> "${PATHLOG}/${output_file}"
