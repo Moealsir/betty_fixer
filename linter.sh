@@ -7,7 +7,7 @@ CURRENT_DATE=$(date -u +"%Y-%m-%dT%H:%M:%SZ")
 NAME=$(git config --get user.name)
 
 # path from the root of project to the directory where the log files will be saved
-PATHLOG=$(git rev-parse --show-toplevel)/error_logs/linting
+PATHLOG=$(git rev-parse --show-toplevel)/errors_logs/linting
 # Check if pylint is installed
 if ! command -v pylint &> /dev/null
 then
