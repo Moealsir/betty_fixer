@@ -488,7 +488,7 @@ def main():
     if len(sys.argv) < 2:
         print(
             "Usage: python -m betty_fixer_package.betty_fixer\
-                  file1.c file2.c ...")
+ file1.c file2.c ...")
         sys.exit(1)
 
     if "-H" in sys.argv and len(sys.argv) > 2:

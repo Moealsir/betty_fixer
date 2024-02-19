@@ -62,7 +62,7 @@ def check_ctags():
         return True, None
     except subprocess.CalledProcessError:
         msg = "ctags is not installed. \
-            Please install ctags before running this script."
+Please install ctags before running this script."
         return False, msg
 
 
