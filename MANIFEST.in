@@ -1,1 +1,3 @@
 include README.md
+recursive-exclude  errors_logs *
+exclude pylintrc
