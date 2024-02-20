@@ -3,6 +3,7 @@ Test the betty_fixer module.
 """
 import os
 import pytest
+import re
 from bettyfixer.betty_fixer import (
     read_file, write_file, add_line_without_newline,
     remove_consecutive_blank_lines, add_parentheses_around_return,
@@ -52,3 +53,26 @@ class TestBettyFixer:
         """Test add_line_without_newline function."""
         with pytest.raises(FileNotFoundError):
             add_line_without_newline("notFound", "\n")
+
+    def test_remove_consecutive_blank_lines(self):
+        """Test remove_consecutive_blank_lines function."""
+        list_str_blank = ["Hello\n\n\nWorld", "Hello\n\n\nWorld\n\n\n",
+                          "Hello\n\n\nWorld\n\n\n\n\n",
+                          "\n\n\nHello\n\n\nWorld\n\n\n\n\n\n"]
+
+        assert all(remove_consecutive_blank_lines(string) != re.search(
+            "\n{3,}", string) for string in list_str_blank)
+
+    def test_add_parentheses_around_return(self):
+        """Test add_parentheses_around_return function."""
+
+        return_ = {
+            "return 0;": r"return\s*\((\d+)\);",
+            "return (0);": r"return\s*\((\d+)\);",
+            "return ;": r"return\s*;",
+            "return value;": r"return\s*\(value\);",
+            "return (value);": r"return\s*\(value\);"
+        }
+
+        for key, value in return_.items():
+            assert re.search(value, add_parentheses_around_return(key))
