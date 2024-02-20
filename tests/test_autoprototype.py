@@ -13,7 +13,7 @@ from bettyfixer.autoprototype import (betty_check, filter_tags, generate_tags,
                                       print_ctags_header_error,
                                       check_ctags, create_header,
                                       delete_files, check_header_file,
-                                      autoproto, print_ctags_header_error
+                                      autoproto
                                       )
 
 
@@ -232,12 +232,11 @@ class TestAutoprototypeSuite:
     def test_autoproto(self, mocker):
         """ Test the autoproto function from autoprototype.py"""
         mock_check_header_file, mock_filter_tags, \
-            mock_generate_tags, mock_create_header, mock_ctag_print = mocker.patch(
+            mock_generate_tags, mock_create_header = mocker.patch(
                 "bettyfixer.autoprototype.check_header_file"), mocker.patch(
                 "bettyfixer.autoprototype.filter_tags"), mocker.patch(
                 "bettyfixer.autoprototype.generate_tags"), mocker.patch(
-                "bettyfixer.autoprototype.create_header"), mocker.patch(
-                "bettyfixer.autoprototype.print_ctags_header_error")
+                "bettyfixer.autoprototype.create_header")
 
         mock_check_header_file.return_value = (True, None)
         mock_generate_tags.return_value = True
@@ -251,6 +250,3 @@ class TestAutoprototypeSuite:
         mock_create_header.assert_called_once_with(
             "test.h", mock_filter_tags.return_value)
         mocker.stopall()
-        # mock_check_header_file.return_value = (False, None)
-        # autoproto(".", "test.h")
-        # mock_ctag_print.assert_called_once()
