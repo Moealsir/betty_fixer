@@ -93,6 +93,7 @@ class TestBettyFixer:
     def test_remove_trailing_whitespaces(self):
         """Test remove_trailing_whitespaces function."""
         lines = ["Hello World  ", "Hello World",
-                 "Hello World\t", "Hello World\t\t"]  # ❗ "Hello World\n" and "Hello World\n  " is failing
+                 "Hello World\t", "Hello World\t\t"]
+        # ❗ "Hello World\n" and "Hello World\n  " is failing
         assert all(remove_trailing_whitespaces(line)
                    == re.search(r"Hello World\S*", line).group() for line in lines)
