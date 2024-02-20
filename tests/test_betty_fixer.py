@@ -41,3 +41,14 @@ class TestBettyFixer:
         write_file("./hello.txt", "Hello World")
         assert read_file("./hello.txt") == "Hello World"
         os.remove("./hello.txt")
+
+    def test_add_line_without_newline(self):
+        """Test add_line_without_newline function."""
+        add_line_without_newline("test.c", "\n")
+        assert read_file(
+            "test.c") == 'int main(int argc, char **argv){\nprintf("Hello World"\nreturn 0; \n}\n'
+
+    def test_add_line_without_newline_fail(self):
+        """Test add_line_without_newline function."""
+        with pytest.raises(FileNotFoundError):
+            add_line_without_newline("notFound", "\n")
