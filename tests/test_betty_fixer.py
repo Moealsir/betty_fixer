@@ -75,4 +75,17 @@ class TestBettyFixer:
         }
 
         for key, value in return_.items():
-            assert re.search(value, add_parentheses_around_return(key))
+            assert re.search(
+                value, add_parentheses_around_return(key)) is not None
+
+    def test_fix_comments(self):
+        """Test fix_comments function."""
+        comments = {
+            "something// comment": r"something\s*",
+            "something // comment": r"something\s*",
+            "something // comment\n": r"something\s*",
+            "// comment": r"\s*",
+            "/* comment */": r"\s*\/\* comment \*/\s*",
+        }
+        for key, value in comments.items():
+            assert re.search(value, fix_comments(key)) is not None
