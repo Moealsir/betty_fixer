@@ -100,7 +100,7 @@ class TestBettyFixer:
         assert all(remove_trailing_whitespaces(line)
                    == re.search(r"Hello World\S*", line).group() for line in lines)
 
-    # @pytest.mark.skip(reason="Needs to be refactored with Dependency Injection in mind")
+    # ❗ @pytest.mark.skip(reason="Needs to be refactored with Dependency Injection in mind")
     def test_fix_betty_warnings(self, mocker):
         """Test fix_betty_warnings function."""
         mock_remove_consecutive_blank_lines = mocker.patch(
@@ -130,3 +130,38 @@ class TestBettyFixer:
         mock_open.assert_any_call("some_file", 'r', encoding='utf-8')
         mock_open.assert_any_call("some_file", 'w', encoding='utf-8')
         mock_open().writelines.assert_called_once_with(["/**\n", "*/"])
+
+    # ❗ @pytest.mark.skip(reason="in serious need of refactoring. Decoupling and Dependency Injection")
+    def test_fix_betty_style(self, mocker):
+        """Test fix_betty_style function."""
+        file_paths = ["file1", "file2", "file3"]
+        mock_create_backup = mocker.patch(
+            "bettyfixer.betty_fixer.create_backup", return_value="file content")
+        mock_run_vi_script = mocker.patch(
+            "bettyfixer.betty_fixer.run_vi_script", return_value="file content")
+        mock_read_file = mocker.patch(
+            "bettyfixer.betty_fixer.read_file", return_value="file content")
+        mock_write_file = mocker.patch(
+            "bettyfixer.betty_fixer.write_file", return_value="file content")
+        mock_add_line_without_newline = mocker.patch(
+            "bettyfixer.betty_fixer.add_line_without_newline", return_value="file content")
+        mock_process_errors = mocker.patch(
+            "bettyfixer.betty_fixer.process_errors", return_value="file content")
+        mock_open = mocker.patch(
+            "builtins.open", mocker.mock_open(read_data="file content"))
+
+        fix_betty_style(file_paths)
+
+        mock_process_errors.call_count = len(file_paths) * 2
+        # Check that the mocked functions were called with the correct arguments
+        for file_path in file_paths:
+            mock_create_backup.assert_any_call(file_path)
+            mock_run_vi_script.assert_any_call(file_path)
+            mock_read_file.assert_any_call(file_path)
+            mock_write_file.assert_any_call(file_path, "file content")
+            mock_add_line_without_newline.assert_any_call(file_path, "\n")
+            mock_process_errors.assert_any_call(file_path)
+
+            mock_open.assert_any_call(file_path, 'r', encoding='utf-8')
+            mock_open.assert_any_call(file_path, 'w', encoding='utf-8')
+            mock_open().writelines.assert_called_with(["file content"])
