@@ -2,12 +2,12 @@
 Test the betty_fixer module.
 """
 import os
-import pytest
 import re
+import pytest
 from bettyfixer.betty_fixer import (
     read_file, write_file, add_line_without_newline,
     remove_consecutive_blank_lines, add_parentheses_around_return,
-    fix_comments, remove_trailing_whitespaces, process_errors,
+    fix_comments, remove_trailing_whitespaces,
     fix_betty_warnings, remove_blank_lines_inside_comments,
     fix_betty_style, more_than_5_functions_in_the_file,
     find_available_file_name, copy_remaining_lines,
@@ -31,6 +31,8 @@ class TestBettyFixer:
         yield
 
         os.remove("test.c")
+        if os.path.exists("errors.txt"):
+            os.remove("errors.txt")
 
     def test_read_file(self):
         """Test read_file function."""
@@ -97,3 +99,35 @@ class TestBettyFixer:
         # ❗ "Hello World\n" and "Hello World\n  " is failing
         assert all(remove_trailing_whitespaces(line)
                    == re.search(r"Hello World\S*", line).group() for line in lines)
+
+    # @pytest.mark.skip(reason="Needs to be refactored with Dependency Injection in mind")
+    def test_fix_betty_warnings(self, mocker):
+        """Test fix_betty_warnings function."""
+        mock_remove_consecutive_blank_lines = mocker.patch(
+            "bettyfixer.betty_fixer.remove_consecutive_blank_lines", return_value="some_content")
+        mock_fix_comments = mocker.patch(
+            "bettyfixer.betty_fixer.fix_comments", return_value="some_content")
+        mock_remove_trailing_whitespaces = mocker.patch(
+            "bettyfixer.betty_fixer.remove_trailing_whitespaces")
+        fix_betty_warnings("some_content", "test.c")
+        mock_remove_consecutive_blank_lines.assert_called_once_with(
+            "some_content")
+        mock_fix_comments.assert_called_once_with("some_content")
+        mock_remove_trailing_whitespaces.assert_called_once_with(
+            "some_content")
+
+
+def test_remove_blank_lines_inside_comments(mocker):
+    """Test remove_blank_lines_inside_comments function."""
+
+    mock_clean_errors_file = mocker.patch(
+        "bettyfixer.betty_fixer.clean_errors_file")
+    mock_open = mocker.patch(
+        "builtins.open", mocker.mock_open(read_data="/**\n\n*/"))
+
+    remove_blank_lines_inside_comments("some_file")
+    mock_clean_errors_file.assert_called_once_with('errors.txt')
+    assert mock_open.call_count == 2
+    mock_open.assert_any_call("some_file", 'r', encoding='utf-8')
+    mock_open.assert_any_call("some_file", 'w', encoding='utf-8')
+    mock_open().writelines.assert_called_once_with(["/**\n", "*/"])
