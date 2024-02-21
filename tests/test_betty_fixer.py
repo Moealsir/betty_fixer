@@ -116,18 +116,17 @@ class TestBettyFixer:
         mock_remove_trailing_whitespaces.assert_called_once_with(
             "some_content")
 
+    def test_remove_blank_lines_inside_comments(self, mocker):
+        """Test remove_blank_lines_inside_comments function."""
 
-def test_remove_blank_lines_inside_comments(mocker):
-    """Test remove_blank_lines_inside_comments function."""
+        mock_clean_errors_file = mocker.patch(
+            "bettyfixer.betty_fixer.clean_errors_file")
+        mock_open = mocker.patch(
+            "builtins.open", mocker.mock_open(read_data="/**\n\n*/"))
 
-    mock_clean_errors_file = mocker.patch(
-        "bettyfixer.betty_fixer.clean_errors_file")
-    mock_open = mocker.patch(
-        "builtins.open", mocker.mock_open(read_data="/**\n\n*/"))
-
-    remove_blank_lines_inside_comments("some_file")
-    mock_clean_errors_file.assert_called_once_with('errors.txt')
-    assert mock_open.call_count == 2
-    mock_open.assert_any_call("some_file", 'r', encoding='utf-8')
-    mock_open.assert_any_call("some_file", 'w', encoding='utf-8')
-    mock_open().writelines.assert_called_once_with(["/**\n", "*/"])
+        remove_blank_lines_inside_comments("some_file")
+        mock_clean_errors_file.assert_called_once_with('errors.txt')
+        assert mock_open.call_count == 2
+        mock_open.assert_any_call("some_file", 'r', encoding='utf-8')
+        mock_open.assert_any_call("some_file", 'w', encoding='utf-8')
+        mock_open().writelines.assert_called_once_with(["/**\n", "*/"])
