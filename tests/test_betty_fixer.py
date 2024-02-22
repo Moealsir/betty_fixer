@@ -280,3 +280,13 @@ class TestBettyFixer:
         assert mock_open.call_count == len(files) * 2
         mock_open.assert_any_call("file1.c", 'r', encoding='utf-8')
         mock_open.assert_any_call("file1.c", 'w', encoding='utf-8')
+
+    def test_record_processed_file(self, mocker):
+        """Test record_processed_file function."""
+        HIDDEN_FILE_NAME = ".processed_files"  # pylint: disable=invalid-name
+        mock_open = mocker.patch("builtins.open", mocker.mock_open())
+        filename = "test_file.c"
+        record_processed_file(filename)
+        mock_open.assert_called_once_with(
+            HIDDEN_FILE_NAME, 'a', encoding='utf-8')
+        mock_open().write.assert_called_once_with(filename + '\n')
