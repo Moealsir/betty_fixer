@@ -17,7 +17,7 @@ from bettyfixer.betty_fixer import (
 )
 
 
-class TestBettyFixer:
+class TestBettyFixer:  # pylint: disable=too-many-public-methods
     """
     Test the betty_fixer module.
     """
