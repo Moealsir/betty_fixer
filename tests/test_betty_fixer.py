@@ -336,3 +336,17 @@ class TestBettyFixer:  # pylint: disable=too-many-public-methods
 
         captured = capsys.readouterr()
         assert "Usage: python -m betty_fixer_package.betty_fixer " in captured.out
+
+    def test_main_header_option(self, mocker):
+        """Test main function with -H option."""
+        mocker.patch("bettyfixer.betty_fixer.is_file_processed",
+                     return_value=False)
+        mocker.patch("bettyfixer.betty_fixer.betty_check", return_value=True)
+        mocker.patch("sys.argv", ["betty_fixer", "-H", "header.h"])
+        mock_autoproto = mocker.patch("bettyfixer.betty_fixer.autoproto")
+
+        main()
+
+        assert sys.argv[sys.argv.index("-H") + 1] == "header.h"
+        mock_autoproto.assert_called_once_with(
+            ".", "header.h")
