@@ -325,3 +325,14 @@ class TestBettyFixer:  # pylint: disable=too-many-public-methods
             main()
         captured = capsys.readouterr()
         assert "The files have already been processed. Skipping.\n" == captured.out
+
+    def test_main_no_args(self, mocker, capsys):
+        """Test main function with no arguments."""
+        mocker.patch("bettyfixer.betty_fixer.is_file_processed",
+                     return_value=False)
+        mocker.patch("sys.argv", ["betty_fixer"])
+        with pytest.raises(SystemExit):
+            main()
+
+        captured = capsys.readouterr()
+        assert "Usage: python -m betty_fixer_package.betty_fixer " in captured.out
