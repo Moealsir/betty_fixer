@@ -141,6 +141,7 @@ def process_errors(file_path):
     process_error_file(file_path)
 
 
+# ❗ Needs to be refactored with Dependency Injection in mind
 def fix_betty_warnings(content, file_path):
     """
     Fix Betty warnings in the specified content.
@@ -190,6 +191,7 @@ def remove_blank_lines_inside_comments(file_path):
                     return
 
 
+# ❗ in serious need of refactoring. Decoupling and Dependency Injection
 def fix_betty_style(file_paths):
     """
     Fix Betty style for the specified file paths.
