@@ -193,3 +193,13 @@ class TestBettyFixer:
             True] * 100 + [False]  # Simulate that "test1.txt" to "test100.txt" exist
         mocker.patch('os.path.exists', side_effect=exists_side_effect)
         assert find_available_file_name("test.txt") == "test101.txt"
+
+    def test_copy_remaining_lines(self, mocker):
+        """Test copy_remaining_lines function."""
+        mock_open = mocker.patch("builtins.open", mocker.mock_open())
+        lines = ["line1\n", "line2\n", "line3\n"]
+        start_line = 1
+        new_file_path = "new_file.txt"
+        copy_remaining_lines(lines, start_line, new_file_path)
+        mock_open.assert_called_once_with(new_file_path, 'w', encoding='utf-8')
+        mock_open().write.assert_called_once_with("".join(lines[start_line:]))
