@@ -249,3 +249,12 @@ class TestBettyFixer:
         mock_modify_main_files.assert_called_once_with([file_path])
         mock_clean_errors_file.assert_called_once_with('errors.txt')
         mock_exctract_errors.assert_called_once_with(file_path, 'errors.txt')
+
+    def test_create_tasks_directory(self, mocker):
+        """Test create_tasks_directory function."""
+        mock_makedirs = mocker.patch("os.makedirs")
+        mock_os_path_exists = mocker.patch(
+            "os.path.exists", return_value=False)
+        create_tasks_directory()
+        mock_os_path_exists.assert_called_once_with("tasks")
+        mock_makedirs.assert_called_once_with("tasks")
