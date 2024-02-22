@@ -203,3 +203,27 @@ class TestBettyFixer:
         copy_remaining_lines(lines, start_line, new_file_path)
         mock_open.assert_called_once_with(new_file_path, 'w', encoding='utf-8')
         mock_open().write.assert_called_once_with("".join(lines[start_line:]))
+
+    def test_betty_handler_no_errors(self, mocker):
+        """Test betty_handler function when there are no Betty errors."""
+        mock_open = mocker.patch(
+            "builtins.open", mocker.mock_open(read_data=""))
+        mock_other_handlers = mocker.patch(
+            "bettyfixer.betty_fixer.other_handlers")
+        betty_handler("errors.txt")
+        mock_open.assert_called_once_with("errors.txt", 'r', encoding='utf-8')
+        mock_other_handlers.assert_not_called()
+
+    def test_betty_handler_with_errors(self, mocker):
+        """Test betty_handler function when there are Betty errors."""
+        error_lines = "More than 40 lines in a function\nline over 80 characters\n"
+        mock_open = mocker.patch(
+            "builtins.open", mocker.mock_open(read_data=error_lines))
+        mock_other_handlers = mocker.patch(
+            "bettyfixer.betty_fixer.other_handlers")
+        mock_extract_and_print_variables = mocker.patch(
+            "bettyfixer.betty_fixer.extract_and_print_variables", return_value=("file_path",))
+        betty_handler("errors.txt")
+        mock_open.assert_called_once_with("errors.txt", 'r', encoding='utf-8')
+        mock_extract_and_print_variables.assert_called()
+        mock_other_handlers.assert_called_with("file_path")
