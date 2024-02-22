@@ -9,7 +9,7 @@ from bettyfixer.betty_fixer import (
     remove_consecutive_blank_lines, add_parentheses_around_return,
     fix_comments, remove_trailing_whitespaces,
     fix_betty_warnings, remove_blank_lines_inside_comments,
-    fix_betty_style, more_than_5_functions_in_the_file,
+    fix_betty_style,
     find_available_file_name, copy_remaining_lines,
     betty_handler, other_handlers, create_tasks_directory,
     copy_files_to_tasks, modify_main_files, record_processed_file,
