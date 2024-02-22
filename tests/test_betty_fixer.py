@@ -165,3 +165,31 @@ class TestBettyFixer:
             mock_open.assert_any_call(file_path, 'r', encoding='utf-8')
             mock_open.assert_any_call(file_path, 'w', encoding='utf-8')
             mock_open().writelines.assert_called_with(["file content"])
+
+    # ❗
+    @pytest.mark.skip(reason="Needs refactoring [DI, pure functions, decoupling]")
+    def test_more_than_5_functions_in_the_file(self, mocker):
+        """Test more_than_5_functions_in_the_file function."""
+        pass  # pylint: disable=unnecessary-pass
+
+    def test_find_available_file_name_no_existing_files(self, mocker):
+        """Test find_available_file_name when there are
+        no existing files with the same base name."""
+        mocker.patch('os.path.exists', return_value=False)
+        assert find_available_file_name("test.txt") == "test1.txt"
+
+    def test_find_available_file_name_with_existing_files(self, mocker):
+        """Test find_available_file_name when
+        there are existing files with the same base name."""
+        exists_side_effect = [
+            True, True, False]  # Simulate that "test1.txt" and "test2.txt" exist
+        mocker.patch('os.path.exists', side_effect=exists_side_effect)
+        assert find_available_file_name("test.txt") == "test3.txt"
+
+    def test_find_available_file_name_with_many_existing_files(self, mocker):
+        """Test find_available_file_name when there are many existing
+        files with the same base name."""
+        exists_side_effect = [
+            True] * 100 + [False]  # Simulate that "test1.txt" to "test100.txt" exist
+        mocker.patch('os.path.exists', side_effect=exists_side_effect)
+        assert find_available_file_name("test.txt") == "test101.txt"
