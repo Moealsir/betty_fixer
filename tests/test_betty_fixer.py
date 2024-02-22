@@ -227,3 +227,25 @@ class TestBettyFixer:
         mock_open.assert_called_once_with("errors.txt", 'r', encoding='utf-8')
         mock_extract_and_print_variables.assert_called()
         mock_other_handlers.assert_called_with("file_path")
+
+    def test_other_handlers(self, mocker):
+        """Test other_handlers function."""
+        mock_create_tasks_directory = mocker.patch(
+            "bettyfixer.betty_fixer.create_tasks_directory")
+        mock_copy_files_to_tasks = mocker.patch(
+            "bettyfixer.betty_fixer.copy_files_to_tasks")
+        mock_modify_main_files = mocker.patch(
+            "bettyfixer.betty_fixer.modify_main_files")
+        mock_clean_errors_file = mocker.patch(
+            "bettyfixer.betty_fixer.clean_errors_file")
+        mock_exctract_errors = mocker.patch(
+            "bettyfixer.betty_fixer.exctract_errors")
+
+        file_path = "test_file.c"
+        other_handlers(file_path)
+
+        mock_create_tasks_directory.assert_called_once()
+        mock_copy_files_to_tasks.assert_called_once_with([file_path])
+        mock_modify_main_files.assert_called_once_with([file_path])
+        mock_clean_errors_file.assert_called_once_with('errors.txt')
+        mock_exctract_errors.assert_called_once_with(file_path, 'errors.txt')
