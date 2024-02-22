@@ -258,3 +258,25 @@ class TestBettyFixer:
         create_tasks_directory()
         mock_os_path_exists.assert_called_once_with("tasks")
         mock_makedirs.assert_called_once_with("tasks")
+
+    def test_copy_files_to_tasks(self, mocker):
+        """Test copy_files_to_tasks function."""
+        mock_exists = mocker.patch("os.path.exists", return_value=False)
+        mock_open = mocker.patch("builtins.open", mocker.mock_open(
+            read_data="#include <stdio.h>\nint main() {}\n#include \"file.h\""))
+        files = ["file1.c", "file2.c"]
+        copy_files_to_tasks(files)
+        assert mock_exists.call_count == len(files)
+        # Each file is opened twice: once for reading and once for writing
+        assert mock_open.call_count == len(files) * 2
+        mock_open.assert_any_call("file1.c", 'r', encoding='utf-8')
+
+    def test_modify_main_files(self, mocker):
+        """Test modify_main_files function."""
+        mock_open = mocker.patch("builtins.open", mocker.mock_open(
+            read_data="#include <stdio.h>\nint main() {}\n#include \"file.h\""))
+        files = ["file1.c", "file2.c"]
+        modify_main_files(files)
+        assert mock_open.call_count == len(files) * 2
+        mock_open.assert_any_call("file1.c", 'r', encoding='utf-8')
+        mock_open.assert_any_call("file1.c", 'w', encoding='utf-8')
