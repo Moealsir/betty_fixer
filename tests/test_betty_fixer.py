@@ -3,13 +3,14 @@ Test the betty_fixer module.
 """
 import os
 import re
+import sys
 import pytest
 from bettyfixer.betty_fixer import (
     read_file, write_file, add_line_without_newline,
     remove_consecutive_blank_lines, add_parentheses_around_return,
     fix_comments, remove_trailing_whitespaces,
     fix_betty_warnings, remove_blank_lines_inside_comments,
-    fix_betty_style,
+    fix_betty_style, main,
     find_available_file_name, copy_remaining_lines,
     betty_handler, other_handlers, create_tasks_directory,
     copy_files_to_tasks, modify_main_files, record_processed_file,
@@ -314,3 +315,13 @@ class TestBettyFixer:  # pylint: disable=too-many-public-methods
             read_data="other_file.c\n"))
 
         assert is_file_processed("test_file.c") is False
+
+    def test_main_processed_files(self, mocker, capsys):
+        """Test main function when .processed_files exists."""
+        mocker.patch("bettyfixer.betty_fixer.is_file_processed",
+                     return_value=True)
+
+        with pytest.raises(SystemExit):
+            main()
+        captured = capsys.readouterr()
+        assert "The files have already been processed. Skipping.\n" == captured.out
