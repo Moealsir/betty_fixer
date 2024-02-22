@@ -131,7 +131,7 @@ class TestBettyFixer:
         mock_open.assert_any_call("some_file", 'w', encoding='utf-8')
         mock_open().writelines.assert_called_once_with(["/**\n", "*/"])
 
-    # ❗ @pytest.mark.skip(reason="in serious need of refactoring. Decoupling and Dependency Injection")
+ # ❗@pytest.mark.skip(reason="in serious need of refactoring.Decoupling and Dependency Injection")
     def test_fix_betty_style(self, mocker):
         """Test fix_betty_style function."""
         file_paths = ["file1", "file2", "file3"]
