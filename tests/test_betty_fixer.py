@@ -290,3 +290,27 @@ class TestBettyFixer:
         mock_open.assert_called_once_with(
             HIDDEN_FILE_NAME, 'a', encoding='utf-8')
         mock_open().write.assert_called_once_with(filename + '\n')
+
+    def test_is_file_processed(self, mocker):
+        """Test is_file_processed function."""
+        mocker.patch("os.path.exists", return_value=True)
+        mocker.patch("builtins.open", mocker.mock_open(
+            read_data="test_file.c\n"))
+
+        assert is_file_processed("test_file.c") is True
+
+    def test_is_file_processed_not_exists(self, mocker):
+        """Test is_file_processed function when the file does not exist."""
+        mocker.patch("os.path.exists", return_value=False)
+
+        assert is_file_processed("test_file.c") is False
+
+    def test_is_file_processed_not_processed(self, mocker):
+        """Test is_file_processed function when the file has not been processed."""
+        # Mock os.path.exists to return True
+        mocker.patch("os.path.exists", return_value=True)
+        # Mock builtins.open to return a file without the filename in it
+        mocker.patch("builtins.open", mocker.mock_open(
+            read_data="other_file.c\n"))
+
+        assert is_file_processed("test_file.c") is False
