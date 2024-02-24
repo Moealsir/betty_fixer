@@ -12,12 +12,15 @@ class TestBackup:
 
     @pytest.fixture(autouse=True)
     def setup_method(self):
-        """Create a test file."""  # pylint: disable=attribute-defined-outside-init
+        """Create a test file."""
+        # pylint: disable=attribute-defined-outside-init
         self.test_file = 'test.c'
         with open(self.test_file, 'w', encoding='utf-8') as f:
             self.test_file = f.name
             f.write(
-                'int main(int argc, char **argv){\nprintf("Hello World"\nreturn 0; \n}')
+                'int main(int argc, char **argv){\nprintf(\
+"Hello World"\nreturn 0; \n}'
+            )
         yield
         os.remove(self.test_file)
         if os.path.exists(self.test_file + '.bak'):

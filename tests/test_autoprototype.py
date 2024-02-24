@@ -28,7 +28,8 @@ class TestAutoprototypeSuite:
 
         with open("test.c", "w", encoding="utf-8") as f:
             f.write(
-                'int main(int argc, char **argv){\nprintf("Hello World"\nreturn 0; \n}')
+                'int main(int argc, char **argv)\
+{\nprintf("Hello World"\nreturn 0; \n}')
         yield
 
         os.remove("test.c")
@@ -53,11 +54,12 @@ class TestAutoprototypeSuite:
             "subprocess.run"), mocker.patch("glob.glob")
 
         mock_glob.return_value = ["test.c"]
-        mock_run.return_value = CompletedProcess(args=['betty'] + mock_glob.return_value,
-                                                 returncode=0,
-                                                 stdout='ERROR: ',
-                                                 stderr='WARNING:'
-                                                 )
+        mock_run.return_value = CompletedProcess(
+            args=['betty'] + mock_glob.return_value,
+            returncode=0,
+            stdout='ERROR: ',
+            stderr='WARNING:'
+        )
         betty_check_result = betty_check()
         assert betty_check_result is not None
         assert betty_check_result is False
@@ -122,14 +124,16 @@ class TestAutoprototypeSuite:
         assert ctag[0] is False and isinstance(ctag[1], str)
 
     def test_generate_tags_failure(self, mocker):
-        """ Test the generate_tags function not working from autoprototype.py"""
+        """ Test the generate_tags function not
+        working from autoprototype.py"""
         mock_run = mocker.patch("subprocess.run")
         mock_run.side_effect = subprocess.CalledProcessError(
             returncode=1, cmd=['ctags', '-R', '.'], stderr="Error")
         assert not generate_tags('.')
 
     def test_generate_tags_success(self, mocker):
-        """Test the generate_tags function when the subprocess command succeeds."""
+        """Test the generate_tags function when the subprocess command
+        succeeds."""
         mock_run = mocker.patch("subprocess.run")
         mock_run.return_value = CompletedProcess(args=[
             'ctags', '-R', '--c-kinds=+p',
@@ -152,7 +156,8 @@ class TestAutoprototypeSuite:
 
     @pytest.mark.usefixtures("setup_tear_down_temp_files")
     def test_filter_tags_success(self):
-        """Test the filter_tags function when the subprocess command succeeds."""
+        """Test the filter_tags function when the
+        subprocess command succeeds."""
         generate_tags(".")
         result = filter_tags('.', "tags")
 
@@ -226,7 +231,9 @@ class TestAutoprototypeSuite:
         os.remove("test.h")
         result = check_header_file("test")
         assert result == (
-            False, "Error: Invalid header file. It should have a '.h' extension.")
+            False,
+            "Error: Invalid header file. It should have a '.h' extension."
+        )
 
     @pytest.mark.usefixtures("setup_tear_down_temp_files")
     def test_autoproto(self, mocker):
