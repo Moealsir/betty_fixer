@@ -369,3 +369,25 @@ class TestBettyFixer:  # pylint: disable=too-many-public-methods
         mocker.patch("sys.argv", ["betty_fixer", "-H"])
         main()
         mock_print_header_missing.assert_called_once()
+
+    def test_main_files(self, mocker):
+        """Test main function with file arguments."""
+        mocker.patch("bettyfixer.betty_fixer.is_file_processed",
+                     return_value=False)
+        mocker.patch("sys.argv", ["betty_fixer", "file1.c", "file2.c"])
+        mock_betty_style = mocker.patch(
+            "bettyfixer.betty_fixer.fix_betty_style")
+        mock_vi_script = mocker.patch("bettyfixer.betty_fixer.run_vi_script")
+        mock_record_processed_file = mocker.patch(
+            "bettyfixer.betty_fixer.record_processed_file")
+        mocker.patch("os.remove")
+
+        main()
+
+        mock_betty_style.assert_called_once_with(
+            ["file1.c", "file2.c"])
+        mock_vi_script.assert_has_calls(
+            [mocker.call("file1.c"), mocker.call("file2.c")])
+        mock_record_processed_file.assert_has_calls(
+            [mocker.call("file1.c"), mocker.call("file2.c")])
+        os.remove.assert_called_once_with('errors.txt')
