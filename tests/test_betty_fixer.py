@@ -359,3 +359,13 @@ class TestBettyFixer:  # pylint: disable=too-many-public-methods
         main()
         capured = capsys.readouterr()
         assert "\x1b[31mUsage : bettyfixer -H <heahdername>.h\x1b[39m" in capured.out
+
+    def test_main_header_print_assertion(self, mocker):
+        """Test main function with -H option but no header.
+            checks print_header_name_missing being called.
+        """
+        mock_print_header_missing = mocker.patch(
+            "bettyfixer.betty_fixer.print_header_name_missing")
+        mocker.patch("sys.argv", ["betty_fixer", "-H"])
+        main()
+        mock_print_header_missing.assert_called_once()
