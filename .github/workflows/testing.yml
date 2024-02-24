@@ -24,7 +24,7 @@ jobs:
       run: sudo apt-get update && sudo apt-get install -y exuberant-ctags
     - name: Install betty
       run: |
-        ./bettyfixer/install_dependency/.Betty/install.sh &&
+        sudo ./bettyfixer/install_dependency/.Betty/install.sh &&
         sudo mv bettyfixer/install_dependency/.Betty/betty.sh /bin/betty
     - name: Create test-results directory
       run: mkdir -p test-results
