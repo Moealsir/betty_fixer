@@ -350,3 +350,12 @@ class TestBettyFixer:  # pylint: disable=too-many-public-methods
         assert sys.argv[sys.argv.index("-H") + 1] == "header.h"
         mock_autoproto.assert_called_once_with(
             ".", "header.h")
+
+    def test_main_header_option_no_header(self, mocker, capsys):
+        """Test main function with -H option but no header.
+            checks stdout for the error message.
+        """
+        mocker.patch("sys.argv", ["betty_fixer", "-H"])
+        main()
+        capured = capsys.readouterr()
+        assert "\x1b[31mUsage : bettyfixer -H <heahdername>.h\x1b[39m" in capured.out
