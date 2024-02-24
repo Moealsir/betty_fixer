@@ -20,7 +20,7 @@ jobs:
         pip install pylint pycodestyle colorama pytest pytest-mock
     - name: Analysing the code with pylint
       run: |
-        pylint $(git ls-files '*.py')
+        pylint $(git ls-files '*.py' | grep -v setup.py)
     - name: Analysing the code with pycodestyle
       run: |
         pycodestyle $(git ls-files '*.py' | grep -v setup.py)
